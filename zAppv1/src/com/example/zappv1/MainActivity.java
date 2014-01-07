@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.example.zappv1.MainActivity;
 import com.example.zappv1.R;
-import com.example.zappv1.MainActivity.HashMapAdapter;
+//import com.example.zappv1.MainActivity.HashMapAdapter;
 import com.invities.deviceWatcher.DeviceManager;
 import com.invities.deviceWatcher.DeviceWatcher;
 import com.invities.deviceWatcher.SocialWatcher.Room;
@@ -47,7 +47,6 @@ import android.widget.AdapterView.OnItemClickListener;
 public class MainActivity extends FragmentActivity {
 
 	int count = 0;
-	static BaseAdapter adapter;
 	static ListView listView;
 	static TextView t;
 	public static String deviceList = "devices are : "; 
@@ -79,7 +78,7 @@ public class MainActivity extends FragmentActivity {
         String newText = (String)params.get("text");
         String which = (String)params.get("which");
       
-        if("1".equals(which)) t.setText(newText);
+        if("1".equals(which)) System.out.println("1111111111"); //t.setText(newText);
       }
 
         else
@@ -104,11 +103,6 @@ public class MainActivity extends FragmentActivity {
 	  super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-	  
-	  t = (TextView)findViewById(R.id.textView1);
-	  t.setText("Mixicom Demo starting...");
-		
-		
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActionBar().getThemedContext(), android.R.layout.simple_list_item_1, data);
 
 		final DrawerLayout drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
@@ -133,13 +127,13 @@ public class MainActivity extends FragmentActivity {
 		tx.replace(R.id.main,Fragment.instantiate(MainActivity.this, fragments[0]));
 		tx.commit();
 
-
+	
 
 		/*** Module ID IP téléphone ***/
 		// On lance la librairie qui gère les devices, avec la callback pour les notifications natives
-		DeviceWatcher deviceWatcher = DeviceWatcher.getInstance(getApplicationContext()/*,MainActivity.class,R.drawable.ic_launcher*/);
+	//	DeviceWatcher deviceWatcher = DeviceWatcher.getInstance(getApplicationContext()/*,MainActivity.class,R.drawable.ic_launcher*/);
 		// On crée pour cela un DeviceManager
-		DeviceManager deviceManager = new DeviceManager() {
+	/*	DeviceManager deviceManager = new DeviceManager() {
 			@Override
 			public String searchType() {
 				return DeviceWatcher.LOCAL_NETWORK;// + "/post_to/TF1";
@@ -173,7 +167,7 @@ public class MainActivity extends FragmentActivity {
 				setText("1",deviceList);
 			}
 		};
-		deviceWatcher.search(deviceManager);
+		deviceWatcher.search(deviceManager);*/
 
 	}
 
@@ -188,7 +182,7 @@ public class MainActivity extends FragmentActivity {
 		}
 		
 		
-		class HashMapAdapter extends BaseAdapter {
+		/*class HashMapAdapter extends BaseAdapter {
 		    private HashMap<String,String > mData = new HashMap<String, String>();
 		    private String[] mKeys;
 		    public HashMapAdapter(LinkedHashMap<String, String> data){
@@ -228,6 +222,5 @@ public class MainActivity extends FragmentActivity {
 	           // title.setText(value);
 	            detail.setText("Click to enter this room");
 	            return (row);
-		    }
+		    }*/
 		}
-}

@@ -12,7 +12,7 @@
         android:layout_gravity="top|center"  
         android:gravity="center"                                     
         android:textStyle="bold"
-        android:text="Ceci est un text pour la liste de chaine" />
+        android:text="Liste des chaines" />
     
      <ListView
             android:id="@+id/listDevice"
