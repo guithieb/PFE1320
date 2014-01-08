@@ -4,12 +4,14 @@ import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
 
 
+
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class Preview extends Activity {
 //Commentair
@@ -19,11 +21,21 @@ public class Preview extends Activity {
   private static final String LOG_TAG = Reglages.class.getSimpleName();
   private static final String DEFAULT_BOX_URL = "http://10.0.2.2:8080/api.bbox.lan/V0";
   private Button programUp,programDown;
-
+  String channel;
+  TextView textChaine;
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.preview);
+    
+    textChaine = (TextView)findViewById(R.id.chaineName);
+    
+    Bundle nomChaine = getIntent().getExtras();
+      if(nomChaine != null)
+      {
+        channel = nomChaine.getString("chaineID");
+        textChaine.setText(channel);
+      }
 
     programUp = (Button)findViewById(R.id.programUp);
     programUp.setOnClickListener(new OnClickListener(){
