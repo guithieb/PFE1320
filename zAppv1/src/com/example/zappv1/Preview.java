@@ -15,7 +15,7 @@ public class Preview extends Activity {
 //Commentair
 	// melvin
   //Guillaume
-
+//coucou test
   private static final String LOG_TAG = Reglages.class.getSimpleName();
   private static final String DEFAULT_BOX_URL = "http://10.0.2.2:8080/api.bbox.lan/V0";
   private Button programUp,programDown;
