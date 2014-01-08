@@ -12,7 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class Preview extends Activity {
-
+//Commentair
 
   private static final String LOG_TAG = Reglages.class.getSimpleName();
   private static final String DEFAULT_BOX_URL = "http://10.0.2.2:8080/api.bbox.lan/V0";
