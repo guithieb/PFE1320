@@ -24,9 +24,8 @@ public class ListeChaine extends Fragment{
 
   private ListView listeChaine;
   private String listview_array[] = { "TF1", "FR2", "FR3", "CANAL+", "ARTE", "M6"};
-
-
-
+  private ArrayAdapter<String> listAdapter ;  
+  
 
 
   public static Fragment newInstance(Context context){
