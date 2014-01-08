@@ -13,5 +13,7 @@
         android:gravity="center"                                     
         android:textStyle="bold"
         android:text="MES REGLAGES" />
+    
+    
 
 </LinearLayout>
