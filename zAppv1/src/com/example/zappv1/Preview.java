@@ -3,18 +3,11 @@ package com.example.zappv1;
 import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
 
-
-
-
-
-
-
-
-
-
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.view.GestureDetectorCompat;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -36,8 +29,9 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	private static final int SWIPE_MAX_OFF_PATH = 250;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	private static final String TAG = "MyActivity";
+	public static final String BOX_PREFERENCES = "boxPrefs";
 	//*** Melvin Gesture *** //
-
+	
 	private static final String LOG_TAG = Reglages.class.getSimpleName();
 	private static final String DEFAULT_BOX_URL = "http://192.168.0.24:8080/api.bbox.lan/V0";
 	private Button programUp,programDown;
@@ -46,6 +40,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 	private static final String DEBUG_TAG = "Gestures";
 	private GestureDetectorCompat mDetector; 
+	private String ip;
 
 
 
@@ -92,6 +87,11 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			}
 
 		});
+		
+		
+	  SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+	  ip = prefs.getString(BOX_PREFERENCES,"null");
+	  Log.d(TAG,"IP22"+ip);
 
 
 	}
