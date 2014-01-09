@@ -163,7 +163,12 @@ public class MainActivity extends FragmentActivity {
 					if(device != null)
 					{
 						deviceList += device.id+" ("+device.ip+"): "+device.friendlyName+"\n";//devices.get(i).id+" ";
-						if(device.id.contains("uuid:f527bdbb-b6bb-476a-96c8-5375d38c4668") && device.id != null) {Log.d(TAG,"TEST REUSSI "+device.friendlyName);}
+						if(device.deviceType != null){
+							if(device.deviceType.contains("urn:schemas-upnp-org:device:MediaRenderer:1")) 
+									Log.d(TAG,"TEST REUSSI"+device.friendlyName);
+						
+						}
+							
 						else {Log.d(TAG,"TEST RATE");}
 						
 					}
