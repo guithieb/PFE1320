@@ -29,9 +29,6 @@ public class ListeChaine extends Fragment{
   final String ID_CHAINE = "id_chaine";
 
 
-
-
-
   public static Fragment newInstance(Context context){
     ListeChaine f = new ListeChaine();
 
