@@ -22,6 +22,7 @@ import com.example.remote.ServerException;
 public class Reglages extends Fragment{
 
   
+  
 	public static Fragment newInstance(Context context){
 		Reglages f = new Reglages();
     	 

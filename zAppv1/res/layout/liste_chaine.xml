@@ -14,13 +14,19 @@
         android:textStyle="bold"
         android:text="Liste des chaines" />
 
-    
-    
      <ListView
          android:id="@+id/chaines"
          android:layout_width="match_parent"
-         android:layout_height="match_parent" >
-
+         android:layout_height="194dp" >
+        </ListView>
+        
+     <ListView
+            android:id="@+id/listDevice"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
      </ListView>
+     
+     
+    
 
 </LinearLayout>

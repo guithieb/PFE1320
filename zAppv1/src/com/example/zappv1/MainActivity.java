@@ -61,6 +61,7 @@ public class MainActivity extends FragmentActivity {
 			"com.example.zappv1.Categories",
 			"com.example.zappv1.GestionAlertes",
 	"com.example.zappv1.Reglages"};
+	private static final String TAG = "MyActivity";
 
 	
 	public static Handler mHandler = new Handler(Looper.getMainLooper()) {
@@ -78,7 +79,7 @@ public class MainActivity extends FragmentActivity {
         String newText = (String)params.get("text");
         String which = (String)params.get("which");
       
-        if("1".equals(which)) System.out.println("1111111111"); //t.setText(newText);
+        if("1".equals(which)) Log.d(TAG,"HELLO");
       }
 
         else
@@ -102,6 +103,8 @@ public class MainActivity extends FragmentActivity {
 		
 	  super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    
+   
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActionBar().getThemedContext(), android.R.layout.simple_list_item_1, data);
 
@@ -131,9 +134,9 @@ public class MainActivity extends FragmentActivity {
 
 		/*** Module ID IP téléphone ***/
 		// On lance la librairie qui gère les devices, avec la callback pour les notifications natives
-	//	DeviceWatcher deviceWatcher = DeviceWatcher.getInstance(getApplicationContext()/*,MainActivity.class,R.drawable.ic_launcher*/);
+		DeviceWatcher deviceWatcher = DeviceWatcher.getInstance(getApplicationContext()/*,MainActivity.class,R.drawable.ic_launcher*/);
 		// On crée pour cela un DeviceManager
-	/*	DeviceManager deviceManager = new DeviceManager() {
+		DeviceManager deviceManager = new DeviceManager() {
 			@Override
 			public String searchType() {
 				return DeviceWatcher.LOCAL_NETWORK;// + "/post_to/TF1";
@@ -162,12 +165,15 @@ public class MainActivity extends FragmentActivity {
 					if(device != null)
 					{
 						deviceList += device.id+" ("+device.ip+"): "+device.friendlyName+"\n";//devices.get(i).id+" ";
+						if(device.id.contains("uuid:f527bdbb-b6bb-476a-96c8-5375d38c4668") && device.id != null) {Log.d(TAG,"TEST REUSSI "+device.friendlyName);}
+						else {Log.d(TAG,"TEST RATE");}
+						
 					}
 				}
 				setText("1",deviceList);
 			}
 		};
-		deviceWatcher.search(deviceManager);*/
+		deviceWatcher.search(deviceManager);
 
 	}
 
@@ -224,3 +230,4 @@ public class MainActivity extends FragmentActivity {
 	            return (row);
 		    }*/
 		}
+		

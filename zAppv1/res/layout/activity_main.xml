@@ -24,6 +24,8 @@
         android:paddingLeft="15sp"
         android:paddingRight="15sp"
         />
+    
+   
  
       
 </android.support.v4.widget.DrawerLayout>
