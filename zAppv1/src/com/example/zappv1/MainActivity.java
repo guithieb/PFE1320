@@ -62,7 +62,6 @@ public class MainActivity extends FragmentActivity {
 			"com.example.zappv1.GestionAlertes",
 	"com.example.zappv1.Reglages"};
 
-	
 	public static Handler mHandler = new Handler(Looper.getMainLooper()) {
     @Override
     public void handleMessage(Message inputMessage) {
@@ -90,7 +89,6 @@ public class MainActivity extends FragmentActivity {
           //listView.setAdapter(adapter);
           int i=0;
           i++;
-
         }
       }
 
