@@ -163,8 +163,9 @@ public class MainActivity extends FragmentActivity {
 					if(device != null)
 					{
 						deviceList += device.id+" ("+device.ip+"): "+device.friendlyName+"\n";//devices.get(i).id+" ";
-						if(device.id.contains("uuid:f527bdbb-b6bb-476a-96c8-5375d38c4668") && device.id != null) {Log.d(TAG,"TEST REUSSI "+device.friendlyName);}
+						if(device.id.contains("uuid") && device.friendlyName != null ) {Log.d(TAG,"TEST REUSSI "+device.ip);}
 						else {Log.d(TAG,"TEST RATE");}
+						//uuid:f527bdbb-b6bb-476a-96c8-5375d38c4668
 						
 					}
 				}
