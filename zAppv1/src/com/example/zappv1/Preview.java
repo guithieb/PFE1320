@@ -31,16 +31,19 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	private static final String TAG = "MyActivity";
 	public static final String BOX_PREFERENCES = "boxPrefs";
 	//*** Melvin Gesture *** //
-	
+	private String ip;
 	private static final String LOG_TAG = Reglages.class.getSimpleName();
-	private static final String DEFAULT_BOX_URL = "http://192.168.0.24:8080/api.bbox.lan/V0";
+	//private static final String DEFAULT_BOX_URL = "http://192.168.0.24:8080/api.bbox.lan/V0";
+	public static final String DEFAULT_URL ="";  // ici devait figurer notre IP BOX
+	public static final String SUFFIXE_URL = "/api.bbox.lan/V0";
+	public static String URL_HTTP = "";
 	private Button programUp,programDown;
 	String channel;
 	TextView textChaine;
 
 	private static final String DEBUG_TAG = "Gestures";
 	private GestureDetectorCompat mDetector; 
-	private String ip;
+	
 
 
 
@@ -92,6 +95,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	  SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 	  ip = prefs.getString(BOX_PREFERENCES,"null");
 	  Log.d(TAG,"IP22"+ip);
+	  
+	  URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
 
 
 	}
@@ -99,7 +104,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 	private void sendKeyPressed(String key){
 		new SendKeyPressedTask().execute(
-				new String[] { DEFAULT_BOX_URL , key});    
+				new String[] { URL_HTTP/*DEFAULT_BOX_URL*/ , key});    
 	}
 
 	private class SendKeyPressedTask extends AsyncTask<String, Void, String> {
@@ -179,7 +184,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		Log.d(TAG,"CHANNEL UP");
 	}
 
-
+	
 	@Override
 	public void onLongPress(MotionEvent e) {
 		// TODO Auto-generated method stub
