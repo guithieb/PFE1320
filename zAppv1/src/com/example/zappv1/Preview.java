@@ -34,7 +34,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	private String ip;
 	private static final String LOG_TAG = Reglages.class.getSimpleName();
 	//private static final String DEFAULT_BOX_URL = "http://192.168.0.24:8080/api.bbox.lan/V0";
-	public static final String DEFAULT_URL ="";  // ici devait figurer notre IP BOX
 	public static final String SUFFIXE_URL = "/api.bbox.lan/V0";
 	public static String URL_HTTP = "";
 	private Button programUp,programDown;
