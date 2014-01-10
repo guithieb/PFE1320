@@ -21,6 +21,7 @@ import android.os.Message;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -42,7 +43,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
-
+import android.preference.PreferenceManager;
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class MainActivity extends FragmentActivity {
 
@@ -62,6 +63,8 @@ public class MainActivity extends FragmentActivity {
 			"com.example.zappv1.GestionAlertes",
 	"com.example.zappv1.Reglages"};
 	private static final String TAG = "MyActivity";
+	public static final String BOX_PREFERENCES = "boxPrefs";
+	private String ip;
 
 	public static Handler mHandler = new Handler(Looper.getMainLooper()) {
     @Override
@@ -128,7 +131,7 @@ public class MainActivity extends FragmentActivity {
 		tx.replace(R.id.main,Fragment.instantiate(MainActivity.this, fragments[0]));
 		tx.commit();
 
-	
+		
 
 		/*** Module ID IP téléphone ***/
 		// On lance la librairie qui gère les devices, avec la callback pour les notifications natives
@@ -163,13 +166,20 @@ public class MainActivity extends FragmentActivity {
 					if(device != null)
 					{
 						deviceList += device.id+" ("+device.ip+"): "+device.friendlyName+"\n";//devices.get(i).id+" ";
+
 						if(device.deviceType != null){
 							if(device.deviceType.contains("urn:schemas-upnp-org:device:MediaRenderer:1")) 
 									Log.d(TAG,"TEST REUSSI"+device.friendlyName);
+							    ip=device.ip;
+							    SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+							    SharedPreferences.Editor prefEditor = settings.edit();
+							    prefEditor.putString(BOX_PREFERENCES,ip);
+							    prefEditor.commit();
 						
 						}
 							
 						else {Log.d(TAG,"TEST RATE");}
+						
 						
 					}
 				}
@@ -177,10 +187,11 @@ public class MainActivity extends FragmentActivity {
 			}
 		};
 		deviceWatcher.search(deviceManager);
-
-	}
-
 	
+	 
+		
+   
+	}
 
 		public static void setText(String Which,String newText) {
 			Map<String,String> v_params = new HashMap<String,String>();

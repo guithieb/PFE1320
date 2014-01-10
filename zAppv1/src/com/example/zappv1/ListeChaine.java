@@ -50,7 +50,6 @@ public class ListeChaine extends Fragment{
        String item = (String) arg0.getItemAtPosition(position);
        intent.putExtra("chaineID",item);
         startActivity(intent);
-
       }
 
     });

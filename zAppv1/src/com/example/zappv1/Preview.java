@@ -2,11 +2,11 @@ package com.example.zappv1;
 
 import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
-
-
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.view.GestureDetectorCompat;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -28,21 +28,20 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	private static final int SWIPE_MAX_OFF_PATH = 250;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	private static final String TAG = "MyActivity";
+	public static final String BOX_PREFERENCES = "boxPrefs";
 	//*** Melvin Gesture *** //
-
-	// Variables URL de la Open STB
-	public static final String SUFFIXE_URL = "/api.bbox.lan/V0";
-	public static final String URL_HTTP = "http://%1$s:8080"+SUFFIXE_URL;
-	
+	private String ip;
 	private static final String LOG_TAG = Reglages.class.getSimpleName();
-	private static final String DEFAULT_BOX_URL = "http://192.168.0.24:8080/api.bbox.lan/V0";
+	//private static final String DEFAULT_BOX_URL = "http://192.168.0.24:8080/api.bbox.lan/V0";
+	public static final String DEFAULT_URL ="";  // ici devait figurer notre IP BOX
+	public static final String SUFFIXE_URL = "/api.bbox.lan/V0";
+	public static String URL_HTTP = "";
 	private Button programUp,programDown;
 	String channel;
 	TextView textChaine;
 
 	private static final String DEBUG_TAG = "Gestures";
 	private GestureDetectorCompat mDetector; 
-
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -87,6 +86,13 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			}
 
 		});
+		
+		
+	  SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+	  ip = prefs.getString(BOX_PREFERENCES,"null");
+	  Log.d(TAG,"IP22"+ip);
+	  
+	  URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
 
 
 	}
@@ -94,7 +100,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 	private void sendKeyPressed(String key){
 		new SendKeyPressedTask().execute(
-				new String[] { DEFAULT_BOX_URL , key});    
+				new String[] { URL_HTTP/*DEFAULT_BOX_URL*/ , key});    
 	}
 
 	private class SendKeyPressedTask extends AsyncTask<String, Void, String> {
@@ -174,7 +180,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		Log.d(TAG,"CHANNEL UP");
 	}
 
-
+	
 	@Override
 	public void onLongPress(MotionEvent e) {
 		// TODO Auto-generated method stub
