@@ -3,6 +3,7 @@ package com.example.zappv1;
 import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
 
+
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,6 +30,10 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	private static final String TAG = "MyActivity";
 	//*** Melvin Gesture *** //
 
+	// Variables URL de la Open STB
+	public static final String SUFFIXE_URL = "/api.bbox.lan/V0";
+	public static final String URL_HTTP = "http://%1$s:8080"+SUFFIXE_URL;
+	
 	private static final String LOG_TAG = Reglages.class.getSimpleName();
 	private static final String DEFAULT_BOX_URL = "http://192.168.0.24:8080/api.bbox.lan/V0";
 	private Button programUp,programDown;
