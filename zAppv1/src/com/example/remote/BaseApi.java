@@ -22,6 +22,13 @@ import com.google.gson.GsonBuilder;
 
 import android.util.Log;
 
+/**
+ * 
+ * 
+ * Implémente les différentes façons d'envoyer des requetes (GET,POST,PUT..) par le protocole HTTP
+ * 
+ * 
+ */
 
 public class BaseApi {
   private static final String LOG_TAG = BaseApi.class.getSimpleName();

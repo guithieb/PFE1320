@@ -45,6 +45,16 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.preference.PreferenceManager;
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+
+/***
+ * Première classe qui se lance pour une application android
+ *      - sert à identifier la box parmis tout les devices que l'on trouve dans le réseau
+ *      - initialiser le drawer
+ *      - 
+ * 
+ * 
+ */
+
 public class MainActivity extends FragmentActivity {
 
 	int count = 0;
@@ -56,6 +66,7 @@ public class MainActivity extends FragmentActivity {
 	private ListView drawerListView;		
 	private ActionBarDrawerToggle actionBarDrawerToggle;
 	final String[] data ={"Liste des chaînes","Favoris","Catégoris","Gestion des alertes","Mes réglages"};
+	//Liste des différentes vues liées au drawer
 	final String[] fragments ={
 			"com.example.zappv1.ListeChaine",
 			"com.example.zappv1.Favoris",
@@ -99,6 +110,8 @@ public class MainActivity extends FragmentActivity {
     };
 	
 	
+  //Fonction obligatoire dans une classe qui hérite de la classe Activity, Fragement, FragmentActivity
+  // Se lance quand on accède à l'application
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
@@ -109,6 +122,7 @@ public class MainActivity extends FragmentActivity {
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActionBar().getThemedContext(), android.R.layout.simple_list_item_1, data);
 
+		//Initialisation du drawer
 		final DrawerLayout drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
 		final ListView navList = (ListView) findViewById(R.id.drawer);
 		navList.setAdapter(adapter);
@@ -132,7 +146,7 @@ public class MainActivity extends FragmentActivity {
 		tx.commit();
 
 		
-
+		
 		/*** Module ID IP téléphone ***/
 		// On lance la librairie qui gère les devices, avec la callback pour les notifications natives
 		DeviceWatcher deviceWatcher = DeviceWatcher.getInstance(getApplicationContext()/*,MainActivity.class,R.drawable.ic_launcher*/);
@@ -167,10 +181,13 @@ public class MainActivity extends FragmentActivity {
 					{
 						deviceList += device.id+" ("+device.ip+"): "+device.friendlyName+"\n";//devices.get(i).id+" ";
 
+					//Identification de la box par le nom de son attribut DeviceType
 						if(device.deviceType != null){
 							if(device.deviceType.contains("urn:schemas-upnp-org:device:MediaRenderer:1")) 
 									Log.d(TAG,"TEST REUSSI"+device.friendlyName);
 							    ip=device.ip;
+							    //On met dans les préférences du téléphone l'adresse ip pour que l'on puisse la retrouver dans 
+							    //n'importe quelle vue
 							    SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 							    SharedPreferences.Editor prefEditor = settings.edit();
 							    prefEditor.putString(BOX_PREFERENCES,ip);
