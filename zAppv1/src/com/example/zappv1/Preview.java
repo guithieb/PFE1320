@@ -68,7 +68,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		Bundle nomChaine = getIntent().getExtras();
 		if(nomChaine != null)
 		{
-			channel = nomChaine.getString("chaineID");
+			channel = nomChaine.getString("chaineNom");
 			textChaine.setText(channel);
 		}
 

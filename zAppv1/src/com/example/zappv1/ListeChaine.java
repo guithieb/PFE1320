@@ -63,8 +63,10 @@ public class ListeChaine extends Fragment{
       public void onItemClick(AdapterView<?> arg0, View v, int position, long id)
       {
         Intent intent = new Intent(getActivity(), Preview.class);
-       String item = (String) arg0.getItemAtPosition(position);
-       intent.putExtra("chaineID",item);
+       //String item = (String) arg0.getItemAtPosition(position);
+        EPGChaine item = (EPGChaine) arg0.getItemAtPosition(position);
+        intent.putExtra("chaineNom",item.getNom());
+       // intent.putExtra("progDescription",item.getListeProgrammes().get(0).getProgrammes().get(0).getDescription());
         startActivity(intent);
       }
       
