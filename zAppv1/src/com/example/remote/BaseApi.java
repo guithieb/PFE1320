@@ -9,6 +9,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
@@ -101,5 +102,15 @@ public class BaseApi {
     }
   }
   
+	public static HttpResponse executeHttpGet(String url)
+			throws IOException, ClientProtocolException {
+		
+		HttpGet method = new HttpGet(url);
+		
+		HttpClient client = makeJsonHttpClient(method);
+		
+		HttpResponse response = client.execute(method);
+		return response;
+	}
 
 }

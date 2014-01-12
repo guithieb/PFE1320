@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+     <ImageView
+         android:id="@+id/logo"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_gravity="center_vertical"
+         android:layout_weight="0.25"
+         android:padding="10dp" />
+
+    <LinearLayout 
+        android:orientation="vertical"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	   	android:layout_gravity="center_vertical"
+	   	android:paddingLeft="10px"
+	    android:layout_weight="1"
+        >
+        <TextView 
+            android:id="@+id/chaineName"
+            android:textStyle="bold"
+            android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:textSize="16px"
+            />
+        <TextView 
+            android:id="@+id/programname"
+            android:textStyle="bold"
+            android:layout_width="fill_parent"
+	         android:layout_height="fill_parent"
+            />
+
+       
+        
+	</LinearLayout>
+ </LinearLayout>
+    
