@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.example.cloud.ChaineAdapter;
 import com.example.cloud.CloudApi;
 import com.example.cloud.EPGChaine;
+import com.example.cloud.EPGChaine.ListeProgramme;
 import com.example.cloud.GetProgramTask;
 import com.example.cloud.SendRequestEPG;
 import com.example.remote.ServerException;
@@ -43,10 +44,12 @@ public class ListeChaine extends Fragment{
   private ListView listeChaine;
   ArrayList<EPGChaine> epgChaines = new ArrayList<EPGChaine>();
   final String ID_CHAINE = "id_chaine";
+  EPGChaine item;
   
   CloudApi epg;
   final String baseurlEPG = "http://openbbox.flex.bouyguesbox.fr:81/V0";
   ChaineAdapter adapter;
+ 
 
 
   public static Fragment newInstance(Context context){
@@ -63,20 +66,27 @@ public class ListeChaine extends Fragment{
     adapter = new ChaineAdapter(getActivity(), epgChaines, this);
     
     listeChaine.setAdapter(adapter);
-    LinkedList item = new LinkedList<String>();
     refreshChaine();
    
+    
+    
     //évenement lorsque que l'on clique sur une chaîne dans la lsite
     listeChaine.setOnItemClickListener(new OnItemClickListener()
     {
+      @Override
       public void onItemClick(AdapterView<?> arg0, View v, int position, long id)
       {
         Intent intent = new Intent(getActivity(), Preview.class);
-        EPGChaine item = (EPGChaine) arg0.getItemAtPosition(position);
+        item = (EPGChaine) arg0.getItemAtPosition(position);    
         //Envoie du nom de la chaine à la vue prévisualisation
-        intent.putExtra("chaineNom",item.getNom());
-       // intent.putExtra("progDescription",item.getListeProgrammes().get(0).getProgrammes().get(0).getDescription());
-        startActivity(intent);
+        intent.putExtra("chaineNom",item.getLogo());
+       // listeProg = item.getListeProgrammes();
+        //prog = listeProg.getProgrammes().get(0);
+        if(item.getListeProgrammes() == null) Log.d(LOG_TAG,"ITEM RATE");
+          
+        // intent.putExtra("progDescription",item.getListeProgrammes().get(0).getProgrammes().get(0).getDescription());
+        // Log.d(LOG_TAG,"PROG "+prog.toString());
+         startActivity(intent);
       }
          
     });

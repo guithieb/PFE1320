@@ -2,10 +2,9 @@ package com.example.cloud;
 
 import java.util.ArrayList;
 
+import com.example.cloud.EPGChaine.ListeProgramme;
+import com.example.cloud.EPGChaine.ListeProgramme.Programme;
 import com.example.zappv1.ListeChaine;
-
-
-
 import com.example.zappv1.R;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -80,9 +79,14 @@ public boolean isEmpty()
 		}
 		
 		final EPGChaine application = datas.get(position);
-		ch.chaineName.setText(application.getNom());
-		
-		
+	  ch.chaineName.setText(application.getNom());
+	  
+		if(application.getListeProgrammes() != null)
+		{
+		ListeProgramme lp = application.getListeProgrammes();
+		Programme p = lp.getProgrammes().get(0);
+		}
+	
 		return convertView;
 	}
 }
