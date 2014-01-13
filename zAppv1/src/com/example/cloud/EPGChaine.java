@@ -13,9 +13,10 @@ import java.util.Date;
 
 public class EPGChaine {
 
+	// tout passer en public ?
 	private int id;
 	private String nom;
-	private String logo;
+	public String logo;
 	private ListeProgramme ListeProgrammes;
 	
 	public EPGChaine()

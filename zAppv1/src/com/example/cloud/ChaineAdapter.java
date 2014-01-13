@@ -29,6 +29,7 @@ public class ChaineAdapter extends BaseAdapter {
 	}
 	
 	public static final String LOG_TAG = "debug";
+	// constructeur pour ChView ?
 	private ArrayList<EPGChaine> datas;
 	Context context;
 	ListeChaine listeChaine;
@@ -77,7 +78,7 @@ public boolean isEmpty()
 		{ 
 			ch = new ChView();
 			convertView = inflater.inflate(R.layout.chaineview, null);
-			ch.logo =(ImageView) convertView.findViewById(R.id.logo);
+			//ch.logo =(ImageView) convertView.findViewById(R.id.logo);
 			ch.chaineName = (TextView) convertView.findViewById(R.id.chaineName);
 			ch.programname = (TextView) convertView.findViewById(R.id.programname);
 			convertView.setTag(ch);
@@ -95,6 +96,14 @@ public boolean isEmpty()
 				Log.d(LOG_TAG, "prg" +application.getListeProgrammes());
 				//ch.programname.setText(application.getListeProgrammes().get(0).getProgrammes().get(0).getNom());
 			}*/
+	  ch.chaineName.setText(application.getNom());
+	  
+		/*if(application.getListeProgrammes() != null)
+		{
+		ListeProgramme lp = application.getListeProgrammes();
+		Programme p = lp.getProgrammes().get(0);
+		}
+	*/
 		return convertView;
 	}
 }
