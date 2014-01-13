@@ -6,9 +6,7 @@ import com.example.cloud.EPGChaine.ListeProgramme;
 import com.example.cloud.EPGChaine.ListeProgramme.Programme;
 import com.example.zappv1.ListeChaine;
 import com.example.zappv1.R;
-
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +19,10 @@ public class ChaineAdapter extends BaseAdapter {
 	private class ChView{
 		TextView chaineName;
 		TextView progName;
+		TextView identifiant;
 		
 	}
-	
+	// constructeur pour ChView ?
 	
 	private ArrayList<EPGChaine> datas;
 	Context context;
@@ -73,7 +72,7 @@ public boolean isEmpty()
 		{ 
 			ch = new ChView();
 			convertView = inflater.inflate(R.layout.chaineview, null);
-			
+			ch.identifiant =(TextView) convertView.findViewById(R.id.identifiant);
 			ch.chaineName = (TextView) convertView.findViewById(R.id.chaineName);
 			ch.progName = (TextView) convertView.findViewById(R.id.progName);
 			convertView.setTag(ch);
@@ -83,8 +82,9 @@ public boolean isEmpty()
 		}
 		
 		final EPGChaine application = datas.get(position);
+		ch.identifiant.setText(application.getId());
 	  ch.chaineName.setText(application.getNom());
-	  ch.progName.setText(application.getListeProgrammes().getProgrammes().get(0).getNom());
+	  ch.progName.setText(application.getListeProgrammes().getProgrammes().getNom());
 	  
 		/*if(application.getListeProgrammes() != null)
 		{
@@ -99,7 +99,7 @@ public boolean isEmpty()
 			Log.d(LOG_TAG,"PROG REUSSI");
 			Log.d(LOG_TAG,"NOM PROGRAMME "+application.getListeProgrammes().getProgrammes().get(0).getNom());
 		}*/
-	
+
 		return convertView;
 	}
 }

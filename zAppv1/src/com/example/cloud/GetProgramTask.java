@@ -48,7 +48,7 @@ public class GetProgramTask extends AsyncTask<String, Void, String>{
 	@Override
 	protected String doInBackground(String... params){
 	  //Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
-		String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/?period=1";
+		String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/";
 		try {
 			HttpResponse response = BaseApi.executeHttpGet(url);
 			HttpEntity entity = response.getEntity();
