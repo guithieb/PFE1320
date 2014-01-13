@@ -1,6 +1,7 @@
 package com.example.cloud;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import com.example.zappv1.R;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +24,7 @@ import android.widget.TextView;
 
 public class ChaineAdapter extends BaseAdapter {
 	private class ChView{
-		ImageView logo;
+		TextView idchannel;
 		TextView chaineName;
 		TextView programname;
 		
@@ -78,10 +80,11 @@ public boolean isEmpty()
 		{ 
 			ch = new ChView();
 			convertView = inflater.inflate(R.layout.chaineview, null);
-			//ch.logo =(ImageView) convertView.findViewById(R.id.logo);
+			ch.idchannel =(TextView) convertView.findViewById(R.id.idchannel);
 			ch.chaineName = (TextView) convertView.findViewById(R.id.chaineName);
 			ch.programname = (TextView) convertView.findViewById(R.id.programname);
 			convertView.setTag(ch);
+			
 	
 		} else {
 			ch = (ChView) convertView.getTag();
@@ -89,21 +92,24 @@ public boolean isEmpty()
 		
 		final EPGChaine application = datas.get(position);
 		ch.chaineName.setText(application.getNom());
-		Log.d(LOG_TAG, "IMAGE" +application.getLogo());
-		
-		/*if (application.getListeProgrammes() != null)
-			{
-				Log.d(LOG_TAG, "prg" +application.getListeProgrammes());
-				//ch.programname.setText(application.getListeProgrammes().get(0).getProgrammes().get(0).getNom());
-			}*/
-	  ch.chaineName.setText(application.getNom());
-	  
-		/*if(application.getListeProgrammes() != null)
-		{
-		ListeProgramme lp = application.getListeProgrammes();
-		Programme p = lp.getProgrammes().get(0);
-		}
-	*/
+		Log.d(LOG_TAG, "id" +application.getId());
+		ch.idchannel.setText(application.getId());
+		 
+	    /* Drawable drawable = LoadImageFromWebOperations(application.getLogo());
+	     ch.logo.setImageDrawable(drawable);*/
 		return convertView;
 	}
+/*
+	private Drawable LoadImageFromWebOperations(String url)
+	{
+	try
+	{
+	InputStream is = (InputStream) new URL(url).getContent();
+	Drawable d = Drawable.createFromStream(is, "src name");
+	return d;
+	}catch (Exception e) {
+	System.out.println("Exc="+e);
+	return null;
+	}
+	}*/
 }
