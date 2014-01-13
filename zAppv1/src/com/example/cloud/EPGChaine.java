@@ -3,7 +3,13 @@ package com.example.cloud;
 import java.util.ArrayList;
 import java.util.Date;
 
-import android.text.method.DateTimeKeyListener;
+/*
+ * 
+ * 
+ * Création des attributs qui caractérise une chaîne ainsi que ses programmes
+ * 
+ */
+
 
 public class EPGChaine {
 

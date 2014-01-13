@@ -17,6 +17,14 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.BaseAdapter;
 
+/**
+ * 
+ * 
+ * Task=Thread permettant de récupérer toute la liste des chaînes pour la box
+ * 
+ */
+
+
 public class GetProgramTask extends AsyncTask<String, Void, String>{
 
 	private ArrayList<EPGChaine> chaines;
@@ -29,9 +37,11 @@ public class GetProgramTask extends AsyncTask<String, Void, String>{
 		this.adapter = adapter;
 		this.context = c;
 	}
-
+	
+	//Fonction qui se lance à l'appel de cette classe
 	@Override
 	protected String doInBackground(String... params){
+	  //Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
 		String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live";
 		try {
 			HttpResponse response = BaseApi.executeHttpGet(url);
@@ -58,6 +68,7 @@ public class GetProgramTask extends AsyncTask<String, Void, String>{
 		return null;
 	}
 	
+	//Fonction qui se lance après l'éxécution de la fonction doInBackground
 	@Override
 	protected void onPostExecute(String result){
 		super.onPostExecute(result);

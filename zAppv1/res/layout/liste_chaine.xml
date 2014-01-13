@@ -14,7 +14,7 @@
         android:textStyle="bold"
         android:text="Liste des chaines" />
 
-     <ListView
+     	<ListView
          android:id="@+id/chaines"
          android:layout_width="match_parent"
          android:layout_height="194dp" >

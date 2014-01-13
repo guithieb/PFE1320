@@ -17,11 +17,15 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+/**
+ * 
+ * Vue servant à afficher les informations sur le programme en cours d'une chaine précise
+ * 
+ * 
+ */
+
 public class Preview extends Activity implements GestureDetector.OnGestureListener {
-	//Commentair
-	// melvin
-	//Guillaume
-	//coucou test
+	
 
 	// *** Melvin Gesture *** //
 	private static final int SWIPE_MIN_DISTANCE = 120;
@@ -58,16 +62,18 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		// Instantiate the gesture detector with the
 		// application context and an implementation of
 		// GestureDetector.OnGestureListener
-		mDetector = new GestureDetectorCompat(this,this);
+		//mDetector = new GestureDetectorCompat(this,this);
 
 
+		//Récuperation du nom de la chaine envoyé dans la vue ListeChaine
 		Bundle nomChaine = getIntent().getExtras();
 		if(nomChaine != null)
 		{
-			channel = nomChaine.getString("chaineID");
+			channel = nomChaine.getString("chaineNom");
 			textChaine.setText(channel);
 		}
 
+		//Création des boutons Prog+ et Prog-
 		programUp = (Button)findViewById(R.id.programUp);
 		programUp.setOnClickListener(new OnClickListener(){
 			@Override
@@ -86,7 +92,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 		});
 		
-		
+		//Récuperation de l'adresse ip de la box grâce aux préférences 
 	  SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 	  ip = prefs.getString(BOX_PREFERENCES,"null");
 	  Log.d(TAG,"IP22"+ip);
@@ -102,6 +108,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				new String[] { URL_HTTP/*DEFAULT_BOX_URL*/ , key});    
 	}
 
+	//Appel de la fonction SendKey de la classe UserIntefaceApi pour pouvoir envoyer les commande de remote
 	private class SendKeyPressedTask extends AsyncTask<String, Void, String> {
 		private Exception mException = null;
 
@@ -120,7 +127,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 	}
 
-
+	
+	//Fonction permettant de detecter différents gestes sur le smartphone (ici le slide pour changer de programme)
 	@Override 
 	public boolean onTouchEvent(MotionEvent event){ 
 		this.mDetector.onTouchEvent(event);

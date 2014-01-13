@@ -80,7 +80,7 @@ public boolean isEmpty()
 			convertView = inflater.inflate(R.layout.chaineview, null);
 			ch.logo =(ImageView) convertView.findViewById(R.id.logo);
 			ch.chaineName = (TextView) convertView.findViewById(R.id.chaineName);
-			//ch.programname = (TextView) convertView.findViewById(R.id.programname);
+			ch.programname = (TextView) convertView.findViewById(R.id.programname);
 			convertView.setTag(ch);
 	
 		} else {
@@ -90,8 +90,13 @@ public boolean isEmpty()
 		final EPGChaine application = datas.get(position);
 		ch.chaineName.setText(application.getNom());
 		Log.d(LOG_TAG, "IMAGE" +application.getLogo());
+		
 		if (application.getLogo() != null) ch.logo.setImageURI(Uri.parse(application.getLogo()));
-		if (application.getListeProgrammes().get(0).getProgrammes().get(0).getNom() != null) ch.programname.setText(application.getListeProgrammes().get(0).getProgrammes().get(0).getNom());
+		/*if (application.getListeProgrammes().get(0).getProgrammes().get(0).getNom() != null)
+			{
+				Log.d(LOG_TAG, "prg" +application.getListeProgrammes().get(0).getProgrammes().get(0).getNom());
+				ch.programname.setText(application.getListeProgrammes().get(0).getProgrammes().get(0).getNom());
+			}*/
 		
 		return convertView;
 	}

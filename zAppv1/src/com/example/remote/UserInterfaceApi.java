@@ -4,6 +4,12 @@ import org.apache.http.HttpResponse;
 
 import android.util.Log;
 
+/**
+ * 
+ * Implémente fonction qui permet d'envoyer une commande à la box (P+,P-,V+,V-...)
+ * 
+ * 
+ */
 
 public class UserInterfaceApi extends BaseApi {
 

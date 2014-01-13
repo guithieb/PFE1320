@@ -30,6 +30,13 @@ import com.example.cloud.SendRequestEPG;
 import com.example.remote.ServerException;
 import com.example.zappv1.R;
 
+/**
+ * Vue regroupant toutes les chaines disponibles sur la box
+ * Permet ensuite d'accéder à la prévisualisation d'une chaîne
+ * 
+ * 
+ */
+
 public class ListeChaine extends Fragment{
 
   public static final String LOG_TAG = "debug";
@@ -49,42 +56,39 @@ public class ListeChaine extends Fragment{
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
     ViewGroup root = (ViewGroup) inflater.inflate(R.layout.liste_chaine, container,false);
+    //Initialisation de la List qui regroupe tout les noms des chaînes
     listeChaine = (ListView) root.findViewById(R.id.chaines);
     adapter = new ChaineAdapter(getActivity(), epgChaines, this);
     
     listeChaine.setAdapter(adapter);
-    LinkedList item = new LinkedList<String>();
     refreshChaine();
    
+    //évenement lorsque que l'on clique sur une chaîne dans la lsite
     listeChaine.setOnItemClickListener(new OnItemClickListener()
     {
       public void onItemClick(AdapterView<?> arg0, View v, int position, long id)
       {
         Intent intent = new Intent(getActivity(), Preview.class);
-       String item = (String) arg0.getItemAtPosition(position);
-       intent.putExtra("chaineID",item);
+        EPGChaine item = (EPGChaine) arg0.getItemAtPosition(position);
+        //Envoie du nom de la chaine à la vue prévisualisation
+        intent.putExtra("chaineNom",item.getNom());
+       // intent.putExtra("progDescription",item.getListeProgrammes().get(0).getProgrammes().get(0).getDescription());
         startActivity(intent);
       }
-      
-      
-     
-
+         
     });
     //Log.d(LOG_TAG," CHAINES "+epgChaines.get(0).getId());
     return root;
-  
-
-    //ListView listdevice;
 
   }
+
 
 private void refreshChaine() {
 	// TODO Auto-generated method stub
 	new GetProgramTask(epgChaines, adapter, getActivity()).execute();
 	Log.d(LOG_TAG,"PROGRAM GSON");
 	
-	
-}
+	}
 
 }
 
