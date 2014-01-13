@@ -41,8 +41,8 @@ public class GetProgramTask extends AsyncTask<String, Void, String>{
 	//Fonction qui se lance à l'appel de cette classe
 	@Override
 	protected String doInBackground(String... params){
-	  //Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
-		String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live";
+	  //Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+		String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
 		try {
 			HttpResponse response = BaseApi.executeHttpGet(url);
 			HttpEntity entity = response.getEntity();
@@ -54,7 +54,7 @@ public class GetProgramTask extends AsyncTask<String, Void, String>{
 				while ((line = r.readLine()) != null) {
 					total.append(line);
 				}
-				//Log.d(LOG_TAG,"TOTAL "+total.toString());
+				Log.d(LOG_TAG,"TOTAL "+total.toString());
 				return total.toString();
 			}
 

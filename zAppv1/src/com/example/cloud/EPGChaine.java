@@ -16,8 +16,12 @@ public class EPGChaine {
 	private int id;
 	private String nom;
 	private String logo;
-	private ArrayList<ListeProgramme> listeProgrammes;
+	private ListeProgramme ListeProgrammes;
 	
+	public EPGChaine()
+	{
+	  
+	}
 
 	public void setId(int id){
 		this.id = id;
@@ -39,12 +43,12 @@ public class EPGChaine {
 		this.logo = logo;
 	}
 
-	public ArrayList<ListeProgramme> getListeProgrammes() {
-		return listeProgrammes;
+	public ListeProgramme getListeProgrammes() {
+		return ListeProgrammes;
 	}
 
-	public void setListeProgrammes(ArrayList<ListeProgramme> listeProgrammes) {
-		this.listeProgrammes = listeProgrammes;
+	public void setListeProgrammes(ListeProgramme listeProgrammes) {
+		this.ListeProgrammes = listeProgrammes;
 	}
 
 	public int getId() {
@@ -53,25 +57,35 @@ public class EPGChaine {
 
 	public class ListeProgramme{
 		
-		private ArrayList<Programme> programmes;
+		private ArrayList<Programme> Programme;
+		
+		
+		public ListeProgramme(){
+		  
+		}
 
 		public ArrayList<Programme> getProgrammes() {
-			return programmes;
+			return Programme;
 		}
 
-		public void setProgrammes(ArrayList<Programme> programmes) {
-			this.programmes = programmes;
+		public void setProgrammes(ArrayList<Programme> programme) {
+			this.Programme = programme;
 		}
 		
 		
 		
-	}
 	
-	public  class Programme{
+	
+	protected  class Programme{
 		
 		private int id;
 		private String nom, description;
 		private Date debut,fin;
+		
+		public Programme()
+		{
+		  
+		}
 		
 		public int getId() {
 			return id;
@@ -107,6 +121,6 @@ public class EPGChaine {
 		
 	}
 	
-	
+	}
 	
 }

@@ -1,14 +1,16 @@
 package com.example.cloud;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import com.example.zappv1.ListeChaine;
-
-
-
 import com.example.zappv1.R;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,11 +19,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 public class ChaineAdapter extends BaseAdapter {
-	
-	
 	private class ChView{
 		ImageView logo;
 		TextView chaineName;
@@ -91,13 +90,11 @@ public boolean isEmpty()
 		ch.chaineName.setText(application.getNom());
 		Log.d(LOG_TAG, "IMAGE" +application.getLogo());
 		
-		if (application.getLogo() != null) ch.logo.setImageURI(Uri.parse(application.getLogo()));
-		/*if (application.getListeProgrammes().get(0).getProgrammes().get(0).getNom() != null)
+		/*if (application.getListeProgrammes() != null)
 			{
-				Log.d(LOG_TAG, "prg" +application.getListeProgrammes().get(0).getProgrammes().get(0).getNom());
-				ch.programname.setText(application.getListeProgrammes().get(0).getProgrammes().get(0).getNom());
+				Log.d(LOG_TAG, "prg" +application.getListeProgrammes());
+				//ch.programname.setText(application.getListeProgrammes().get(0).getProgrammes().get(0).getNom());
 			}*/
-		
 		return convertView;
 	}
 }
