@@ -15,10 +15,11 @@ import android.text.method.DateTimeKeyListener;
 
 public class EPGChaine {
 
+	// tout passer en public ?
 	private int id;
 	private String nom;
-	private String logo;
-	private ListeProgramme listeProgrammes;
+	public String logo;
+	private ListeProgramme ListeProgrammes;
 	
 	public EPGChaine()
 	{
@@ -46,11 +47,11 @@ public class EPGChaine {
 	}
 
 	public ListeProgramme getListeProgrammes() {
-		return listeProgrammes;
+		return ListeProgrammes;
 	}
 
 	public void setListeProgrammes(ListeProgramme listeProgrammes) {
-		this.listeProgrammes = listeProgrammes;
+		this.ListeProgrammes = listeProgrammes;
 	}
 
 	public int getId() {

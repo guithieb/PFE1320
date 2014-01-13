@@ -20,7 +20,7 @@ public class ChaineAdapter extends BaseAdapter {
 		TextView chaineName;
 		
 	}
-	
+	// constructeur pour ChView ?
 	
 	private ArrayList<EPGChaine> datas;
 	Context context;
@@ -81,12 +81,12 @@ public boolean isEmpty()
 		final EPGChaine application = datas.get(position);
 	  ch.chaineName.setText(application.getNom());
 	  
-		if(application.getListeProgrammes() != null)
+		/*if(application.getListeProgrammes() != null)
 		{
 		ListeProgramme lp = application.getListeProgrammes();
 		Programme p = lp.getProgrammes().get(0);
 		}
-	
+	*/
 		return convertView;
 	}
 }

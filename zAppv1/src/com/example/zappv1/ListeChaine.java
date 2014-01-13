@@ -45,9 +45,10 @@ public class ListeChaine extends Fragment{
   ArrayList<EPGChaine> epgChaines = new ArrayList<EPGChaine>();
   final String ID_CHAINE = "id_chaine";
   EPGChaine item;
-  
-  CloudApi epg;
-  final String baseurlEPG = "http://openbbox.flex.bouyguesbox.fr:81/V0";
+  EPGChaine id;
+ 
+  //CloudApi epg;
+  //final String baseurlEPG = "http://openbbox.flex.bouyguesbox.fr:81/V0";
   ChaineAdapter adapter;
  
 
@@ -95,6 +96,7 @@ public class ListeChaine extends Fragment{
 
   }
 
+  
 
 private void refreshChaine() {
 	// TODO Auto-generated method stub

@@ -1,10 +1,25 @@
 package com.example.zappv1;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+
+
+//import com.example.cinece.R;
+//import com.example.zappv1.Preview.TacheAffiche;
+import com.example.cloud.EPGChaine;
+//import com.example.cinece.R;
 import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -12,10 +27,12 @@ import android.support.v4.view.GestureDetectorCompat;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -26,7 +43,9 @@ import android.widget.TextView;
  */
 
 public class Preview extends Activity implements GestureDetector.OnGestureListener {
-	
+
+	/*** IMAGE Melvin ***/
+	private EPGChaine epgchaine;
 
 	// *** Melvin Gesture *** //
 	private static final int SWIPE_MIN_DISTANCE = 120;
@@ -46,7 +65,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 	private static final String DEBUG_TAG = "Gestures";
 	private GestureDetectorCompat mDetector; 
-	
+
 
 
 
@@ -68,6 +87,11 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		// GestureDetector.OnGestureListener
 		//mDetector = new GestureDetectorCompat(this,this);
 
+		//URL url = new URL("http://213.139.122.233/res/chaines/1.png");
+    	//Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+    	//ImageView imageView = (ImageView) findViewById(R.id.Picture);
+//imageView.setImageBitmap(bmp);
+    	
 
 		//Récuperation du nom de la chaine envoyé dans la vue ListeChaine
 		Bundle nomChaine = getIntent().getExtras();
@@ -95,14 +119,19 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			}
 
 		});
-		
-		//Récuperation de l'adresse ip de la box grâce aux préférences 
-	  SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-	  ip = prefs.getString(BOX_PREFERENCES,"null");
-	  Log.d(TAG,"IP22"+ip);
-	  
-	  URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
 
+		//Récuperation de l'adresse ip de la box grâce aux préférences 
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		ip = prefs.getString(BOX_PREFERENCES,"null");
+		Log.d(TAG,"IP22"+ip);
+
+		URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
+
+		// execution de l'image
+		//TacheAffiche nouvelleTache = new TacheAffiche();
+		//nouvelleTache.execute();
+		
+    	
 
 	}
 
@@ -131,7 +160,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 	}
 
-	
+
 	//Fonction permettant de detecter différents gestes sur le smartphone (ici le slide pour changer de programme)
 	@Override 
 	public boolean onTouchEvent(MotionEvent event){ 
@@ -191,7 +220,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		Log.d(TAG,"CHANNEL UP");
 	}
 
-	
+
 	@Override
 	public void onLongPress(MotionEvent e) {
 		// TODO Auto-generated method stub
@@ -212,5 +241,5 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		return false;
 	}
 
-
+			    			    	
 }
