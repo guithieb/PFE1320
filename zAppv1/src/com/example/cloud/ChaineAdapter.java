@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import com.example.zappv1.ListeChaine;
+import com.example.zappv1.Preview;
 import com.example.zappv1.R;
 
 import android.content.Context;
@@ -43,6 +44,10 @@ public class ChaineAdapter extends BaseAdapter {
 		this.datas = datas;
 		this.listeChaine = listeChaine;
 	}	
+	
+
+	
+
 	
 	
 	
@@ -101,8 +106,8 @@ public boolean isEmpty()
 	     ch.logo.setImageDrawable(drawable);*/
 
 		ch.identifiant.setText(application.getId()+". ");
-	  ch.chaineName.setText(application.getNom());
-	  ch.progName.setText(application.getListeProgrammes().getProgrammes().getNom());
+		ch.chaineName.setText(application.getNom());
+		ch.progName.setText(application.getListeProgrammes().getProgrammes().getNom());
 	  
 		/*if(application.getListeProgrammes() != null)
 		{

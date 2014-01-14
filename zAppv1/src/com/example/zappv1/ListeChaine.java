@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.example.cloud.ChaineAdapter;
 import com.example.cloud.EPGChaine;
 import com.example.cloud.EPGChaine.ListeProgramme;
+import com.example.cloud.EPGChaines;
 import com.example.cloud.GetProgramTask;
 import com.example.remote.ServerException;
 import com.example.zappv1.R;
@@ -42,11 +43,10 @@ public class ListeChaine extends Fragment{
   private ListView listeChaine;
   ArrayList<EPGChaine> epgChaines = new ArrayList<EPGChaine>();
   final String ID_CHAINE = "id_chaine";
-  EPGChaine item;
-  EPGChaine item2;
-  
+  EPGChaine item;  
   final String baseurlEPG = "http://openbbox.flex.bouyguesbox.fr:81/V0";
   EPGChaine id;
+  ArrayList<EPGChaines> epgs = new ArrayList<EPGChaines>();
  
   //CloudApi epg;
   //final String baseurlEPG = "http://openbbox.flex.bouyguesbox.fr:81/V0";
@@ -62,12 +62,12 @@ public class ListeChaine extends Fragment{
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
     ViewGroup root = (ViewGroup) inflater.inflate(R.layout.liste_chaine, container,false);
-    //Initialisation de la List qui regroupe tout les noms des chaînes
+    //Initialisation de la List qui regroupe tout les noms des chaines
     listeChaine = (ListView) root.findViewById(R.id.chaines);
-    adapter = new ChaineAdapter(getActivity(), epgChaines, this);
-    
+    adapter = new ChaineAdapter(getActivity(), epgChaines, this);  
     listeChaine.setAdapter(adapter);
     refreshChaine();
+    
    
     
     
@@ -79,24 +79,23 @@ public class ListeChaine extends Fragment{
       {
         Intent intent = new Intent(getActivity(), Preview.class);
         item = (EPGChaine) arg0.getItemAtPosition(position);
-        int position2 = position+1;
-        
-        
-        		
-        item2 = (EPGChaine) arg0.getItemAtPosition(position2);
         //Envoie du nom de la chaine à la vue prévisualisation
         intent.putExtra("chaineNom",item.getNom());
         intent.putExtra("progNom", item.getListeProgrammes().getProgrammes().getNom());
          intent.putExtra("progDescription",item.getListeProgrammes().getProgrammes().getDescription());
          intent.putExtra("chaineId", item.getId());
-         //intent.putExtra("tableauChaines", epgChaines);
-         intent.putExtra("chaineNom2",item2.getNom());
-         Log.d(LOG_TAG,"POSITION2 "+position2);
+        intent.putExtra("progDescription",item.getListeProgrammes().getProgrammes().getDescription());
+        intent.putExtra("progDebut",item.getListeProgrammes().getProgrammes().getDebut());
+        intent.putExtra("progFin",item.getListeProgrammes().getProgrammes().getFin());
+        
+        
+        // Log.d(LOG_TAG,"PROG "+prog.toString());
          startActivity(intent);
       }
          
     });
-    //Log.d(LOG_TAG," CHAINES "+epgChaines.get(0).getId());
+    
+   
     return root;
 
   }
@@ -106,9 +105,10 @@ public class ListeChaine extends Fragment{
 private void refreshChaine() {
 	// TODO Auto-generated method stub
 	new GetProgramTask(epgChaines, adapter, getActivity()).execute();
-	Log.d(LOG_TAG,"PROGRAM GSON");
 	
 	}
+
+
 
 }
 

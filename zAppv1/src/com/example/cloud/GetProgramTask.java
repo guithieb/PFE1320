@@ -82,9 +82,9 @@ public class GetProgramTask extends AsyncTask<String, Void, String>{
 		super.onPostExecute(result);
 		
 		if (result!=null)
-		{	Log.d(LOG_TAG,"RESULT "+result);
+		{	
 			EPGChaines ch = new Gson().fromJson(result,EPGChaines.class);
-			Log.d(LOG_TAG,"CH "+ch.toString());
+			
 			//Log.d(LOG_TAG,"CH"+ch.toString());
 			chaines.clear();
 			chaines.addAll(ch);
