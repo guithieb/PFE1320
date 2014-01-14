@@ -13,7 +13,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -96,10 +96,9 @@ public boolean isEmpty()
 		 
 	    /* Drawable drawable = LoadImageFromWebOperations(application.getLogo());
 	     ch.logo.setImageDrawable(drawable);*/
-
 		ch.identifiant.setText(application.getId()+". ");
-		ch.chaineName.setText(application.getNom());
-		ch.progName.setText(application.getListeProgrammes().getProgrammes().getNom());
+		ch.chaineName.setText(Html.fromHtml(application.getNom()));
+		ch.progName.setText(Html.fromHtml(application.getListeProgrammes().getProgrammes().getNom()));
 	  
 		/*if(application.getListeProgrammes() != null)
 		{

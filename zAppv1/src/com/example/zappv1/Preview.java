@@ -13,6 +13,7 @@ import java.util.Date;
 
 
 
+
 //import com.example.cinece.R;
 //import com.example.zappv1.Preview.TacheAffiche;
 import com.example.cloud.EPGChaine;
@@ -30,6 +31,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.GestureDetectorCompat;
+import android.text.Html;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -122,10 +124,10 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			textChaine.setText(channel+ " : ");
 			
 			nom = nomChaine.getString("progNom");
-			textNom.setText(nom);
+			textNom.setText(Html.fromHtml(nom));
 			
 			description = nomChaine.getString("progDescription");
-			textDescription.setText(description);
+			textDescription.setText(Html.fromHtml(description));
 			
 			debut = nomChaine.getString("progDebut");
 			Log.d(TAG,"DATE"+debut);
