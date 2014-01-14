@@ -98,8 +98,8 @@ public boolean isEmpty()
 	     ch.logo.setImageDrawable(drawable);*/
 
 		ch.identifiant.setText(application.getId()+". ");
-	  ch.chaineName.setText(application.getNom());
-	  ch.progName.setText(application.getListeProgrammes().getProgrammes().getNom());
+		ch.chaineName.setText(application.getNom());
+		ch.progName.setText(application.getListeProgrammes().getProgrammes().getNom());
 	  
 		/*if(application.getListeProgrammes() != null)
 		{

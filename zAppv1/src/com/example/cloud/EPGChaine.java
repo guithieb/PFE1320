@@ -75,7 +75,7 @@ public class EPGChaine {
 		
 		private int id;
 		private String nom, description;
-		private Date debut,fin;
+		private String debut,fin;
 		
 		public Programme()
 		{
@@ -100,16 +100,16 @@ public class EPGChaine {
 		public void setDescription(String description) {
 			this.description = description;
 		}
-		public Date getDebut() {
+		public String getDebut() {
 			return debut;
 		}
-		public void setDebut(Date debut) {
+		public void setDebut(String debut) {
 			this.debut = debut;
 		}
-		public Date getFin() {
+		public String getFin() {
 			return fin;
 		}
-		public void setFin(Date fin) {
+		public void setFin(String fin) {
 			this.fin = fin;
 		}
 		
