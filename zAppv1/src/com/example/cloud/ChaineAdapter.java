@@ -43,6 +43,9 @@ public class ChaineAdapter extends BaseAdapter {
 		this.datas = datas;
 		this.listeChaine = listeChaine;
 	}	
+	
+	
+	
 
 	@Override
 	public int getCount() {
@@ -129,4 +132,5 @@ public boolean isEmpty()
 	return null;
 	}
 	}*/
+	
 }

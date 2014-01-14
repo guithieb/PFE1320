@@ -7,12 +7,15 @@ import java.net.URL;
 
 
 
+import java.util.ArrayList;
+
 //import com.example.cinece.R;
 //import com.example.zappv1.Preview.TacheAffiche;
 import com.example.cloud.EPGChaine;
 //import com.example.cinece.R;
 import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
+
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -62,9 +65,12 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	String channel;
 	String description;
 	String nom;
+	String chaineId;
 	TextView textChaine;
 	TextView textNom;
 	TextView textDescription;
+	Bundle extra;
+	ArrayList<EPGChaine> epg = new ArrayList<EPGChaine>();
 
 	private static final String DEBUG_TAG = "Gestures";
 	private GestureDetectorCompat mDetector; 
@@ -96,16 +102,16 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
     	
 
 		//Récuperation du nom de la chaine envoyé dans la vue ListeChaine
-		Bundle nomChaine = getIntent().getExtras();
-		if(nomChaine != null)
+		 extra = getIntent().getExtras();
+		if(extra != null)
 		{
-			channel = nomChaine.getString("chaineNom");
+			channel = extra.getString("chaineNom");
 			textChaine.setText(channel);
 			
-			nom = nomChaine.getString("progNom");
+			nom = extra.getString("progNom");
 			textNom.setText(nom);
 			
-			description = nomChaine.getString("progDescription");
+			description = extra.getString("progDescription");
 			textDescription.setText(description);
 		}
 
@@ -225,8 +231,19 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 	protected void onSwipeRight() {   
 		// do your stuff here
-		sendKeyPressed(UserInterfaceApi.CHANNEL_UP); 
-		Log.d(TAG,"CHANNEL UP");
+		//sendKeyPressed(UserInterfaceApi.CHANNEL_UP); 
+		//Log.d(TAG,"CHANNEL UP");
+		extra = getIntent().getExtras();
+		if(extra != null)
+		{
+			epg = extra.getShortArray("1");
+			
+			textChaine.setText(channel);
+			Log.d(TAG,"CHANGEMENT OK "+channel);
+			
+			
+		}
+	
 	}
 
 

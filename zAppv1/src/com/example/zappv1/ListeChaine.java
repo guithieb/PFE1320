@@ -43,6 +43,7 @@ public class ListeChaine extends Fragment{
   ArrayList<EPGChaine> epgChaines = new ArrayList<EPGChaine>();
   final String ID_CHAINE = "id_chaine";
   EPGChaine item;
+  EPGChaine item2;
   
   final String baseurlEPG = "http://openbbox.flex.bouyguesbox.fr:81/V0";
   EPGChaine id;
@@ -77,12 +78,20 @@ public class ListeChaine extends Fragment{
       public void onItemClick(AdapterView<?> arg0, View v, int position, long id)
       {
         Intent intent = new Intent(getActivity(), Preview.class);
-        item = (EPGChaine) arg0.getItemAtPosition(position);    
+        item = (EPGChaine) arg0.getItemAtPosition(position);
+        int position2 = position+1;
+        
+        
+        		
+        item2 = (EPGChaine) arg0.getItemAtPosition(position2);
         //Envoie du nom de la chaine à la vue prévisualisation
         intent.putExtra("chaineNom",item.getNom());
         intent.putExtra("progNom", item.getListeProgrammes().getProgrammes().getNom());
          intent.putExtra("progDescription",item.getListeProgrammes().getProgrammes().getDescription());
-        // Log.d(LOG_TAG,"PROG "+prog.toString());
+         intent.putExtra("chaineId", item.getId());
+         intent.putExtra("tableauChaines", epgChaines);
+         intent.putExtra("chaineNom2",item2.getNom());
+         Log.d(LOG_TAG,"POSITION2 "+position2);
          startActivity(intent);
       }
          
