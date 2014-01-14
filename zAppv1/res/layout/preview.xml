@@ -17,23 +17,58 @@
         android:layout_height="wrap_content"
         android:text="@string/program_down" />
     
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+        
     <TextView
         android:id="@+id/chaineName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12dip"  
-        android:gravity="center"                                     
+        android:textSize="20dip"  
+        android:gravity="center"
+        android:textStyle="bold"                                     
          />
+
+    <TextView
+        android:id="@+id/progNom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:textSize="20dip"
+        android:layout_toRightOf="@id/chaineName" 
+        android:textStyle="bold"                                    
+         />
+
     
     <TextView
         android:id="@+id/progDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12dip"  
-        android:gravity="center"                                     
+        android:textSize="15dip"  
+        android:layout_below="@id/progNom"                                    
          />
     
+    <TextView
+        android:id="@+id/progDebut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dip"  
+        android:gravity="center"
+        android:layout_below="@id/progDescription"   
+        android:textStyle="italic"                                  
+         />
+    <TextView
+        android:id="@+id/progFin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dip"  
+        android:gravity="center"   
+        android:layout_below="@id/progDescription"
+        android:layout_toRightOf="@id/progDebut"
+		android:textStyle="italic"                                  
+         />
     
+    </RelativeLayout>
     
 
     

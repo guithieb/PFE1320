@@ -81,7 +81,10 @@ public class ListeChaine extends Fragment{
         //Envoie du nom de la chaine à la vue prévisualisation
         intent.putExtra("chaineNom",item.getNom());
         intent.putExtra("progNom", item.getListeProgrammes().getProgrammes().getNom());
-         intent.putExtra("progDescription",item.getListeProgrammes().getProgrammes().getDescription());
+        intent.putExtra("progDescription",item.getListeProgrammes().getProgrammes().getDescription());
+        intent.putExtra("progDebut",item.getListeProgrammes().getProgrammes().getDebut());
+        intent.putExtra("progFin",item.getListeProgrammes().getProgrammes().getFin());
+        
         // Log.d(LOG_TAG,"PROG "+prog.toString());
          startActivity(intent);
       }
