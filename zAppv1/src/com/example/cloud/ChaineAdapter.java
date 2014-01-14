@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import com.example.zappv1.ListeChaine;
+import com.example.zappv1.Preview;
 import com.example.zappv1.R;
 
 import android.content.Context;
@@ -43,6 +44,13 @@ public class ChaineAdapter extends BaseAdapter {
 		this.datas = datas;
 		this.listeChaine = listeChaine;
 	}	
+	
+
+	
+
+	
+	
+	
 
 	@Override
 	public int getCount() {
@@ -101,4 +109,17 @@ public boolean isEmpty()
 		ch.progName.setText(Html.fromHtml(application.getListeProgrammes().getProgrammes().getNom()));
 		return convertView;
 	}
+/*
+	private Drawable LoadImageFromWebOperations(String url)
+	{
+	try
+	{
+	InputStream is = (InputStream) new URL(url).getContent();
+	Drawable d = Drawable.createFromStream(is, "src name");
+	return d;
+	}catch (Exception e) {
+	System.out.println("Exc="+e);
+	return null;
+	}
+	}*/
 }

@@ -27,14 +27,14 @@
         android:layout_height="wrap_content"
         android:textSize="20dip"  
         android:gravity="center"
-        android:textStyle="bold"                                     
+        android:textStyle="bold"                                    
          />
     <TextView
         android:id="@+id/progNom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
         android:textSize="20dip"
-        android:layout_toRightOf="@id/chaineName" 
+        android:layout_below="@id/chaineName" 
         android:textStyle="bold"                                    
          />
     

@@ -1,27 +1,28 @@
 package com.example.zappv1;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-
-
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-
-
-
-//import com.example.cinece.R;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import com.example.cloud.ChaineAdapter;
 //import com.example.zappv1.Preview.TacheAffiche;
 import com.example.cloud.EPGChaine;
-//import com.example.cinece.R;
+import com.example.cloud.EPGChaineSerialize;
+import com.example.cloud.getChannelTask;
+import com.example.remote.BaseApi;
 import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
-
+import com.google.gson.Gson;
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -39,6 +40,7 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -53,7 +55,7 @@ import android.widget.TextView;
 public class Preview extends Activity implements GestureDetector.OnGestureListener {
 
 	/*** IMAGE Melvin ***/
-	private EPGChaine epgchaine;
+private EPGChaine epgChaine;
 
 	// *** Melvin Gesture *** //
 	private static final int SWIPE_MIN_DISTANCE = 120;
@@ -71,22 +73,28 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	String channel;
 	String description;
 	String nom;
+	String chaineId;
 	String debut;
 	String fin;
 	TextView textChaine;
 	TextView textNom;
 	TextView textDescription;
+	Bundle extra;
+	ArrayList<EPGChaine> epg = new ArrayList<EPGChaine>();
 	TextView textDebut;
 	TextView textFin;
-
 	private static final String DEBUG_TAG = "Gestures";
+	private ChaineAdapter adapter;
 	private GestureDetectorCompat mDetector; 
+	int id;
+	
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preview);
-
+		
 		textChaine = (TextView)findViewById(R.id.chaineName);
 		textNom = (TextView)findViewById(R.id.progNom);
 		textDescription = (TextView)findViewById(R.id.progDescription);
@@ -118,30 +126,35 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 		//Récuperation du nom de la chaine envoyé dans la vue ListeChaine
 		Bundle extra = getIntent().getExtras();
+		 extra = getIntent().getExtras();
 		if(extra != null)
 		{
+			chaineId = extra.getString("chaineId");
 			channel = extra.getString("chaineNom");
-			textChaine.setText(channel+ " : ");
+			textChaine.setText(channel);
 			
 			nom = extra.getString("progNom");
 			textNom.setText(Html.fromHtml(nom));
-			
+			nom = extra.getString("progNom");
+			textNom.setText(nom);			
 			description = extra.getString("progDescription");
 			textDescription.setText(Html.fromHtml(description));
+			textDescription.setText(description);
 			
 			debut = extra.getString("progDebut");
 			Log.d(TAG,"DATE"+debut);
 			String[] parse = debut.split("T");
-			Log.d(TAG,"DATE"+parse[1]);
 			String[] debutProg = parse[1].split("Z");
 			textDebut.setText("Début: "+debutProg[0]+" - ");
 			
 			fin = extra.getString("progFin");
 			Log.d(TAG,"DATE"+fin);
+			fin = extra.getString("progFin");
 			String[] parse2 = fin.split("T");
-			Log.d(TAG,"DATE"+parse2[1]);
 			String[] finProg = parse2[1].split("Z");
 			textFin.setText("Fin: "+finProg[0]);
+			
+			id = Integer.parseInt(chaineId);
 		}
 
 		
@@ -245,6 +258,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		}  else if (distance < -SWIPE_MIN_DISTANCE && enoughSpeed) {
 			// left to right swipe
 			onSwipeRight();
+			
 			return true;
 		} else {
 			// oooou, it didn't qualify; do nothing
@@ -254,15 +268,61 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 	protected void onSwipeLeft() { 
 		// do your stuff here
-		sendKeyPressed(UserInterfaceApi.CHANNEL_DOWN);
-		Log.d(TAG,"CHANNEL DOWN");
+		id++;
+		if(id>=20) id=id-19;
+		getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),Integer.toString(id));
+		gtc.execute();
+		Log.d(TAG,"TASK OK");
+		if(gtc.getStatus() == AsyncTask.Status.RUNNING)
+		{
+			Log.d(TAG,"TASK RIGHT OK");
+		}
+		
+		
+		
+		if(gtc.getStatus() == AsyncTask.Status.FINISHED)
+		{
+			Log.d(TAG,"TASK RIGHT FIN");
+		}
+		
+		if(epgChaine != null)
+		{
+		Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
+		}
+		
 	}
 
 	protected void onSwipeRight() {   
 		// do your stuff here
-		sendKeyPressed(UserInterfaceApi.CHANNEL_UP); 
-		Log.d(TAG,"CHANNEL UP");
-	}
+		//sendKeyPressed(UserInterfaceApi.CHANNEL_UP); 
+		
+		id--;
+		if(id<=0) id=id+20;
+		getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),Integer.toString(id));
+		gtc.execute();
+		Log.d(TAG,"TASK OK");
+		if(gtc.getStatus() == AsyncTask.Status.RUNNING)
+		{
+			Log.d(TAG,"TASK RIGHT OK");
+		}
+		
+		
+		
+		if(gtc.getStatus() == AsyncTask.Status.FINISHED)
+		{
+			Log.d(TAG,"TASK RIGHT FIN");
+		}
+		
+		if(epgChaine != null)
+		{
+		Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
+		}
+		
+		
+		
+		}
+	
+	
 
 
 	@Override
@@ -284,4 +344,86 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	private class getChannelTask extends AsyncTask<String, Void, String> {
+		
+		EPGChaine chaine;
+		
+		BaseAdapter adapter;
+		Context context;
+		String id;
+		 public static final String LOG_TAG = "debug";
+
+	public getChannelTask(EPGChaine chaine, Context c,String id) {
+			this.chaine = chaine;
+			this.context = c;
+			this.id=id;
+		}
+		
+		//Fonction qui se lance à l'appel de cette classe
+		@Override
+		protected String doInBackground(String... params){
+		  //Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+			//String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
+		  //Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+			String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/?TVChannelsId="+id;
+			try {
+				HttpResponse response = BaseApi.executeHttpGet(url);
+				HttpEntity entity = response.getEntity();
+				if (entity !=null)
+				{
+					BufferedReader r = new BufferedReader(new InputStreamReader(entity.getContent()));
+					StringBuilder total = new StringBuilder();
+					String line;
+					while ((line = r.readLine()) != null) {
+						total.append(line);
+					}
+					//Log.d(LOG_TAG,"TOTAL "+total.toString());
+					return total.toString();
+				}
+
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
+		//Fonction qui se lance après l'éxécution de la fonction doInBackground
+		
+		protected void onPostExecute(String result){
+			super.onPostExecute(result);
+			Log.d(LOG_TAG,"POSTEXECUTE");
+			if (result!=null)
+			{	Log.d(LOG_TAG,"RESULT "+result);
+				EPGChaineSerialize ch = new Gson().fromJson(result,EPGChaineSerialize.class);
+				Log.d(LOG_TAG,"CH "+ch.toString());
+				//Log.d(LOG_TAG,"CH"+ch.toString());
+				Log.d(LOG_TAG,"RESULTCHANNEL"+result);
+				//adapter.notifyDataSetChanged();
+				chaine = ch;
+				if(chaine != null)
+				Log.d(LOG_TAG,"CHAINE"+chaine.getListeProgrammes().getProgrammes().getNom());
+				textChaine.setText(chaine.getNom());
+				nom = extra.getString("progNom");
+				textNom.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getNom()));
+				textDescription.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getDescription()));
+				
+				String[] parse = chaine.getListeProgrammes().getProgrammes().getDebut().split("T");
+				String[] debutProg = parse[1].split("Z");
+				textDebut.setText("Début: "+debutProg[0]+" - ");
+				
+				String[] parse2 = chaine.getListeProgrammes().getProgrammes().getFin().split("T");
+				String[] finProg = parse2[1].split("Z");
+				textFin.setText("Fin: "+finProg[0]);
+				
+			}
+		}
+
+	}
+	
+	
 }
