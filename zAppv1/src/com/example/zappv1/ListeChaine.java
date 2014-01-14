@@ -89,7 +89,7 @@ public class ListeChaine extends Fragment{
         intent.putExtra("progNom", item.getListeProgrammes().getProgrammes().getNom());
          intent.putExtra("progDescription",item.getListeProgrammes().getProgrammes().getDescription());
          intent.putExtra("chaineId", item.getId());
-         intent.putExtra("tableauChaines", epgChaines);
+         //intent.putExtra("tableauChaines", epgChaines);
          intent.putExtra("chaineNom2",item2.getNom());
          Log.d(LOG_TAG,"POSITION2 "+position2);
          startActivity(intent);

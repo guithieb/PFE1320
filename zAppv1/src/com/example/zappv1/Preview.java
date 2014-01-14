@@ -236,7 +236,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		extra = getIntent().getExtras();
 		if(extra != null)
 		{
-			epg = extra.getShortArray("1");
+			//epg = extra.getShortArray("1");
 			
 			textChaine.setText(channel);
 			Log.d(TAG,"CHANGEMENT OK "+channel);
