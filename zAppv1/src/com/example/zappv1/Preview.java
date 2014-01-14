@@ -75,7 +75,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		setContentView(R.layout.preview);
 
 		textChaine = (TextView)findViewById(R.id.chaineName);
-		textNom = (TextView)findViewById(R.id.progNom);
+		textNom = (TextView)findViewById(R.id.progName);
 		textDescription = (TextView)findViewById(R.id.progDescription);
 
 		// Instantiate the gesture detector with the
