@@ -24,18 +24,17 @@ import android.widget.TextView;
 
 public class ChaineAdapter extends BaseAdapter {
 	private class ChView{
-		TextView idchannel;
 		TextView chaineName;
-		TextView programname;
+		TextView progName;
+		TextView identifiant;
 		
 	}
 	
-	public static final String LOG_TAG = "debug";
 	// constructeur pour ChView ?
 	private ArrayList<EPGChaine> datas;
 	Context context;
 	ListeChaine listeChaine;
-	
+	public static final String LOG_TAG = "debug";
 	private LayoutInflater inflater;
 	
 	public ChaineAdapter (Context context, ArrayList<EPGChaine> datas,ListeChaine listeChaine){
@@ -80,9 +79,9 @@ public boolean isEmpty()
 		{ 
 			ch = new ChView();
 			convertView = inflater.inflate(R.layout.chaineview, null);
-			ch.idchannel =(TextView) convertView.findViewById(R.id.idchannel);
+			ch.identifiant =(TextView) convertView.findViewById(R.id.identifiant);
 			ch.chaineName = (TextView) convertView.findViewById(R.id.chaineName);
-			ch.programname = (TextView) convertView.findViewById(R.id.programname);
+			ch.progName = (TextView) convertView.findViewById(R.id.progName);
 			convertView.setTag(ch);
 			
 	
@@ -91,12 +90,30 @@ public boolean isEmpty()
 		}
 		
 		final EPGChaine application = datas.get(position);
+
 		ch.chaineName.setText(application.getNom());
 		Log.d(LOG_TAG, "id" +application.getId());
-		ch.idchannel.setText(application.getId());
 		 
 	    /* Drawable drawable = LoadImageFromWebOperations(application.getLogo());
 	     ch.logo.setImageDrawable(drawable);*/
+
+		ch.identifiant.setText(application.getId()+". ");
+	  ch.chaineName.setText(application.getNom());
+	  ch.progName.setText(application.getListeProgrammes().getProgrammes().getNom());
+	  
+		/*if(application.getListeProgrammes() != null)
+		{
+		//ListeProgramme lp = application.getListeProgrammes();
+		//Programme p = lp.getProgrammes().get(0);
+			Log.d(LOG_TAG,"LP NULL");
+			
+		}
+		
+		if(application.getListeProgrammes().getProgrammes().get(0) != null)
+		{
+			Log.d(LOG_TAG,"PROG REUSSI");
+			Log.d(LOG_TAG,"NOM PROGRAMME "+application.getListeProgrammes().getProgrammes().get(0).getNom());
+		}*/
 		return convertView;
 	}
 /*

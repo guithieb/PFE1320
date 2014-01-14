@@ -15,17 +15,11 @@
         android:text="Liste des chaines" />
 
      	<ListView
-         android:id="@+id/chaines"
-         android:layout_width="match_parent"
-         android:layout_height="200dp" >
-        </ListView>
+     	    android:id="@+id/chaines"
+     	    android:layout_width="match_parent"
+     	    android:layout_height="match_parent" >
 
-     
-     <ListView
-            android:id="@+id/listDevice"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-     </ListView>
+        </ListView>
      
 
 </LinearLayout>

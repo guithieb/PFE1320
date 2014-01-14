@@ -10,13 +10,12 @@ import java.util.Date;
  * 
  */
 
-
 public class EPGChaine {
 
 	// tout passer en public ?
-	private int id;
+	private String id;
 	private String nom;
-	public String logo;
+	private String logo;
 	private ListeProgramme ListeProgrammes;
 	
 	public EPGChaine()
@@ -24,7 +23,7 @@ public class EPGChaine {
 	  
 	}
 
-	public void setId(int id){
+	public void setId(String id){
 		this.id = id;
 	}
 	
@@ -48,36 +47,31 @@ public class EPGChaine {
 		return ListeProgrammes;
 	}
 
+
 	public void setListeProgrammes(ListeProgramme listeProgrammes) {
 		this.ListeProgrammes = listeProgrammes;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
 	public class ListeProgramme{
-		
-		private ArrayList<Programme> Programme;
+		private Programme Programme;
 		
 		
 		public ListeProgramme(){
-		  
+		 
 		}
-
-		public ArrayList<Programme> getProgrammes() {
+		public Programme getProgrammes() {
 			return Programme;
 		}
 
-		public void setProgrammes(ArrayList<Programme> programme) {
-			this.Programme = programme;
+		public void setProgrammes(Programme programmes) {
+			this.Programme = programmes;
 		}
 		
-		
-		
-	
-	
-	protected  class Programme{
+	public class Programme{
 		
 		private int id;
 		private String nom, description;
@@ -122,6 +116,8 @@ public class EPGChaine {
 		
 	}
 	
-	}
 	
+	}
 }
+	
+
