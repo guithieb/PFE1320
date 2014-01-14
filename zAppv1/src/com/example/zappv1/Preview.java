@@ -5,18 +5,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-
-
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-
-
-
-//import com.example.cinece.R;
-//import com.example.zappv1.Preview.TacheAffiche;
 import com.example.cloud.EPGChaine;
-//import com.example.cinece.R;
 import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
 
@@ -26,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -39,7 +29,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 /**
  * 
@@ -52,6 +44,12 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 	/*** IMAGE Melvin ***/
 	private EPGChaine epgchaine;
+
+	/*** PLAYER ZAPP ***/
+	//VideoView playerSurfaceView;
+	// besoin du format 3gp != stream
+	//String videoSrc = "rtsp://v6.cache1.c.youtube.com/CjYLENy73wIaLQkDsLHya4-Z9hMYDSANFEIJbXYtZ29vZ2xlSARSBXdhdGNoYKX4k4uBjbOiUQw=/0/0/0/video.3gp";
+
 
 	// *** Melvin Gesture *** //
 	private static final int SWIPE_MIN_DISTANCE = 120;
@@ -69,13 +67,9 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	String channel;
 	String description;
 	String nom;
-	String debut;
-	String fin;
 	TextView textChaine;
 	TextView textNom;
 	TextView textDescription;
-	TextView textDebut;
-	TextView textFin;
 
 	private static final String DEBUG_TAG = "Gestures";
 	private GestureDetectorCompat mDetector; 
@@ -85,11 +79,19 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preview);
 
+		/* PLAYER 
+		playerSurfaceView = (VideoView)findViewById(R.id.playersurface);
+
+		MediaController mediaController = new MediaController(this); 
+		mediaController.setAnchorView(playerSurfaceView);
+		playerSurfaceView.setMediaController(mediaController);
+		playerSurfaceView.setVideoURI(Uri.parse(videoSrc));
+		playerSurfaceView.start();
+		 */
+
 		textChaine = (TextView)findViewById(R.id.chaineName);
 		textNom = (TextView)findViewById(R.id.progName);
 		textDescription = (TextView)findViewById(R.id.progDescription);
-		textDebut = (TextView) findViewById(R.id.progDebut);
-		textFin = (TextView) findViewById(R.id.progFin);
 
 		// Instantiate the gesture detector with the
 		// application context and an implementation of
@@ -103,46 +105,26 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		//mDetector = new GestureDetectorCompat(this,this);
 
 		//URL url = new URL("http://213.139.122.233/res/chaines/1.png");
-    	//Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-    	//ImageView imageView = (ImageView) findViewById(R.id.Picture);
+		//Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+		//ImageView imageView = (ImageView) findViewById(R.id.Picture);
 		//imageView.setImageBitmap(bmp);
-    	
-		/*
-		 * TextView textView = (TextView) findViewById(R.id.DATE);
-			Date date = new Date(location.getTime());
-			DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getApplicationContext());
-			textView .setText("Time: " + dateFormat.format(date));
-		 */
+
 
 		//Récuperation du nom de la chaine envoyé dans la vue ListeChaine
 		Bundle nomChaine = getIntent().getExtras();
 		if(nomChaine != null)
 		{
 			channel = nomChaine.getString("chaineNom");
-			textChaine.setText(channel+ " : ");
-			
+			textChaine.setText(channel);
+
 			nom = nomChaine.getString("progNom");
 			textNom.setText(nom);
-			
+
 			description = nomChaine.getString("progDescription");
 			textDescription.setText(description);
-			
-			debut = nomChaine.getString("progDebut");
-			Log.d(TAG,"DATE"+debut);
-			String[] parse = debut.split("T");
-			Log.d(TAG,"DATE"+parse[1]);
-			String[] debutProg = parse[1].split("Z");
-			textDebut.setText("Début: "+debutProg[0]+" - ");
-			
-			fin = nomChaine.getString("progFin");
-			Log.d(TAG,"DATE"+fin);
-			String[] parse2 = fin.split("T");
-			Log.d(TAG,"DATE"+parse2[1]);
-			String[] finProg = parse2[1].split("Z");
-			textFin.setText("Fin: "+finProg[0]);
 		}
 
-		
+
 		//Création des boutons Prog+ et Prog-
 		programUp = (Button)findViewById(R.id.programUp);
 		programUp.setOnClickListener(new OnClickListener(){
@@ -172,8 +154,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		// execution de l'image
 		//TacheAffiche nouvelleTache = new TacheAffiche();
 		//nouvelleTache.execute();
-		
-    	
+
+
 
 	}
 
