@@ -30,7 +30,10 @@ public class DisplayImages extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chaineview);
 
-       // ImageView imgView =(ImageView)findViewById(R.id.ImageView01);
+       ImageView imgView =(ImageView)findViewById(R.id.Picture);
+       Drawable drawable = LoadImageFromWebOperations("http://213.139.122.234/res/chaines/1.png");
+       imgView.setImageDrawable(drawable);
+
 
 		/*	TacheAffiche nouvelleTache = new TacheAffiche();
     	nouvelleTache.execute();
@@ -81,11 +84,22 @@ public class DisplayImages extends Activity {
 				}
 			}
 		 */
-		new DownloadImageTask((ImageView) findViewById(R.id.Picture))
-		.execute("http://java.sogeti.nl/JavaBlog/wp-content/uploads/2009/04/android_icon_256.png");
+	//	new DownloadImageTask((ImageView) findViewById(R.id.Picture))
+		//.execute("http://java.sogeti.nl/JavaBlog/wp-content/uploads/2009/04/android_icon_256.png");
 	}
 
-	public void onClick(View v) {
+    private Drawable LoadImageFromWebOperations(String url)
+    {
+    	try{
+            InputStream is = (InputStream) new URL(url).getContent();
+            Drawable d = Drawable.createFromStream(is, "src name");
+            return d;
+          }catch (Exception e) {
+            System.out.println("Exc="+e);
+            return null;
+          }
+    }
+    /*		public void onClick(View v) {
 		startActivity(new Intent(this, DisplayImages.class));
 		finish();
 
@@ -115,7 +129,7 @@ public class DisplayImages extends Activity {
 			bmImage.setImageBitmap(result);
 		}
 	}
-
+*/
 }
 
 
