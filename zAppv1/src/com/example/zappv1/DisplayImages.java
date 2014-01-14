@@ -1,4 +1,4 @@
-/*package com.example.zappv1;
+package com.example.zappv1;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +32,7 @@ public class DisplayImages extends Activity {
 
        // ImageView imgView =(ImageView)findViewById(R.id.ImageView01);
 
-		new DownloadImageTask((ImageView) findViewById(R.id.picture))
+		new DownloadImageTask((ImageView) findViewById(R.id.Picture))
 		.execute(epgchaine.getLogo());
 	}
 
@@ -67,6 +67,6 @@ public class DisplayImages extends Activity {
 		}
 	}
 
-}*/
+}
 
 
