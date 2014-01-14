@@ -408,7 +408,6 @@ private EPGChaine epgChaine;
 				if(chaine != null)
 				Log.d(LOG_TAG,"CHAINE"+chaine.getListeProgrammes().getProgrammes().getNom());
 				textChaine.setText(chaine.getNom());
-				nom = extra.getString("progNom");
 				textNom.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getNom()));
 				textDescription.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getDescription()));
 				
