@@ -85,7 +85,6 @@ public class GetProgramTask extends AsyncTask<String, Void, String>{
 		{	Log.d(LOG_TAG,"RESULT "+result);
 			EPGChaines ch = new Gson().fromJson(result,EPGChaines.class);
 			Log.d(LOG_TAG,"CH "+ch.toString());
-			//Log.d(LOG_TAG,"CH"+ch.toString());
 			chaines.clear();
 			chaines.addAll(ch);
 			adapter.notifyDataSetChanged();

@@ -99,33 +99,6 @@ public boolean isEmpty()
 		ch.identifiant.setText(application.getId()+". ");
 		ch.chaineName.setText(Html.fromHtml(application.getNom()));
 		ch.progName.setText(Html.fromHtml(application.getListeProgrammes().getProgrammes().getNom()));
-	  
-		/*if(application.getListeProgrammes() != null)
-		{
-		//ListeProgramme lp = application.getListeProgrammes();
-		//Programme p = lp.getProgrammes().get(0);
-			Log.d(LOG_TAG,"LP NULL");
-			
-		}
-		
-		if(application.getListeProgrammes().getProgrammes().get(0) != null)
-		{
-			Log.d(LOG_TAG,"PROG REUSSI");
-			Log.d(LOG_TAG,"NOM PROGRAMME "+application.getListeProgrammes().getProgrammes().get(0).getNom());
-		}*/
 		return convertView;
 	}
-/*
-	private Drawable LoadImageFromWebOperations(String url)
-	{
-	try
-	{
-	InputStream is = (InputStream) new URL(url).getContent();
-	Drawable d = Drawable.createFromStream(is, "src name");
-	return d;
-	}catch (Exception e) {
-	System.out.println("Exc="+e);
-	return null;
-	}
-	}*/
 }

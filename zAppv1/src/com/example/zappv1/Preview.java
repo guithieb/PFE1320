@@ -117,26 +117,26 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		 */
 
 		//Récuperation du nom de la chaine envoyé dans la vue ListeChaine
-		Bundle nomChaine = getIntent().getExtras();
-		if(nomChaine != null)
+		Bundle extra = getIntent().getExtras();
+		if(extra != null)
 		{
-			channel = nomChaine.getString("chaineNom");
+			channel = extra.getString("chaineNom");
 			textChaine.setText(channel+ " : ");
 			
-			nom = nomChaine.getString("progNom");
+			nom = extra.getString("progNom");
 			textNom.setText(Html.fromHtml(nom));
 			
-			description = nomChaine.getString("progDescription");
+			description = extra.getString("progDescription");
 			textDescription.setText(Html.fromHtml(description));
 			
-			debut = nomChaine.getString("progDebut");
+			debut = extra.getString("progDebut");
 			Log.d(TAG,"DATE"+debut);
 			String[] parse = debut.split("T");
 			Log.d(TAG,"DATE"+parse[1]);
 			String[] debutProg = parse[1].split("Z");
 			textDebut.setText("Début: "+debutProg[0]+" - ");
 			
-			fin = nomChaine.getString("progFin");
+			fin = extra.getString("progFin");
 			Log.d(TAG,"DATE"+fin);
 			String[] parse2 = fin.split("T");
 			Log.d(TAG,"DATE"+parse2[1]);
