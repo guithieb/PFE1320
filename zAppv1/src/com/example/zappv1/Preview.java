@@ -60,7 +60,11 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	public static String URL_HTTP = "";
 	private Button programUp,programDown;
 	String channel;
+	String description;
+	String nom;
 	TextView textChaine;
+	TextView textNom;
+	TextView textDescription;
 
 	private static final String DEBUG_TAG = "Gestures";
 	private GestureDetectorCompat mDetector; 
@@ -71,6 +75,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		setContentView(R.layout.preview);
 
 		textChaine = (TextView)findViewById(R.id.chaineName);
+		textNom = (TextView)findViewById(R.id.progNom);
+		textDescription = (TextView)findViewById(R.id.progDescription);
 
 		// Instantiate the gesture detector with the
 		// application context and an implementation of
@@ -95,8 +101,15 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		{
 			channel = nomChaine.getString("chaineNom");
 			textChaine.setText(channel);
+			
+			nom = nomChaine.getString("progNom");
+			textNom.setText(nom);
+			
+			description = nomChaine.getString("progDescription");
+			textDescription.setText(description);
 		}
 
+		
 		//Création des boutons Prog+ et Prog-
 		programUp = (Button)findViewById(R.id.programUp);
 		programUp.setOnClickListener(new OnClickListener(){

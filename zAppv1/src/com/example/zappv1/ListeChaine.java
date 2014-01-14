@@ -23,11 +23,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.cloud.ChaineAdapter;
-import com.example.cloud.CloudApi;
 import com.example.cloud.EPGChaine;
 import com.example.cloud.EPGChaine.ListeProgramme;
 import com.example.cloud.GetProgramTask;
-import com.example.cloud.SendRequestEPG;
 import com.example.remote.ServerException;
 import com.example.zappv1.R;
 
@@ -46,7 +44,6 @@ public class ListeChaine extends Fragment{
   final String ID_CHAINE = "id_chaine";
   EPGChaine item;
   
-  CloudApi epg;
   final String baseurlEPG = "http://openbbox.flex.bouyguesbox.fr:81/V0";
   EPGChaine id;
  
@@ -82,12 +79,9 @@ public class ListeChaine extends Fragment{
         Intent intent = new Intent(getActivity(), Preview.class);
         item = (EPGChaine) arg0.getItemAtPosition(position);    
         //Envoie du nom de la chaine à la vue prévisualisation
-        intent.putExtra("chaineNom",item.getLogo());
-       // listeProg = item.getListeProgrammes();
-        //prog = listeProg.getProgrammes().get(0);
-        if(item.getListeProgrammes() == null) Log.d(LOG_TAG,"ITEM RATE");
-          
-        // intent.putExtra("progDescription",item.getListeProgrammes().get(0).getProgrammes().get(0).getDescription());
+        intent.putExtra("chaineNom",item.getNom());
+        intent.putExtra("progNom", item.getListeProgrammes().getProgrammes().getNom());
+         intent.putExtra("progDescription",item.getListeProgrammes().getProgrammes().getDescription());
         // Log.d(LOG_TAG,"PROG "+prog.toString());
          startActivity(intent);
       }

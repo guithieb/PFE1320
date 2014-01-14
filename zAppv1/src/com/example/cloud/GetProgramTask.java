@@ -3,7 +3,9 @@ package com.example.cloud;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -11,6 +13,10 @@ import org.apache.http.client.ClientProtocolException;
 
 import com.example.remote.BaseApi;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -27,7 +33,7 @@ import android.widget.BaseAdapter;
 
 public class GetProgramTask extends AsyncTask<String, Void, String>{
 
-	private ArrayList<EPGChaine> chaines;
+	 ArrayList<EPGChaine> chaines;
 	BaseAdapter adapter;
 	Context context;
 	 public static final String LOG_TAG = "debug";
@@ -42,7 +48,9 @@ public class GetProgramTask extends AsyncTask<String, Void, String>{
 	@Override
 	protected String doInBackground(String... params){
 	  //Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
-		String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
+		//String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
+	  //Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+		String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/";
 		try {
 			HttpResponse response = BaseApi.executeHttpGet(url);
 			HttpEntity entity = response.getEntity();
@@ -54,7 +62,7 @@ public class GetProgramTask extends AsyncTask<String, Void, String>{
 				while ((line = r.readLine()) != null) {
 					total.append(line);
 				}
-				Log.d(LOG_TAG,"TOTAL "+total.toString());
+				//Log.d(LOG_TAG,"TOTAL "+total.toString());
 				return total.toString();
 			}
 
@@ -69,17 +77,18 @@ public class GetProgramTask extends AsyncTask<String, Void, String>{
 	}
 	
 	//Fonction qui se lance après l'éxécution de la fonction doInBackground
-	@Override
+	
 	protected void onPostExecute(String result){
 		super.onPostExecute(result);
+		
 		if (result!=null)
 		{	Log.d(LOG_TAG,"RESULT "+result);
 			EPGChaines ch = new Gson().fromJson(result,EPGChaines.class);
+			Log.d(LOG_TAG,"CH "+ch.toString());
+			//Log.d(LOG_TAG,"CH"+ch.toString());
 			chaines.clear();
 			chaines.addAll(ch);
 			adapter.notifyDataSetChanged();
-			Log.d(LOG_TAG,"TASK OK");
-			
 			
 		}
 	}
