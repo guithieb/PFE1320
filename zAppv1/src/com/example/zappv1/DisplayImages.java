@@ -30,76 +30,13 @@ public class DisplayImages extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chaineview);
 
-       ImageView imgView =(ImageView)findViewById(R.id.Picture);
-       Drawable drawable = LoadImageFromWebOperations("http://213.139.122.234/res/chaines/1.png");
-       imgView.setImageDrawable(drawable);
+       // ImageView imgView =(ImageView)findViewById(R.id.ImageView01);
 
-
-		/*	TacheAffiche nouvelleTache = new TacheAffiche();
-    	nouvelleTache.execute();
-	}
-		private Drawable LoadImageFromWeb(String url)
-		{
-			try 
-			{
-				InputStream is = (InputStream) new URL(url).getContent();
-				Drawable d = Drawable.createFromStream(is, "src name");
-				return d;
-			} 
-			catch (Exception e)
-			{
-				e.printStackTrace();
-				return null;
-			}
-		}
-
-		@SuppressWarnings("deprecation")
-		private Drawable resize(Drawable image) {
-			Display display = getWindowManager().getDefaultDisplay();
-			Bitmap b = ((BitmapDrawable)image).getBitmap();
-			float scale = (b.getWidth()*3)/display.getWidth();
-			int size_x = (int) Math.round(b.getWidth()/scale);
-			int size_y = (int) Math.round(b.getHeight()/scale);
-			Bitmap bitmapResized = Bitmap.createScaledBitmap(b, size_x, size_y, false);
-			return new BitmapDrawable(bitmapResized);
-		}
-
-		private class TacheAffiche extends AsyncTask<String,String,Boolean>
-		{
-			private Drawable myDrawable = null;
-
-
-			protected Boolean doInBackground (String... args)
-			{
-				myDrawable = LoadImageFromWeb(epgchaine.getLogo());
-				return true;
-			}
-
-			protected void onPostExecute(Boolean bool)
-			{
-				if(myDrawable != null)
-				{
-					ImageView AfficheView = (ImageView) findViewById(R.id.Picture);
-					AfficheView.setImageDrawable(resize(myDrawable));
-				}
-			}
-		 */
-	//	new DownloadImageTask((ImageView) findViewById(R.id.Picture))
-		//.execute("http://java.sogeti.nl/JavaBlog/wp-content/uploads/2009/04/android_icon_256.png");
+		new DownloadImageTask((ImageView) findViewById(R.id.Picture))
+		.execute(epgchaine.getLogo());
 	}
 
-    private Drawable LoadImageFromWebOperations(String url)
-    {
-    	try{
-            InputStream is = (InputStream) new URL(url).getContent();
-            Drawable d = Drawable.createFromStream(is, "src name");
-            return d;
-          }catch (Exception e) {
-            System.out.println("Exc="+e);
-            return null;
-          }
-    }
-    /*		public void onClick(View v) {
+	public void onClick(View v) {
 		startActivity(new Intent(this, DisplayImages.class));
 		finish();
 
@@ -129,7 +66,7 @@ public class DisplayImages extends Activity {
 			bmImage.setImageBitmap(result);
 		}
 	}
-*/
+
 }
 
 

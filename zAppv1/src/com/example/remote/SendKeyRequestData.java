@@ -1,4 +1,4 @@
-package com.example.remote;
+	package com.example.remote;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -11,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class SendKeyRequestData {
   
-  @SerializedName("key")
+  @SerializedName("key")	
   public Key key;
 
   public SendKeyRequestData(String keyName, String keyType){

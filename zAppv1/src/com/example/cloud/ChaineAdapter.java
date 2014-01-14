@@ -1,29 +1,36 @@
 package com.example.cloud;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
-import com.example.cloud.EPGChaine.ListeProgramme;
-import com.example.cloud.EPGChaine.ListeProgramme.Programme;
 import com.example.zappv1.ListeChaine;
 import com.example.zappv1.R;
+
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 public class ChaineAdapter extends BaseAdapter {
-	
 	private class ChView{
 		TextView chaineName;
 		TextView progName;
 		TextView identifiant;
 		
 	}
-	// constructeur pour ChView ?
 	
+	// constructeur pour ChView ?
 	private ArrayList<EPGChaine> datas;
 	Context context;
 	ListeChaine listeChaine;
@@ -35,7 +42,7 @@ public class ChaineAdapter extends BaseAdapter {
 		this.context = context;
 		this.datas = datas;
 		this.listeChaine = listeChaine;
-	}
+	}	
 
 	@Override
 	public int getCount() {
@@ -76,13 +83,21 @@ public boolean isEmpty()
 			ch.chaineName = (TextView) convertView.findViewById(R.id.chaineName);
 			ch.progName = (TextView) convertView.findViewById(R.id.progName);
 			convertView.setTag(ch);
+			
 	
 		} else {
 			ch = (ChView) convertView.getTag();
 		}
 		
 		final EPGChaine application = datas.get(position);
-		ch.identifiant.setText(application.getId());
+
+		ch.chaineName.setText(application.getNom());
+		Log.d(LOG_TAG, "id" +application.getId());
+		 
+	    /* Drawable drawable = LoadImageFromWebOperations(application.getLogo());
+	     ch.logo.setImageDrawable(drawable);*/
+
+		ch.identifiant.setText(application.getId()+". ");
 	  ch.chaineName.setText(application.getNom());
 	  ch.progName.setText(application.getListeProgrammes().getProgrammes().getNom());
 	  
@@ -99,7 +114,19 @@ public boolean isEmpty()
 			Log.d(LOG_TAG,"PROG REUSSI");
 			Log.d(LOG_TAG,"NOM PROGRAMME "+application.getListeProgrammes().getProgrammes().get(0).getNom());
 		}*/
-
 		return convertView;
 	}
+/*
+	private Drawable LoadImageFromWebOperations(String url)
+	{
+	try
+	{
+	InputStream is = (InputStream) new URL(url).getContent();
+	Drawable d = Drawable.createFromStream(is, "src name");
+	return d;
+	}catch (Exception e) {
+	System.out.println("Exc="+e);
+	return null;
+	}
+	}*/
 }

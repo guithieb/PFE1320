@@ -12,38 +12,35 @@
         android:scaleType="fitCenter"
         android:src="@drawable/ic_launcher" />
     
-    
-        
-    <LinearLayout 
-        android:layout_height="match_parent"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        >
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+ 
          <TextView 
             android:id="@+id/identifiant"
             android:textStyle="bold"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:lines="1"
+            android:textSize="15dip"
             />
         
         <TextView 
             android:id="@+id/chaineName"
             android:textStyle="bold"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:lines="1"
+            android:textSize="15dip"
+            android:layout_toRightOf="@id/identifiant"
             />
 		 <TextView 
             android:id="@+id/progName"
             android:textStyle="bold"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lines="1"
+            android:layout_below="@id/identifiant"
             />
        
         
-	</LinearLayout>
+	</RelativeLayout>
  </LinearLayout>
-    

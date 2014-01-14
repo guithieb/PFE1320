@@ -13,7 +13,6 @@ import com.example.cloud.EPGChaine;
 //import com.example.cinece.R;
 import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
-
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -62,14 +61,13 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	private Button programUp,programDown;
 	String channel;
 	String description;
+	String nom;
 	TextView textChaine;
+	TextView textNom;
 	TextView textDescription;
 
 	private static final String DEBUG_TAG = "Gestures";
 	private GestureDetectorCompat mDetector; 
-
-
-
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -77,6 +75,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		setContentView(R.layout.preview);
 
 		textChaine = (TextView)findViewById(R.id.chaineName);
+		textNom = (TextView)findViewById(R.id.progNom);
 		textDescription = (TextView)findViewById(R.id.progDescription);
 
 		// Instantiate the gesture detector with the
@@ -102,6 +101,9 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		{
 			channel = nomChaine.getString("chaineNom");
 			textChaine.setText(channel);
+			
+			nom = nomChaine.getString("progNom");
+			textNom.setText(nom);
 			
 			description = nomChaine.getString("progDescription");
 			textDescription.setText(description);
@@ -247,6 +249,4 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-			    			    	
 }

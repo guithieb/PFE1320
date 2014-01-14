@@ -3,8 +3,6 @@ package com.example.cloud;
 import java.util.ArrayList;
 import java.util.Date;
 
-import android.text.method.DateTimeKeyListener;
-
 /*
  * 
  * 
@@ -59,14 +57,12 @@ public class EPGChaine {
 	}
 
 	public class ListeProgramme{
-		
 		private Programme Programme;
 		
 		
 		public ListeProgramme(){
 		 
 		}
-
 		public Programme getProgrammes() {
 			return Programme;
 		}

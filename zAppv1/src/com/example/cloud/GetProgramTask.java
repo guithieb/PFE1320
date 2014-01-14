@@ -47,6 +47,8 @@ public class GetProgramTask extends AsyncTask<String, Void, String>{
 	//Fonction qui se lance à l'appel de cette classe
 	@Override
 	protected String doInBackground(String... params){
+	  //Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+		//String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
 	  //Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
 		String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/";
 		try {
