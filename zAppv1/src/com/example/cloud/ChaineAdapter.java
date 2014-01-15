@@ -7,13 +7,14 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import com.example.zappv1.ListeChaine;
+import com.example.zappv1.Preview;
 import com.example.zappv1.R;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,13 @@ public class ChaineAdapter extends BaseAdapter {
 		this.datas = datas;
 		this.listeChaine = listeChaine;
 	}	
+	
+
+	
+
+	
+	
+	
 
 	@Override
 	public int getCount() {
@@ -96,24 +104,9 @@ public boolean isEmpty()
 		 
 	    /* Drawable drawable = LoadImageFromWebOperations(application.getLogo());
 	     ch.logo.setImageDrawable(drawable);*/
-
 		ch.identifiant.setText(application.getId()+". ");
-		ch.chaineName.setText(application.getNom());
-		ch.progName.setText(application.getListeProgrammes().getProgrammes().getNom());
-	  
-		/*if(application.getListeProgrammes() != null)
-		{
-		//ListeProgramme lp = application.getListeProgrammes();
-		//Programme p = lp.getProgrammes().get(0);
-			Log.d(LOG_TAG,"LP NULL");
-			
-		}
-		
-		if(application.getListeProgrammes().getProgrammes().get(0) != null)
-		{
-			Log.d(LOG_TAG,"PROG REUSSI");
-			Log.d(LOG_TAG,"NOM PROGRAMME "+application.getListeProgrammes().getProgrammes().get(0).getNom());
-		}*/
+		ch.chaineName.setText(Html.fromHtml(application.getNom()));
+		ch.progName.setText(Html.fromHtml(application.getListeProgrammes().getProgrammes().getNom()));
 		return convertView;
 	}
 /*
