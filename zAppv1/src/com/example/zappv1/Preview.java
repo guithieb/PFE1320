@@ -24,6 +24,7 @@ import com.example.remote.UserInterfaceApi;
 import com.google.gson.Gson;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -379,8 +380,7 @@ private EPGChaine epgChaine;
 		BaseAdapter adapter;
 		Context context;
 		String id;
-		 public static final String LOG_TAG = "debug";
-
+		public static final String LOG_TAG = "debug";
 	public getChannelTask(EPGChaine chaine, Context c,String id) {
 			this.chaine = chaine;
 			this.context = c;
