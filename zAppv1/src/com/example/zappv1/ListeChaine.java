@@ -23,11 +23,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.cloud.ChaineAdapter;
-import com.example.cloud.CloudApi;
 import com.example.cloud.EPGChaine;
 import com.example.cloud.EPGChaine.ListeProgramme;
+import com.example.cloud.EPGChaines;
 import com.example.cloud.GetProgramTask;
-import com.example.cloud.SendRequestEPG;
 import com.example.remote.ServerException;
 import com.example.zappv1.R;
 
@@ -44,12 +43,14 @@ public class ListeChaine extends Fragment{
   private ListView listeChaine;
   ArrayList<EPGChaine> epgChaines = new ArrayList<EPGChaine>();
   final String ID_CHAINE = "id_chaine";
-  EPGChaine item;
-  
-  CloudApi epg;
+  EPGChaine item;  
   final String baseurlEPG = "http://openbbox.flex.bouyguesbox.fr:81/V0";
-  ChaineAdapter adapter;
+  EPGChaine id;
+  ArrayList<EPGChaines> epgs = new ArrayList<EPGChaines>();
  
+  //CloudApi epg;
+  //final String baseurlEPG = "http://openbbox.flex.bouyguesbox.fr:81/V0";
+  ChaineAdapter adapter;
 
 
   public static Fragment newInstance(Context context){
@@ -61,12 +62,12 @@ public class ListeChaine extends Fragment{
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
     ViewGroup root = (ViewGroup) inflater.inflate(R.layout.liste_chaine, container,false);
-    //Initialisation de la List qui regroupe tout les noms des chaînes
+    //Initialisation de la List qui regroupe tout les noms des chaines
     listeChaine = (ListView) root.findViewById(R.id.chaines);
-    adapter = new ChaineAdapter(getActivity(), epgChaines, this);
-    
+    adapter = new ChaineAdapter(getActivity(), epgChaines, this);  
     listeChaine.setAdapter(adapter);
     refreshChaine();
+    
    
     
     
@@ -77,31 +78,37 @@ public class ListeChaine extends Fragment{
       public void onItemClick(AdapterView<?> arg0, View v, int position, long id)
       {
         Intent intent = new Intent(getActivity(), Preview.class);
-        item = (EPGChaine) arg0.getItemAtPosition(position);    
+        item = (EPGChaine) arg0.getItemAtPosition(position);
         //Envoie du nom de la chaine à la vue prévisualisation
-        intent.putExtra("chaineNom",item.getLogo());
-       // listeProg = item.getListeProgrammes();
-        //prog = listeProg.getProgrammes().get(0);
-        if(item.getListeProgrammes() == null) Log.d(LOG_TAG,"ITEM RATE");
-          
-        // intent.putExtra("progDescription",item.getListeProgrammes().get(0).getProgrammes().get(0).getDescription());
+        intent.putExtra("chaineNom",item.getNom());
+        intent.putExtra("progNom", item.getListeProgrammes().getProgrammes().getNom());
+         intent.putExtra("progDescription",item.getListeProgrammes().getProgrammes().getDescription());
+         intent.putExtra("chaineId", item.getId());
+        intent.putExtra("progDescription",item.getListeProgrammes().getProgrammes().getDescription());
+        intent.putExtra("progDebut",item.getListeProgrammes().getProgrammes().getDebut());
+        intent.putExtra("progFin",item.getListeProgrammes().getProgrammes().getFin());
+        
+        
         // Log.d(LOG_TAG,"PROG "+prog.toString());
          startActivity(intent);
       }
          
     });
-    //Log.d(LOG_TAG," CHAINES "+epgChaines.get(0).getId());
+    
+   
     return root;
 
   }
 
+  
 
 private void refreshChaine() {
 	// TODO Auto-generated method stub
 	new GetProgramTask(epgChaines, adapter, getActivity()).execute();
-	Log.d(LOG_TAG,"PROGRAM GSON");
 	
 	}
+
+
 
 }
 

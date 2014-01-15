@@ -3,8 +3,6 @@ package com.example.cloud;
 import java.util.ArrayList;
 import java.util.Date;
 
-import android.text.method.DateTimeKeyListener;
-
 /*
  * 
  * 
@@ -12,20 +10,20 @@ import android.text.method.DateTimeKeyListener;
  * 
  */
 
-
 public class EPGChaine {
 
-	private int id;
+	// tout passer en public ?
+	private String id;
 	private String nom;
 	private String logo;
-	private ListeProgramme listeProgrammes;
+	private ListeProgramme ListeProgrammes;
 	
 	public EPGChaine()
 	{
 	  
 	}
 
-	public void setId(int id){
+	public void setId(String id){
 		this.id = id;
 	}
 	
@@ -46,43 +44,38 @@ public class EPGChaine {
 	}
 
 	public ListeProgramme getListeProgrammes() {
-		return listeProgrammes;
+		return ListeProgrammes;
 	}
+
 
 	public void setListeProgrammes(ListeProgramme listeProgrammes) {
-		this.listeProgrammes = listeProgrammes;
+		this.ListeProgrammes = listeProgrammes;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
 	public class ListeProgramme{
-		
-		private ArrayList<Programme> programmes;
+		private Programme Programme;
 		
 		
 		public ListeProgramme(){
-		  
+		 
+		}
+		public Programme getProgrammes() {
+			return Programme;
 		}
 
-		public ArrayList<Programme> getProgrammes() {
-			return programmes;
-		}
-
-		public void setProgrammes(ArrayList<Programme> programmes) {
-			this.programmes = programmes;
+		public void setProgrammes(Programme programmes) {
+			this.Programme = programmes;
 		}
 		
-		
-		
-	
-	
-	protected  class Programme{
+	public class Programme{
 		
 		private int id;
 		private String nom, description;
-		private Date debut,fin;
+		private String debut,fin;
 		
 		public Programme()
 		{
@@ -107,22 +100,24 @@ public class EPGChaine {
 		public void setDescription(String description) {
 			this.description = description;
 		}
-		public Date getDebut() {
+		public String getDebut() {
 			return debut;
 		}
-		public void setDebut(Date debut) {
+		public void setDebut(String debut) {
 			this.debut = debut;
 		}
-		public Date getFin() {
+		public String getFin() {
 			return fin;
 		}
-		public void setFin(Date fin) {
+		public void setFin(String fin) {
 			this.fin = fin;
 		}
 		
 		
 	}
 	
-	}
 	
+	}
 }
+	
+

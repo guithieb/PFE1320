@@ -1,29 +1,120 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" 
-     android:text="Previsualisation">
-    
-    <Button
-        android:id="@+id/programUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/program_up" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".Preview" >
 
-    <Button
-        android:id="@+id/programDown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/program_down" />
+	<LinearLayout
+		android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+      
+	    
+		<TextView
+        	android:id="@+id/chaineName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:layout_marginBottom="2dp"
+            android:textStyle="bold" />
+ 
+		<LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+		
+			<LinearLayout
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical" >
+
+				<LinearLayout
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content" >
+
+					<TextView
+				      android:id="@+id/progNom"
+				      android:layout_width="wrap_content"
+				      android:layout_height="wrap_content" 
+				      android:textSize="20sp"
+				      android:layout_below="@id/chaineName" 
+				      android:textStyle="bold" /> 
+	    		</LinearLayout>
+	    		
+				<TextView
+                      android:id="@+id/TextViewprogDescription"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Résumé"
+                      android:textStyle="bold"
+                      android:textSize="25sp" />
+				
+				<LinearLayout
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content" >
+
+					<TextView
+					    android:id="@+id/progDescription"
+					    android:layout_width="wrap_content"
+					    android:layout_height="wrap_content"
+					    android:layout_below="@id/chaineName"
+					    android:textSize="15sp"
+					    android:textStyle="italic" />
+ 
+	    		</LinearLayout>
+	    		
+
+				
+				<LinearLayout
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content" >
+	    
+				    <TextView
+				        android:id="@+id/TextViewprogDebut"
+				        android:layout_width="63dp"
+				        android:layout_height="wrap_content"
+				        android:text="Début"
+				        android:textSize="15sp" />
+				    
+				    <TextView
+				       android:id="@+id/progDebut"
+				       android:layout_width="wrap_content"
+				       android:layout_height="wrap_content"
+				       android:textSize="15sp"  
+				       android:gravity="center"
+				       android:layout_below="@id/progDescription"   
+				       android:textStyle="bold" />
+	    		</LinearLayout>
+				
+
+				<LinearLayout
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content" >
+	    
+				    <TextView
+				        android:id="@+id/TextViewprogFin"
+				        android:layout_width="65dp"
+				        android:layout_height="wrap_content"
+				        android:text="Fin"
+				        android:textSize="15sp" />
+				    
+				    <TextView
+			          android:id="@+id/progFin"
+			          android:layout_width="wrap_content"
+			          android:layout_height="wrap_content"
+			          android:textSize="15sp"  
+			          android:gravity="center"   
+			          android:layout_below="@id/progDescription"
+					  android:textStyle="bold" />
+	    		</LinearLayout>
+				
+	    	</LinearLayout>
+	    	
+	   	</LinearLayout>
+
+	</LinearLayout>
     
-    <TextView
-        android:id="@+id/chaineName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12dip"  
-        android:gravity="center"                                     
-         />
-    
-    
-</LinearLayout>
+</RelativeLayout>

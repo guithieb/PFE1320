@@ -4,7 +4,9 @@
     <string name="app_name">zApp</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Navigation Drawer</string>
- 
+ 	<string name="action_alarm">alarme Drawer</string>
+ 	<string name="alarm_service_label"> alarme label</string>
+    
     <string-array name="items">
         <item>Liste des chaînes</item>
         <item>Favoris</item>

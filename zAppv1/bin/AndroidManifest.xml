@@ -21,6 +21,10 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!-- vibrate when a message is received. -->
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- activate alarm. -->
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+    
+    
     <permission
         android:name="com.example.zappv1.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
@@ -39,6 +43,7 @@
 
             
         <receiver
+            
             android:name="com.google.android.gcm.GCMBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
@@ -49,6 +54,8 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".TimeAlarm"></receiver>
+        
    
         <service android:name="com.example.zappv1.GCMIntentService" />
         

@@ -7,7 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.example.zappv1.MainActivity;
 import com.example.zappv1.R;
-//import com.example.zappv1.MainActivity.HashMapAdapter;
 import com.invities.deviceWatcher.DeviceManager;
 import com.invities.deviceWatcher.DeviceWatcher;
 import com.invities.deviceWatcher.SocialWatcher.Room;
@@ -20,6 +19,13 @@ import android.os.Looper;
 import android.os.Message;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -35,7 +41,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -78,47 +83,47 @@ public class MainActivity extends FragmentActivity {
 	private String ip;
 
 	public static Handler mHandler = new Handler(Looper.getMainLooper()) {
-    @Override
-    public void handleMessage(Message inputMessage) {
-      //Log.d("mHandler",">> message to UI thread!");
+		@Override
+		public void handleMessage(Message inputMessage) {
+			//Log.d("mHandler",">> message to UI thread!");
 
-      // On recoit un hashmap avec les parametres initiaux
-      // On supporte de la part de la page HTML quelques ordres, qui vont etre envoyes au thread de l'activitŽ.
-      @SuppressWarnings("unchecked")
-      Map<String,Object> params = (Map<String,Object>)inputMessage.obj;
+			// On recoit un hashmap avec les parametres initiaux
+			// On supporte de la part de la page HTML quelques ordres, qui vont etre envoyes au thread de l'activitŽ.
+			@SuppressWarnings("unchecked")
+			Map<String,Object> params = (Map<String,Object>)inputMessage.obj;
 
-      if("setText".equals(params.get("functionName")))
-      {
-        String newText = (String)params.get("text");
-        String which = (String)params.get("which");
-      
-        if("1".equals(which)) Log.d(TAG,"HELLO");
-      }
+			if("setText".equals(params.get("functionName")))
+			{
+				String newText = (String)params.get("text");
+				String which = (String)params.get("which");
 
-        else
-        {
-          // On est dans setList
-          //HashMapAdapter adapter = new HashMapAdapter(params);
-            //params.put("adapter", adapter);
-          //adapter = (HashMapAdapter) params.get("adapter");
-          //listView.setAdapter(adapter);
-          int i=0;
-          i++;
-        }
-      }
+				if("1".equals(which)) Log.d(TAG,"HELLO");
+			}
 
-    };
-	
-	
-  //Fonction obligatoire dans une classe qui hérite de la classe Activity, Fragement, FragmentActivity
-  // Se lance quand on accède à l'application
+			else
+			{
+				// On est dans setList
+				//HashMapAdapter adapter = new HashMapAdapter(params);
+				//params.put("adapter", adapter);
+				//adapter = (HashMapAdapter) params.get("adapter");
+				//listView.setAdapter(adapter);
+				int i=0;
+				i++;
+			}
+		}
+
+	};
+
+
+	//Fonction obligatoire dans une classe qui hérite de la classe Activity, Fragement, FragmentActivity
+	// Se lance quand on accède à l'application
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
-	  super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-    
-   
+
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+
+
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActionBar().getThemedContext(), android.R.layout.simple_list_item_1, data);
 
@@ -145,8 +150,8 @@ public class MainActivity extends FragmentActivity {
 		tx.replace(R.id.main,Fragment.instantiate(MainActivity.this, fragments[0]));
 		tx.commit();
 
-		
-		
+
+
 		/*** Module ID IP téléphone ***/
 		// On lance la librairie qui gère les devices, avec la callback pour les notifications natives
 		DeviceWatcher deviceWatcher = DeviceWatcher.getInstance(getApplicationContext()/*,MainActivity.class,R.drawable.ic_launcher*/);
@@ -181,52 +186,78 @@ public class MainActivity extends FragmentActivity {
 					{
 						deviceList += device.id+" ("+device.ip+"): "+device.friendlyName+"\n";//devices.get(i).id+" ";
 
-					//Identification de la box par le nom de son attribut DeviceType
+						//Identification de la box par le nom de son attribut DeviceType
 						if(device.deviceType != null){
 							if(device.deviceType.contains("urn:schemas-upnp-org:device:MediaRenderer:1")) 
-									Log.d(TAG,"TEST REUSSI"+device.friendlyName);
-							    ip=device.ip;
-							    //On met dans les préférences du téléphone l'adresse ip pour que l'on puisse la retrouver dans 
-							    //n'importe quelle vue
-							    SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-							    SharedPreferences.Editor prefEditor = settings.edit();
-							    prefEditor.putString(BOX_PREFERENCES,ip);
-							    prefEditor.commit();
-						
+								Log.d(TAG,"TEST REUSSI"+device.friendlyName);
+							ip=device.ip;
+							//On met dans les préférences du téléphone l'adresse ip pour que l'on puisse la retrouver dans 
+							//n'importe quelle vue
+							SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+							SharedPreferences.Editor prefEditor = settings.edit();
+							prefEditor.putString(BOX_PREFERENCES,ip);
+							prefEditor.commit();
+
 						}
-							
+
 						else {Log.d(TAG,"TEST RATE");}
-						
-						
+
+
 					}
 				}
 				setText("1",deviceList);
 			}
 		};
 		deviceWatcher.search(deviceManager);
-	
-	 
-		
-   
+
+
+
+
 	}
 
-		public static void setText(String Which,String newText) {
-			Map<String,String> v_params = new HashMap<String,String>();
-			v_params.put("functionName", "setText");
-			v_params.put("which", ""+Which);
-			v_params.put("text", newText);
-			mHandler.sendMessage(mHandler.obtainMessage(1,v_params));		
-		}
-		
-		
-		/*class HashMapAdapter extends BaseAdapter {
+	public static void setText(String Which,String newText) {
+		Map<String,String> v_params = new HashMap<String,String>();
+		v_params.put("functionName", "setText");
+		v_params.put("which", ""+Which);
+		v_params.put("text", newText);
+		mHandler.sendMessage(mHandler.obtainMessage(1,v_params));		
+	}
+
+	/*** Dialog box lorsque l'on quitte l'application ***/
+	// TODO: faire en sorte d'éviter de quitter l'appli depuis un autre Fragment !!
+	public void onBackPressed() {
+
+		final Builder builder = new Builder(this);
+		builder.setTitle(R.string.app_name);
+		builder.setMessage("Voulez-vous vraiment quitter l'application ?");
+		builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
+			@Override
+			public void onClick(final DialogInterface dialog, final int which) {
+				MainActivity.this.finish();
+				dialog.dismiss();    
+			}
+		});
+		builder.setNegativeButton(android.R.string.cancel,
+				new OnClickListener() {
+			@Override
+			public void onClick(final DialogInterface dialog,
+					final int which) {
+				dialog.dismiss();
+			}
+		});
+		final AlertDialog dialog = builder.create();
+		dialog.show();
+	}
+
+
+	/*class HashMapAdapter extends BaseAdapter {
 		    private HashMap<String,String > mData = new HashMap<String, String>();
 		    private String[] mKeys;
 		    public HashMapAdapter(LinkedHashMap<String, String> data){
 		        mData  = data;
 		        mKeys = mData.keySet().toArray(new String[data.size()]);
 		    }
-		    
+
 		    @Override
 		    public int getCount() {
 		        return mData.size();
@@ -260,5 +291,5 @@ public class MainActivity extends FragmentActivity {
 	            detail.setText("Click to enter this room");
 	            return (row);
 		    }*/
-		}
-		
+}
+
