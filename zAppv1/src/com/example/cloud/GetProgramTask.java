@@ -18,6 +18,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -33,15 +34,22 @@ import android.widget.BaseAdapter;
 
 public class GetProgramTask extends AsyncTask<String, Void, String>{
 
-	 ArrayList<EPGChaine> chaines;
+	ArrayList<EPGChaine> chaines;
 	BaseAdapter adapter;
 	Context context;
-	 public static final String LOG_TAG = "debug";
+	public static final String LOG_TAG = "debug";
+	private ProgressDialog spinner;
 
 	public GetProgramTask(ArrayList<EPGChaine> chaines, BaseAdapter adapter, Context c) {
 		this.chaines = chaines;
 		this.adapter = adapter;
 		this.context = c;
+		this.spinner = new ProgressDialog(context);
+	}
+	
+	protected void onPreExecute(){
+		spinner.setMessage("Chargement de l'EPG");
+		spinner.show();
 	}
 	
 	//Fonction qui se lance à l'appel de cette classe
@@ -80,7 +88,7 @@ public class GetProgramTask extends AsyncTask<String, Void, String>{
 	
 	protected void onPostExecute(String result){
 		super.onPostExecute(result);
-		
+		spinner.dismiss();
 		if (result!=null)
 		{	
 			EPGChaines ch = new Gson().fromJson(result,EPGChaines.class);
