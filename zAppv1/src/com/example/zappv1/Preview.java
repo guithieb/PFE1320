@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.http.HttpEntity;
@@ -23,9 +24,16 @@ import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
 import com.google.gson.Gson;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -40,6 +48,9 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,6 +58,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * 
@@ -58,7 +70,7 @@ import android.widget.TextView;
 public class Preview extends Activity implements GestureDetector.OnGestureListener {
 
 	/*** IMAGE Melvin ***/
-private EPGChaine epgChaine;
+	private EPGChaine epgChaine;
 
 	/*** PLAYER ZAPP ***/
 	//VideoView playerSurfaceView;
@@ -94,14 +106,15 @@ private EPGChaine epgChaine;
 	private ChaineAdapter adapter;
 	private GestureDetectorCompat mDetector; 
 	int id;
-	
-	
+
+	AlarmManager am;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preview);
-		
+
 		/* PLAYER 
 		playerSurfaceView = (VideoView)findViewById(R.id.playersurface);
 
@@ -112,6 +125,14 @@ private EPGChaine epgChaine;
 		playerSurfaceView.start();
 		 */
 
+		/*** ACTION BAR ***/
+		ActionBar actionbar = getActionBar();
+		actionbar.show();
+		
+		/*** ALARM MANAGER ***/
+		//am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		//setOneTimeAlarm();
+		
 		textChaine = (TextView)findViewById(R.id.chaineName);
 		textNom = (TextView)findViewById(R.id.progNom);
 		textDescription = (TextView)findViewById(R.id.progDescription);
@@ -133,7 +154,7 @@ private EPGChaine epgChaine;
 		//Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 		//ImageView imageView = (ImageView) findViewById(R.id.Picture);
 		//imageView.setImageBitmap(bmp);
-    	
+
 		/*
 		 * TextView textView = (TextView) findViewById(R.id.DATE);
 			Date date = new Date(location.getTime());
@@ -143,7 +164,7 @@ private EPGChaine epgChaine;
 
 		//Récuperation du nom de la chaine envoyé dans la vue ListeChaine
 		Bundle extra = getIntent().getExtras();
-		 extra = getIntent().getExtras();
+		extra = getIntent().getExtras();
 		if(extra != null)
 		{
 			channel = extra.getString("chaineNom");
@@ -154,7 +175,7 @@ private EPGChaine epgChaine;
 			gtc.execute();
 			/*channel = extra.getString("chaineNom");
 			textChaine.setText(channel);
-			
+
 			nom = extra.getString("progNom");
 			textNom.setText(nom);
 
@@ -167,26 +188,26 @@ private EPGChaine epgChaine;
 			textDescription.setText(Html.fromHtml(description));
 			textDescription.setText(description);
 
-			
+
 			debut = extra.getString("progDebut");
 			Log.d(TAG,"DATE"+debut);
 			String[] parse = debut.split("T");
 			String[] debutProg = parse[1].split("Z");
 			textDebut.setText("Début: "+debutProg[0]+" - ");
-			
+
 			fin = extra.getString("progFin");
 			Log.d(TAG,"DATE"+fin);
 			fin = extra.getString("progFin");
 			String[] parse2 = fin.split("T");
 			String[] finProg = parse2[1].split("Z");
 			textFin.setText("Fin: "+finProg[0]);
-*/
+			 */
 
 			id = Integer.parseInt(chaineId);
 		}
 
-		
-/*		//Création des boutons Prog+ et Prog-
+
+		/*		//Création des boutons Prog+ et Prog-
 		programUp = (Button)findViewById(R.id.programUp);
 		programUp.setOnClickListener(new OnClickListener(){
 			@Override
@@ -204,7 +225,7 @@ private EPGChaine epgChaine;
 			}
 
 		});
-*/
+		 */
 		//Récuperation de l'adresse ip de la box grâce aux préférences 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		ip = prefs.getString(BOX_PREFERENCES,"null");
@@ -215,8 +236,8 @@ private EPGChaine epgChaine;
 		// execution de l'image
 		//TacheAffiche nouvelleTache = new TacheAffiche();
 		//nouvelleTache.execute();
-		
-    	
+
+
 
 	}
 
@@ -286,7 +307,7 @@ private EPGChaine epgChaine;
 		}  else if (distance < -SWIPE_MIN_DISTANCE && enoughSpeed) {
 			// left to right swipe
 			onSwipeRight();
-			
+
 			return true;
 		} else {
 			// oooou, it didn't qualify; do nothing
@@ -305,25 +326,25 @@ private EPGChaine epgChaine;
 		{
 			Log.d(TAG,"TASK RIGHT OK");
 		}
-		
-		
-		
+
+
+
 		if(gtc.getStatus() == AsyncTask.Status.FINISHED)
 		{
 			Log.d(TAG,"TASK RIGHT FIN");
 		}
-		
+
 		if(epgChaine != null)
 		{
-		Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
+			Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
 		}
-		
+
 	}
 
 	protected void onSwipeRight() {   
 		// do your stuff here
 		//sendKeyPressed(UserInterfaceApi.CHANNEL_UP); 
-		
+
 		id--;
 		if(id<=0) id=id+20;
 		getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),Integer.toString(id));
@@ -333,24 +354,24 @@ private EPGChaine epgChaine;
 		{
 			Log.d(TAG,"TASK RIGHT OK");
 		}
-		
-		
-		
+
+
+
 		if(gtc.getStatus() == AsyncTask.Status.FINISHED)
 		{
 			Log.d(TAG,"TASK RIGHT FIN");
 		}
-		
+
 		if(epgChaine != null)
 		{
-		Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
+			Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
 		}
-		
-		
-		
-		}
-	
-	
+
+
+
+	}
+
+
 
 
 	@Override
@@ -372,27 +393,27 @@ private EPGChaine epgChaine;
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	private class getChannelTask extends AsyncTask<String, Void, String> {
-		
+
 		EPGChaine chaine;
-		
+
 		BaseAdapter adapter;
 		Context context;
 		String id;
 		public static final String LOG_TAG = "debug";
-	public getChannelTask(EPGChaine chaine, Context c,String id) {
+		public getChannelTask(EPGChaine chaine, Context c,String id) {
 			this.chaine = chaine;
 			this.context = c;
 			this.id=id;
 		}
-		
+
 		//Fonction qui se lance à l'appel de cette classe
 		@Override
 		protected String doInBackground(String... params){
-		  //Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+			//Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
 			//String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
-		  //Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+			//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
 			String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/?TVChannelsId="+id;
 			try {
 				HttpResponse response = BaseApi.executeHttpGet(url);
@@ -418,38 +439,107 @@ private EPGChaine epgChaine;
 			}
 			return null;
 		}
-		
+
 		//Fonction qui se lance après l'éxécution de la fonction doInBackground
-		
+
 		protected void onPostExecute(String result){
 			super.onPostExecute(result);
 			Log.d(LOG_TAG,"POSTEXECUTE");
 			if (result!=null)
 			{	Log.d(LOG_TAG,"RESULT "+result);
-				EPGChaineSerialize ch = new Gson().fromJson(result,EPGChaineSerialize.class);
-				Log.d(LOG_TAG,"CH "+ch.toString());
-				//Log.d(LOG_TAG,"CH"+ch.toString());
-				Log.d(LOG_TAG,"RESULTCHANNEL"+result);
-				//adapter.notifyDataSetChanged();
-				chaine = ch;
-				if(chaine != null)
+			EPGChaineSerialize ch = new Gson().fromJson(result,EPGChaineSerialize.class);
+			Log.d(LOG_TAG,"CH "+ch.toString());
+			//Log.d(LOG_TAG,"CH"+ch.toString());
+			Log.d(LOG_TAG,"RESULTCHANNEL"+result);
+			//adapter.notifyDataSetChanged();
+			chaine = ch;
+			if(chaine != null)
 				Log.d(LOG_TAG,"CHAINE"+chaine.getListeProgrammes().getProgrammes().getNom());
-				textChaine.setText(chaine.getNom());
-				textNom.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getNom()));
-				textDescription.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getDescription()));
-				
-				String[] parse = chaine.getListeProgrammes().getProgrammes().getDebut().split("T");
-				String[] debutProg = parse[1].split("Z");
-				textDebut.setText(/*"Début: "+*/debutProg[0]/*+" - "*/);
-				
-				String[] parse2 = chaine.getListeProgrammes().getProgrammes().getFin().split("T");
-				String[] finProg = parse2[1].split("Z");
-				textFin.setText(/*"Fin: "+*/finProg[0]);
-				
+			textChaine.setText(chaine.getNom());
+			textNom.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getNom()));
+			textDescription.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getDescription()));
+
+			String[] parse = chaine.getListeProgrammes().getProgrammes().getDebut().split("T");
+			String[] debutProg = parse[1].split("Z");
+			textDebut.setText(/*"Début: "+*/debutProg[0]/*+" - "*/);
+
+			String[] parse2 = chaine.getListeProgrammes().getProgrammes().getFin().split("T");
+			String[] finProg = parse2[1].split("Z");
+			textFin.setText(/*"Fin: "+*/finProg[0]);
+
 			}
 		}
 
 	}
+	/*** ACTION MENU ***/
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu items for use in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main, menu);
+		//return super.onCreateOptionsMenu(menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle presses on the action bar items
+		switch (item.getItemId()) {
+		case R.id.action_alarm:
+			// openSearch();
+			//Log.d(TAG,"ALARME");
+			//return true;
+			makeToast("ALARME...");
+			//setOneTimeAlarm();
+			
+			//default:
+			// return super.onOptionsItemSelected(item);
+		}
+		return true;
+	}
 	
+	public void makeToast(String message) {
+		// with jam obviously
+		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+	}
+	/*** END ACTION MENU ***/
 	
+	/*** ALARM AVEC NOTIFICATION ***/
+	/*
+	public class TimeAlarm extends BroadcastReceiver {
+
+		 NotificationManager nm;
+
+		 @Override
+		 public void onReceive(Context context, Intent intent) {
+		  nm = (NotificationManager) context
+		    .getSystemService(Context.NOTIFICATION_SERVICE);
+		  CharSequence from = "Nithin";
+		  CharSequence message = "Crazy About Android...";
+		  PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
+		    new Intent(), 0);
+		  Notification notif = new Notification(R.drawable.ic_action_alarm,
+		    "Crazy About Android...", System.currentTimeMillis());
+		  notif.setLatestEventInfo(context, from, message, contentIntent);
+		  nm.notify(1, notif);
+		 }
+		}
+	
+	 public void setOneTimeAlarm() {
+		  Intent intent = new Intent(this, TimeAlarm.class);
+		  PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
+		    intent, PendingIntent.FLAG_ONE_SHOT);
+		  am.set(AlarmManager.RTC_WAKEUP,
+		    System.currentTimeMillis() + (5 * 1000), pendingIntent);
+		 }
+
+		 public void setRepeatingAlarm() {
+		  Intent intent = new Intent(this, TimeAlarm.class);
+		  PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
+		    intent, PendingIntent.FLAG_CANCEL_CURRENT);
+		  am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
+		    (5 * 1000), pendingIntent);
+		 }
+		 */
+	/*** END ALARM AVEC NOTIFICATION ***/
 }
