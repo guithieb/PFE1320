@@ -130,7 +130,9 @@ private EPGChaine epgChaine;
 		if(extra != null)
 		{
 			chaineId = extra.getString("chaineId");
-			channel = extra.getString("chaineNom");
+			getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),chaineId);
+			gtc.execute();
+			/*channel = extra.getString("chaineNom");
 			textChaine.setText(channel);
 			
 			nom = extra.getString("progNom");
@@ -154,7 +156,7 @@ private EPGChaine epgChaine;
 			String[] finProg = parse2[1].split("Z");
 			textFin.setText("Fin: "+finProg[0]);
 			
-			id = Integer.parseInt(chaineId);
+			id = Integer.parseInt(chaineId);*/
 		}
 
 		
