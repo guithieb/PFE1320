@@ -185,7 +185,7 @@ private EPGChaine epgChaine;
 		}
 
 		
-		//Création des boutons Prog+ et Prog-
+/*		//Création des boutons Prog+ et Prog-
 		programUp = (Button)findViewById(R.id.programUp);
 		programUp.setOnClickListener(new OnClickListener(){
 			@Override
@@ -203,7 +203,7 @@ private EPGChaine epgChaine;
 			}
 
 		});
-
+*/
 		//Récuperation de l'adresse ip de la box grâce aux préférences 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		ip = prefs.getString(BOX_PREFERENCES,"null");
@@ -440,11 +440,11 @@ private EPGChaine epgChaine;
 				
 				String[] parse = chaine.getListeProgrammes().getProgrammes().getDebut().split("T");
 				String[] debutProg = parse[1].split("Z");
-				textDebut.setText("Début: "+debutProg[0]+" - ");
+				textDebut.setText(/*"Début: "+*/debutProg[0]/*+" - "*/);
 				
 				String[] parse2 = chaine.getListeProgrammes().getProgrammes().getFin().split("T");
 				String[] finProg = parse2[1].split("Z");
-				textFin.setText("Fin: "+finProg[0]);
+				textFin.setText(/*"Fin: "+*/finProg[0]);
 				
 			}
 		}
