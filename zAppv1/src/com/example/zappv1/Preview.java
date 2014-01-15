@@ -155,8 +155,8 @@ private EPGChaine epgChaine;
 			String[] parse2 = fin.split("T");
 			String[] finProg = parse2[1].split("Z");
 			textFin.setText("Fin: "+finProg[0]);
-			
-			id = Integer.parseInt(chaineId);*/
+			*/
+			id = Integer.parseInt(chaineId);
 		}
 
 		
