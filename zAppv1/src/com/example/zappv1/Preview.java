@@ -180,6 +180,7 @@ private EPGChaine epgChaine;
 			String[] finProg = parse2[1].split("Z");
 			textFin.setText("Fin: "+finProg[0]);
 */
+
 			id = Integer.parseInt(chaineId);
 		}
 
