@@ -73,7 +73,7 @@ public class EPGChaine {
 		
 	public class Programme{
 		
-		private int id;
+		private String id;
 		private String nom, description;
 		private String debut,fin;
 		
@@ -82,10 +82,10 @@ public class EPGChaine {
 		  
 		}
 		
-		public int getId() {
+		public String getId() {
 			return id;
 		}
-		public void setId(int id) {
+		public void setId(String id) {
 			this.id = id;
 		}
 		public String getNom() {
