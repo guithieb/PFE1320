@@ -18,7 +18,6 @@ import org.apache.http.client.ClientProtocolException;
 import com.example.cloud.ChaineAdapter;
 import com.example.cloud.EPGChaine;
 import com.example.cloud.EPGChaineSerialize;
-import com.example.cloud.getChannelTask;
 import com.example.remote.BaseApi;
 import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
@@ -206,26 +205,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			id = Integer.parseInt(chaineId);
 		}
 
-
-		/*		//Création des boutons Prog+ et Prog-
-		programUp = (Button)findViewById(R.id.programUp);
-		programUp.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View v) {
-				sendKeyPressed(UserInterfaceApi.CHANNEL_UP);     
-			}
-
-		});
-
-		programDown = (Button)findViewById(R.id.programDown);
-		programDown.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View v) {
-				sendKeyPressed(UserInterfaceApi.CHANNEL_DOWN);     
-			}
-
-		});
-		 */
 		//Récuperation de l'adresse ip de la box grâce aux préférences 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		ip = prefs.getString(BOX_PREFERENCES,"null");
@@ -236,11 +215,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		// execution de l'image
 		//TacheAffiche nouvelleTache = new TacheAffiche();
 		//nouvelleTache.execute();
-
-
-
 	}
-
 
 	private void sendKeyPressed(String key){
 		new SendKeyPressedTask().execute(
@@ -262,8 +237,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				return params[1];
 			}
 		}     
-
-
 	}
 
 
@@ -294,8 +267,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			float velocityY) {
 		if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH) {  return false;  }
 		// TODO Auto-generated method stub
-
-
 		/* positive value means right to left direction */
 
 		final float distance = e1.getX() - e2.getX();
@@ -327,8 +298,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			Log.d(TAG,"TASK RIGHT OK");
 		}
 
-
-
 		if(gtc.getStatus() == AsyncTask.Status.FINISHED)
 		{
 			Log.d(TAG,"TASK RIGHT FIN");
@@ -355,8 +324,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			Log.d(TAG,"TASK RIGHT OK");
 		}
 
-
-
 		if(gtc.getStatus() == AsyncTask.Status.FINISHED)
 		{
 			Log.d(TAG,"TASK RIGHT FIN");
@@ -366,13 +333,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		{
 			Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
 		}
-
-
-
 	}
-
-
-
 
 	@Override
 	public void onLongPress(MotionEvent e) {
@@ -458,7 +419,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			textChaine.setText(chaine.getNom());
 			textNom.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getNom()));
 			textDescription.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getDescription()));
-
+			
 			String[] parse = chaine.getListeProgrammes().getProgrammes().getDebut().split("T");
 			String[] debutProg = parse[1].split("Z");
 			textDebut.setText(/*"Début: "+*/debutProg[0]/*+" - "*/);
