@@ -18,7 +18,6 @@ import org.apache.http.client.ClientProtocolException;
 import com.example.cloud.ChaineAdapter;
 import com.example.cloud.EPGChaine;
 import com.example.cloud.EPGChaineSerialize;
-import com.example.cloud.getChannelTask;
 import com.example.remote.BaseApi;
 import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
@@ -420,7 +419,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			textChaine.setText(chaine.getNom());
 			textNom.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getNom()));
 			textDescription.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getDescription()));
-
+			
 			String[] parse = chaine.getListeProgrammes().getProgrammes().getDebut().split("T");
 			String[] debutProg = parse[1].split("Z");
 			textDebut.setText(/*"Début: "+*/debutProg[0]/*+" - "*/);
