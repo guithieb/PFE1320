@@ -556,6 +556,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			
 			else if((bp.getProgramme().getListeGenres().getGenre().equals("Film"))||
 					(bp.getProgramme().getListeGenres().getGenre().equals("Téléfilm"))||
+					(bp.getProgramme().getListeGenres().getGenre().equals("Jeu"))||
 					(bp.getProgramme().getListeGenres().getGenre().equals("Divertissement"))){
 				Log.d(LOG_TAG,"TSHOW"+result.toString());
 				ProgrammeFilmSerialize pfs = new Gson().fromJson(result,ProgrammeFilmSerialize.class);
@@ -563,8 +564,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				Log.d(LOG_TAG,"SERIENOM"+pgFilm.getProgramme().getImagette());
 			}
 			
-			else if ((bp.getProgramme().getListeGenres().getGenre().equals("Jeu"))||
-					(bp.getProgramme().getListeGenres().getGenre().equals("Magazine"))||
+			else if ((bp.getProgramme().getListeGenres().getGenre().equals("Magazine"))||
 					(bp.getProgramme().getListeGenres().getGenre().equals("Information"))){
 				Log.d(LOG_TAG,"TSHOW"+result.toString());
 				ProgrammeMagSerialize pms = new Gson().fromJson(result,ProgrammeMagSerialize.class);
