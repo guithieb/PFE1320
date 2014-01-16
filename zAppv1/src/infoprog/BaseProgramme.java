@@ -23,13 +23,11 @@ public class BaseProgramme {
 	{
 		private String id;
 		private String titre;
-		private String sousTitre;
 		private String description;
 		private ListeGenre ListeGenres;
 		private String codeParental;
 		private Diffusion Diffusion;
 		private String imagette;
-		private String productionNationality;
 		private String productionDate;
 		
 		public Programme()
@@ -53,13 +51,13 @@ public class BaseProgramme {
 			this.titre = titre;
 		}
 
-		public String getSousTitre() {
+		/*public String getSousTitre() {
 			return sousTitre;
 		}
 
 		public void setSousTitre(String sousTitre) {
 			this.sousTitre = sousTitre;
-		}
+		}*/
 
 		public String getDescription() {
 			return description;
@@ -101,13 +99,13 @@ public class BaseProgramme {
 			this.imagette = imagette;
 		}
 
-		public String getProductionNationality() {
+		/*public String getProductionNationality() {
 			return productionNationality;
 		}
 
 		public void setProductionNationality(String productionNationality) {
 			this.productionNationality = productionNationality;
-		}
+		}*/
 
 		public String getProductionDate() {
 			return productionDate;
@@ -118,10 +116,37 @@ public class BaseProgramme {
 		}
 
 		
+/*		public SousTitre getSousTitre() {
+			return sousTitre;
+		}
+
+		public void setSousTitre(SousTitre sousTitre) {
+			this.sousTitre = sousTitre;
+		}*/
+		
+		/*public class ProductionNationality{
+			
+			public ProductionNationality()
+			{
+				
+			}
+			
+		}*/
+
+
+		/*public class SousTitre{
+			
+			public SousTitre()
+			{
+				
+			}
+		}*/
 		
 		
 		
-		
+	
+
+
 		public class ListeGenre{
 			
 			private String genre;

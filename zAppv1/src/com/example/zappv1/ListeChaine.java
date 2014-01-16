@@ -87,6 +87,7 @@ public class ListeChaine extends Fragment{
         intent.putExtra("progDescription",item.getListeProgrammes().getProgrammes().getDescription());
         intent.putExtra("progDebut",item.getListeProgrammes().getProgrammes().getDebut());
         intent.putExtra("progFin",item.getListeProgrammes().getProgrammes().getFin());
+        intent.putExtra("progId", item.getListeProgrammes().getProgrammes().getId());
         
         
         // Log.d(LOG_TAG,"PROG "+prog.toString());

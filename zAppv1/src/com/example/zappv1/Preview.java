@@ -1,5 +1,12 @@
 package com.example.zappv1;
 
+import infoprog.BaseProgramme;
+import infoprog.BaseProgrammeSerialize;
+import infoprog.ProgrammeFilm;
+import infoprog.ProgrammeMag;
+import infoprog.ProgrammeSerie;
+import infoprog.ProgrammeSerieSerialize;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -70,6 +77,10 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 	/*** IMAGE Melvin ***/
 	private EPGChaine epgChaine;
+	private BaseProgramme basePg;
+	private ProgrammeFilm pgFilm;
+	private ProgrammeSerie pgSerie;
+	private ProgrammeMag pgMag;
 
 	/*** PLAYER ZAPP ***/
 	//VideoView playerSurfaceView;
@@ -105,6 +116,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	private ChaineAdapter adapter;
 	private GestureDetectorCompat mDetector; 
 	int id;
+	String progId;
 
 	AlarmManager am;
 
@@ -170,38 +182,14 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			textChaine.setText(channel);
 
 			chaineId = extra.getString("chaineId");
+			
+			progId= extra.getString("progId");
+			
 			getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),chaineId);
-			gtc.execute();
-			/*channel = extra.getString("chaineNom");
-			textChaine.setText(channel);
-
-			nom = extra.getString("progNom");
-			textNom.setText(nom);
-
-			description = extra.getString("progDescription");
-			nom = extra.getString("progNom");
-			textNom.setText(Html.fromHtml(nom));
-			nom = extra.getString("progNom");
-			textNom.setText(nom);			
-			description = extra.getString("progDescription");
-			textDescription.setText(Html.fromHtml(description));
-			textDescription.setText(description);
-
-
-			debut = extra.getString("progDebut");
-			Log.d(TAG,"DATE"+debut);
-			String[] parse = debut.split("T");
-			String[] debutProg = parse[1].split("Z");
-			textDebut.setText("Début: "+debutProg[0]+" - ");
-
-			fin = extra.getString("progFin");
-			Log.d(TAG,"DATE"+fin);
-			fin = extra.getString("progFin");
-			String[] parse2 = fin.split("T");
-			String[] finProg = parse2[1].split("Z");
-			textFin.setText("Fin: "+finProg[0]);
-			 */
-
+			getBaseProgrammeTask gbpt = new getBaseProgrammeTask(basePg,getApplicationContext(),progId);
+			gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			gbpt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			
 			id = Integer.parseInt(chaineId);
 		}
 
@@ -405,13 +393,13 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 		protected void onPostExecute(String result){
 			super.onPostExecute(result);
-			Log.d(LOG_TAG,"POSTEXECUTE");
+		
 			if (result!=null)
-			{	Log.d(LOG_TAG,"RESULT "+result);
+			{	
 			EPGChaineSerialize ch = new Gson().fromJson(result,EPGChaineSerialize.class);
-			Log.d(LOG_TAG,"CH "+ch.toString());
-			//Log.d(LOG_TAG,"CH"+ch.toString());
-			Log.d(LOG_TAG,"RESULTCHANNEL"+result);
+			
+			
+			
 			//adapter.notifyDataSetChanged();
 			chaine = ch;
 			if(chaine != null)
@@ -503,4 +491,71 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		 }
 		 */
 	/*** END ALARM AVEC NOTIFICATION ***/
+
+	private class getBaseProgrammeTask extends AsyncTask <String,Void,String>
+	{
+		BaseProgramme bp;
+		Context context;
+		String id;
+		
+		public getBaseProgrammeTask(BaseProgramme b, Context context, String id)
+		{
+			this.bp = b;
+			this.context = context;
+			this.id = id;
+		}
+		
+		@Override
+		protected String doInBackground(String... params){
+			//Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+			//String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
+			//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+			String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/?programId=94968332";
+			try {
+				HttpResponse response = BaseApi.executeHttpGet(url);
+				HttpEntity entity = response.getEntity();
+				if (entity !=null)
+				{
+					BufferedReader r = new BufferedReader(new InputStreamReader(entity.getContent()));
+					StringBuilder total = new StringBuilder();
+					String line;
+					while ((line = r.readLine()) != null) {
+						total.append(line);
+					}
+					Log.d(LOG_TAG,"TOTAL "+total.toString());
+					return total.toString();
+				}
+
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
+		protected void onPostExecute(String result){
+			super.onPostExecute(result);
+			
+			if (result!=null)
+			{	
+			BaseProgrammeSerialize bpz = new Gson().fromJson(result,BaseProgrammeSerialize.class);
+			bp = bpz;
+			
+			if(bp.getProgramme().getListeGenres().getGenre().equals("SŽrie"))
+			{
+				Log.d(LOG_TAG,"TSHOW"+result.toString());
+				ProgrammeSerieSerialize pss = new Gson().fromJson(result,ProgrammeSerieSerialize.class);
+				pgSerie = pss;
+				Log.d(LOG_TAG,"SERIENOM"+pgSerie.getProgramme().getSerie().getEpisode());
+			}
+			
+		}
+		
+		
+	}
+
+}
 }
