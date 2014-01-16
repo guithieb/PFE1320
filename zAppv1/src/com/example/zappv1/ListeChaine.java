@@ -79,16 +79,13 @@ public class ListeChaine extends Fragment{
       {
         Intent intent = new Intent(getActivity(), Preview.class);
         item = (EPGChaine) arg0.getItemAtPosition(position);
-        //Envoie du nom de la chaine à la vue prévisualisation
+        //Envoi du nom de la chaine à la vue prévisualisation
         intent.putExtra("chaineNom",item.getNom());
-        intent.putExtra("progNom", item.getListeProgrammes().getProgrammes().getNom());
-         intent.putExtra("progDescription",item.getListeProgrammes().getProgrammes().getDescription());
-         intent.putExtra("chaineId", item.getId());
-        intent.putExtra("progDescription",item.getListeProgrammes().getProgrammes().getDescription());
-        intent.putExtra("progDebut",item.getListeProgrammes().getProgrammes().getDebut());
-        intent.putExtra("progFin",item.getListeProgrammes().getProgrammes().getFin());
-        intent.putExtra("progId", item.getListeProgrammes().getProgrammes().getId());
-        
+        //Envoi de l'id de la chaîne
+        intent.putExtra("chaineId", item.getId());
+        //envoi de l'id du programme
+        intent.putExtra("progid", item.getListeProgrammes().getProgrammes().getId());
+        Log.d(LOG_TAG,"PROGRAMMEID"+item.getListeProgrammes().getProgrammes().getId());
         
         // Log.d(LOG_TAG,"PROG "+prog.toString());
          startActivity(intent);

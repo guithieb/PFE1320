@@ -1,7 +1,5 @@
 package infoprog;
 
-
-
 import java.util.ArrayList;
 
 public class ProgrammeSerie  {

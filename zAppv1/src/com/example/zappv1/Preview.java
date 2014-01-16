@@ -3,7 +3,9 @@ package com.example.zappv1;
 import infoprog.BaseProgramme;
 import infoprog.BaseProgrammeSerialize;
 import infoprog.ProgrammeFilm;
+import infoprog.ProgrammeFilmSerialize;
 import infoprog.ProgrammeMag;
+import infoprog.ProgrammeMagSerialize;
 import infoprog.ProgrammeSerie;
 import infoprog.ProgrammeSerieSerialize;
 
@@ -100,7 +102,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	//private static final String DEFAULT_BOX_URL = "http://192.168.0.24:8080/api.bbox.lan/V0";
 	public static final String SUFFIXE_URL = "/api.bbox.lan/V0";
 	public static String URL_HTTP = "";
-	private Button programUp,programDown;
 	String channel;
 	String description;
 	String nom;
@@ -182,9 +183,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			textChaine.setText(channel);
 
 			chaineId = extra.getString("chaineId");
-			
-			progId= extra.getString("progId");
-			
+			progId= extra.getString("progid");
+			Log.d(TAG,"PROGRAMMEID"+progId);
 			getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),chaineId);
 			getBaseProgrammeTask gbpt = new getBaseProgrammeTask(basePg,getApplicationContext(),progId);
 			gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -510,7 +510,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			//Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
 			//String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
 			//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
-			String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/?programId=94968332";
+			String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?programId="+id;
 			try {
 				HttpResponse response = BaseApi.executeHttpGet(url);
 				HttpEntity entity = response.getEntity();
@@ -544,13 +544,37 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			BaseProgrammeSerialize bpz = new Gson().fromJson(result,BaseProgrammeSerialize.class);
 			bp = bpz;
 			
-			if(bp.getProgramme().getListeGenres().getGenre().equals("SŽrie"))
+			Log.d(LOG_TAG,"TVSHOW"+result.toString());
+			
+			if(bp.getProgramme().getListeGenres().getGenre().equals("Série"))
 			{
 				Log.d(LOG_TAG,"TSHOW"+result.toString());
 				ProgrammeSerieSerialize pss = new Gson().fromJson(result,ProgrammeSerieSerialize.class);
 				pgSerie = pss;
 				Log.d(LOG_TAG,"SERIENOM"+pgSerie.getProgramme().getSerie().getEpisode());
 				
+			}
+			
+			else if((bp.getProgramme().getListeGenres().getGenre().equals("Film"))||
+					(bp.getProgramme().getListeGenres().getGenre().equals("Téléfilm"))||
+					(bp.getProgramme().getListeGenres().getGenre().equals("Jeu"))||
+					(bp.getProgramme().getListeGenres().getGenre().equals("Divertissement"))){
+				Log.d(LOG_TAG,"TSHOW"+result.toString());
+				ProgrammeFilmSerialize pfs = new Gson().fromJson(result,ProgrammeFilmSerialize.class);
+				pgFilm = pfs;
+				Log.d(LOG_TAG,"SERIENOM"+pgFilm.getProgramme().getImagette());
+			}
+			
+			else if ((bp.getProgramme().getListeGenres().getGenre().equals("Magazine"))||
+					(bp.getProgramme().getListeGenres().getGenre().equals("Information"))){
+				Log.d(LOG_TAG,"TSHOW"+result.toString());
+				ProgrammeMagSerialize pms = new Gson().fromJson(result,ProgrammeMagSerialize.class);
+				pgMag = pms;
+				Log.d(LOG_TAG,"SERIENOM"+pgMag.getProgramme().getImagette());
+			}
+			
+			else {
+				Log.d(LOG_TAG,"SERIENOM"+bp.getProgramme().getImagette());
 			}
 			
 		}
