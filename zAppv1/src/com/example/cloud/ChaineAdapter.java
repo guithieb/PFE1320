@@ -98,20 +98,18 @@ public boolean isEmpty()
 
 		//ch.chaineName.setText(application.getNom());
 		Log.d(LOG_TAG, "id" +application.getId());
-		if (application.getLogo() != null){ 
-		BitmapWorkerTask task = new BitmapWorkerTask(ch.photo);
-		task.execute(application.getLogo());
+		
+		 if (application.getNom().equals("Canal+")) {
+		 	ch.photo.setImageResource(R.drawable.canal);
 		}
-		/*
-		 * else if {
-		 * 
-		 * }
-		 */
-		//else
-		/*if(application.getNom().equals("La Chaîne parlementaire")){
-			ch.chaineName.setText("LCP");
-		}
-		else {ch.chaineName.setText(Html.fromHtml(application.getNom()));}*/
+		 else if (application.getNom().equals("i Télé")){
+		 	ch.photo.setImageResource(R.drawable.itele);
+		 } else {
+				BitmapWorkerTask task = new BitmapWorkerTask(ch.photo);
+				task.execute(application.getLogo());
+		 }
+		 
+		
 		if(application.getListeProgrammes().getProgrammes().getNom().contains("&#4")){
 			String[] parseNom = application.getListeProgrammes().getProgrammes().getNom().split("&");
 			ch.progName.setText(Html.fromHtml(parseNom[0]));

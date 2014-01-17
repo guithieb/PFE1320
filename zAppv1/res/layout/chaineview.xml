@@ -5,16 +5,18 @@
     android:background="@drawable/list_selector"
     android:orientation="horizontal" >
 
-    <ImageView
+    
+    
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+        
+        <ImageView
         android:id="@+id/Picture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="fitCenter"
          />
-    
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
 
 		 <TextView 
             android:id="@+id/progName"
@@ -22,6 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/Picture"
             />	 
 		
 	</RelativeLayout>

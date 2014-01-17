@@ -65,6 +65,14 @@
             android:gravity="center"
             android:textSize="15sp"
             android:textStyle="bold" />
+        
+        <ImageView
+        android:id="@+id/imagette"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:layout_alignParentRight="true"
+         />
 
         <ProgressBar
             android:id="@+id/progressTest"

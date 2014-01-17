@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -113,6 +114,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	TextView textDescription;
 	TextView textDebut,textFin;
 	TextView textDuree, textGenre;
+	ImageView imagette;
 	Bundle extra;
 	ArrayList<EPGChaine> epg = new ArrayList<EPGChaine>();
 	private static final String DEBUG_TAG = "Gestures";
@@ -156,6 +158,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		textGenre = (TextView) findViewById(R.id.genre);
 		textDuree = (TextView) findViewById(R.id.duree);
 		mProgressBar = (ProgressBar) findViewById(R.id.progressTest);
+		imagette = (ImageView) findViewById(R.id.imagette);
 
 		// Instantiate the gesture detector with the
 		// application context and an implementation of
@@ -610,10 +613,52 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			double ratio = (double) difference/ (double) dm;
 			Log.d(LOG_TAG,"HEURERATIO"+ratio);
 			mProgressBar.setProgress((int) (ratio*100));
+			
+			if (bp.getProgramme().getImagette() != null){ 
+				BitmapWorkerTask task = new BitmapWorkerTask(imagette);
+				task.execute(bp.getProgramme().getImagette());
+				}
 		}
 		
 		
 	}
 
 }
+	class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
+		  
+		  private final WeakReference<ImageView> imageViewReference;
+		  private String data;
+
+		  public BitmapWorkerTask(ImageView imageView) {
+		      // Use a WeakReference to ensure the ImageView can be garbage
+		      // collected
+		      imageViewReference = new WeakReference<ImageView>(imageView);
+		  }
+
+		  // Decode image in background.
+		  protected Bitmap doInBackground(String... params) {
+		      data = params[0];
+		      try {
+		         return BitmapFactory.decodeStream((InputStream) new URL(data)
+		                  .getContent());
+		      } catch (MalformedURLException e) {
+		          e.printStackTrace();
+		      } catch (IOException e) {
+		          e.printStackTrace();
+		      }
+		      return null;
+		  }
+
+		  // Once complete, see if ImageView is still around and set bitmap
+		  @Override
+		  protected void onPostExecute(Bitmap bitmap) {
+		      if (imageViewReference != null && bitmap != null) {
+		          final ImageView imageView = imageViewReference.get();
+		          if (imageView != null) {
+		              imageView.setImageBitmap(bitmap);
+		          }
+		      }
+		  }
+
+		}
 }
