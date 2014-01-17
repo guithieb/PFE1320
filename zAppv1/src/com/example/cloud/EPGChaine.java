@@ -12,7 +12,7 @@ import java.util.Date;
 
 public class EPGChaine {
 
-	// tout passer en public ?
+
 	public String id; //private avant maj BDD
 	private String nom;
 	private String logo;
@@ -73,6 +73,7 @@ public class EPGChaine {
 		
 	public class Programme{
 		
+
 		private String id;
 		private String nom, description;
 		private String debut,fin;

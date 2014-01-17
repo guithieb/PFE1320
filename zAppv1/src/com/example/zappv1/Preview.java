@@ -1,5 +1,6 @@
 package com.example.zappv1;
 
+
 import infoprog.BaseProgramme;
 import infoprog.BaseProgrammeSerialize;
 import infoprog.ProgrammeFilm;
@@ -79,10 +80,12 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 	/*** IMAGE Melvin ***/
 	private EPGChaine epgChaine;
+
 	private BaseProgramme basePg;
 	private ProgrammeFilm pgFilm;
 	private ProgrammeSerie pgSerie;
 	private ProgrammeMag pgMag;
+
 
 	/*** PLAYER ZAPP ***/
 	//VideoView playerSurfaceView;
@@ -117,7 +120,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	private ChaineAdapter adapter;
 	private GestureDetectorCompat mDetector; 
 	int id;
-	String progId;
+String progId;
 
 	AlarmManager am;
 
@@ -183,6 +186,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			textChaine.setText(channel);
 
 			chaineId = extra.getString("chaineId");
+
+
 			progId= extra.getString("progid");
 			Log.d(TAG,"PROGRAMMEID"+progId);
 			getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),chaineId);
@@ -190,13 +195,27 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			gbpt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			
+
 			id = Integer.parseInt(chaineId);
 		}
+
+
+
+		
 
 		//Récuperation de l'adresse ip de la box grâce aux préférences 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		ip = prefs.getString(BOX_PREFERENCES,"null");
 		Log.d(TAG,"IP22"+ip);
+
+
+		URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
+
+		// execution de l'image
+		//TacheAffiche nouvelleTache = new TacheAffiche();
+		//nouvelleTache.execute();
+
+
 
 		URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
 
@@ -286,6 +305,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			Log.d(TAG,"TASK RIGHT OK");
 		}
 
+
 		if(gtc.getStatus() == AsyncTask.Status.FINISHED)
 		{
 			Log.d(TAG,"TASK RIGHT FIN");
@@ -312,6 +332,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			Log.d(TAG,"TASK RIGHT OK");
 		}
 
+
+
 		if(gtc.getStatus() == AsyncTask.Status.FINISHED)
 		{
 			Log.d(TAG,"TASK RIGHT FIN");
@@ -321,7 +343,14 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		{
 			Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
 		}
+
+
 	}
+
+
+
+
+
 
 	@Override
 	public void onLongPress(MotionEvent e) {
@@ -393,13 +422,14 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 		protected void onPostExecute(String result){
 			super.onPostExecute(result);
-		
+
+			Log.d(LOG_TAG,"POSTEXECUTE");
 			if (result!=null)
-			{	
+			{	Log.d(LOG_TAG,"RESULT "+result);
 			EPGChaineSerialize ch = new Gson().fromJson(result,EPGChaineSerialize.class);
-			
-			
-			
+			Log.d(LOG_TAG,"CH "+ch.toString());
+			//Log.d(LOG_TAG,"CH"+ch.toString());
+			Log.d(LOG_TAG,"RESULTCHANNEL"+result);
 			//adapter.notifyDataSetChanged();
 			chaine = ch;
 			if(chaine != null)
@@ -407,7 +437,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			textChaine.setText(chaine.getNom());
 			textNom.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getNom()));
 			textDescription.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getDescription()));
-			
+
 			String[] parse = chaine.getListeProgrammes().getProgrammes().getDebut().split("T");
 			String[] debutProg = parse[1].split("Z");
 			textDebut.setText(/*"Début: "+*/debutProg[0]/*+" - "*/);
@@ -420,6 +450,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		}
 
 	}
+
 	/*** ACTION MENU ***/
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -583,4 +614,5 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	}
 
 }
+
 }

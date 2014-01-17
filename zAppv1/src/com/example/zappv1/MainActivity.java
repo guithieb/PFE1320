@@ -68,9 +68,10 @@ public class MainActivity extends FragmentActivity {
 	public static String deviceList = "devices are : "; 
 	private String[] drawerListViewItems;	
 	private DrawerLayout drawerLayout;		// Within which the entire activity is enclosed
-	private ListView drawerListView;		
+	private ListView drawerListView;
+	private ActionBarDrawerToggle drawerToggle;
 	private ActionBarDrawerToggle actionBarDrawerToggle;
-	final String[] data ={"Liste des chaînes","Favoris","Catégoris","Gestion des alertes","Mes réglages"};
+	final String[] data ={"Liste des chaînes","Favoris","Catégories","Gestion des alertes","Mes réglages"};
 	//Liste des différentes vues liées au drawer
 	final String[] fragments ={
 			"com.example.zappv1.ListeChaine",
@@ -129,6 +130,13 @@ public class MainActivity extends FragmentActivity {
 
 		//Initialisation du drawer
 		final DrawerLayout drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
+		
+		// DrawerToggle (bouton home pour activer/désactiver le navigation drawer ; avec l'icone du drawer)
+		drawerToggle = new ActionBarDrawerToggle(this, drawer, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close);
+		drawer.setDrawerListener(drawerToggle);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
+		
 		final ListView navList = (ListView) findViewById(R.id.drawer);
 		navList.setAdapter(adapter);
 		navList.setOnItemClickListener(new OnItemClickListener(){
