@@ -71,6 +71,8 @@ public class MainActivity extends FragmentActivity {
 	private ListView drawerListView;
 	private ActionBarDrawerToggle drawerToggle;
 	private ActionBarDrawerToggle actionBarDrawerToggle;
+	private int selection = 0;
+	private int oldSelection = -1;
 	final String[] data ={"Liste des chaînes","Favoris","Catégories","Gestion des alertes","Mes réglages"};
 	//Liste des différentes vues liées au drawer
 	final String[] fragments ={
@@ -136,7 +138,7 @@ public class MainActivity extends FragmentActivity {
 		drawer.setDrawerListener(drawerToggle);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
-		
+		updateContent();
 		final ListView navList = (ListView) findViewById(R.id.drawer);
 		navList.setAdapter(adapter);
 		navList.setOnItemClickListener(new OnItemClickListener(){
@@ -154,9 +156,11 @@ public class MainActivity extends FragmentActivity {
 				drawer.closeDrawer(navList);
 			}
 		});
-		FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+		
+		/*FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
 		tx.replace(R.id.main,Fragment.instantiate(MainActivity.this, fragments[0]));
 		tx.commit();
+		*/
 
 
 
@@ -218,10 +222,38 @@ public class MainActivity extends FragmentActivity {
 		};
 		deviceWatcher.search(deviceManager);
 
-
-
-
 	}
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState)
+	{
+	    super.onPostCreate(savedInstanceState);
+	    drawerToggle.syncState();
+	}
+
+	private void updateContent() {
+		//getActionBar().setTitle(data[selection]); TODO afficher le MenuItem dans l'ActionBar
+		if(selection != oldSelection)
+		{
+			FragmentTransaction tx = getSupportFragmentManager()
+					.beginTransaction();
+			tx.replace(R.id.main,Fragment.instantiate(MainActivity.this,
+					fragments[selection]));
+			tx.commit();
+			oldSelection = selection;
+		}
+		
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+	    if(drawerToggle.onOptionsItemSelected(item))
+	    {
+	        return true;
+	    }
+	    return super.onOptionsItemSelected(item);
+	}
+	
 
 	public static void setText(String Which,String newText) {
 		Map<String,String> v_params = new HashMap<String,String>();

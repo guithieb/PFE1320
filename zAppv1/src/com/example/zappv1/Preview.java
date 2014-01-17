@@ -560,6 +560,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				ProgrammeSerieSerialize pss = new Gson().fromJson(result,ProgrammeSerieSerialize.class);
 				pgSerie = pss;
 				Log.d(LOG_TAG,"SERIENOM"+pgSerie.getProgramme().getSerie().getEpisode());
+				
 			}
 			
 			else if((bp.getProgramme().getListeGenres().getGenre().equals("Film"))||
