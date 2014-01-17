@@ -138,7 +138,7 @@ class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
       return null;
   }
 
-  // Once complete, see if ImageView is still around and set bitmap.
+  // Once complete, see if ImageView is still around and set bitmap
   @Override
   protected void onPostExecute(Bitmap bitmap) {
       if (imageViewReference != null && bitmap != null) {
