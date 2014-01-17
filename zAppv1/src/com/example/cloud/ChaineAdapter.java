@@ -28,9 +28,8 @@ import android.widget.TextView;
 
 public class ChaineAdapter extends BaseAdapter {
 	private class ChView{
-		TextView chaineName;
+		//TextView chaineName;
 		TextView progName;
-		TextView identifiant;
 		ImageView photo;
 
 		
@@ -85,8 +84,7 @@ public boolean isEmpty()
 		{ 
 			ch = new ChView();
 			convertView = inflater.inflate(R.layout.chaineview, null);
-			ch.identifiant =(TextView) convertView.findViewById(R.id.identifiant);
-			ch.chaineName = (TextView) convertView.findViewById(R.id.chaineName);
+			//ch.chaineName = (TextView) convertView.findViewById(R.id.chaineName);
 			ch.progName = (TextView) convertView.findViewById(R.id.progName);
 			ch.photo = (ImageView) convertView.findViewById(R.id.Picture);
 			convertView.setTag(ch);
@@ -98,16 +96,27 @@ public boolean isEmpty()
 		
 		final EPGChaine application = datas.get(position);
 
-		ch.chaineName.setText(application.getNom());
+		//ch.chaineName.setText(application.getNom());
 		Log.d(LOG_TAG, "id" +application.getId());
-		 
+		if (application.getLogo() != null){ 
 		BitmapWorkerTask task = new BitmapWorkerTask(ch.photo);
 		task.execute(application.getLogo());
-		/* Drawable drawable = LoadImageFromWebOperations(application.getLogo());
-	     ch.logo.setImageDrawable(drawable);*/
-		ch.identifiant.setText(application.getId()+". ");
-		ch.chaineName.setText(Html.fromHtml(application.getNom()));
-		ch.progName.setText(Html.fromHtml(application.getListeProgrammes().getProgrammes().getNom()));
+		}
+		/*
+		 * else if {
+		 * 
+		 * }
+		 */
+		//else
+		/*if(application.getNom().equals("La Chaîne parlementaire")){
+			ch.chaineName.setText("LCP");
+		}
+		else {ch.chaineName.setText(Html.fromHtml(application.getNom()));}*/
+		if(application.getListeProgrammes().getProgrammes().getNom().contains("&#4")){
+			String[] parseNom = application.getListeProgrammes().getProgrammes().getNom().split("&");
+			ch.progName.setText(Html.fromHtml(parseNom[0]));
+		}
+		else {ch.progName.setText(Html.fromHtml(application.getListeProgrammes().getProgrammes().getNom()));}
 		return convertView;
 	}
 

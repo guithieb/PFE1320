@@ -416,11 +416,11 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			
 			String[] parse = chaine.getListeProgrammes().getProgrammes().getDebut().split("T");
 			String[] debutProg = parse[1].split("Z");
-			textDebut.setText(/*"Début: "+*/debutProg[0]/*+" - "*/);
+			textDebut.setText(/*"Début: "+*/debutProg[0]+" - ");
 
 			String[] parse2 = chaine.getListeProgrammes().getProgrammes().getFin().split("T");
 			String[] finProg = parse2[1].split("Z");
-			textFin.setText(/*"Fin: "+*/finProg[0]);
+			textFin.setText(finProg[0]);
 			getBaseProgrammeTask gbpt = new getBaseProgrammeTask(basePg,getApplicationContext(),chaine.getListeProgrammes().getProgrammes().getId());
 			gbpt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 

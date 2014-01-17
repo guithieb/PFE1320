@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,7 +41,7 @@ import com.example.zappv1.R;
 public class ListeChaine extends Fragment{
 
   public static final String LOG_TAG = "debug";
-  private ListView listeChaine;
+  private GridView listeChaine;
   ArrayList<EPGChaine> epgChaines = new ArrayList<EPGChaine>();
   final String ID_CHAINE = "id_chaine";
   EPGChaine item;  
@@ -63,7 +64,7 @@ public class ListeChaine extends Fragment{
   public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
     ViewGroup root = (ViewGroup) inflater.inflate(R.layout.liste_chaine, container,false);
     //Initialisation de la List qui regroupe tout les noms des chaines
-    listeChaine = (ListView) root.findViewById(R.id.chaines);
+    listeChaine = (GridView) root.findViewById(R.id.chaines);
     adapter = new ChaineAdapter(getActivity(), epgChaines, this);  
     listeChaine.setAdapter(adapter);
     refreshChaine();

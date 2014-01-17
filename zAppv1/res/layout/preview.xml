@@ -8,142 +8,95 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Preview" >
 
-	<LinearLayout
-		android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
-      
-	    
-		<TextView
-        	android:id="@+id/chaineName"
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/chaineName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
             android:layout_marginBottom="2dp"
+            android:textSize="15sp"
             android:textStyle="bold" />
- 
-		<LinearLayout
+
+        <TextView
+            android:id="@+id/progNom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/chaineName"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/genre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/progNom"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/progDebut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/genre"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/progFin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/genre"
+            android:layout_toRightOf="@id/progDebut"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/duree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/progDebut"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/progressTest"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
-		
-			<LinearLayout
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:orientation="vertical" >
+            android:layout_height="wrap_content"
+            android:layout_below="@id/duree"
+            android:max="100" />
+    </RelativeLayout>
 
-				<LinearLayout
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content" >
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/relativeLayout1"
+        android:layout_below="@+id/relativeLayout1"
+        android:layout_marginTop="19dp" >
 
-					<TextView
-				      android:id="@+id/progNom"
-				      android:layout_width="wrap_content"
-				      android:layout_height="wrap_content" 
-				      android:textSize="20sp"
-				      android:layout_below="@id/chaineName" 
-				      android:textStyle="bold" /> 
-	    		</LinearLayout>
-	    		
-				<TextView
-                      android:id="@+id/TextViewprogDescription"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:text="Résumé"
-                      android:textStyle="bold"
-                      android:textSize="25sp" />
-				
-				<LinearLayout
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content" >
+        <TextView
+            android:id="@+id/TextViewprogDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Résumé"
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
-					<TextView
-					    android:id="@+id/progDescription"
-					    android:layout_width="wrap_content"
-					    android:layout_height="wrap_content"
-					    android:layout_below="@id/chaineName"
-					    android:textSize="15sp"
-					    android:textStyle="italic" />
- 
-	    		</LinearLayout>
-	    		
+        <TextView
+            android:id="@+id/progDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/TextViewprogDescription"
+            android:textSize="15sp"
+            android:textStyle="italic" />
+    </RelativeLayout>
 
-				
-				<LinearLayout
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content" >
-	    
-				    <TextView
-				        android:id="@+id/TextViewprogDebut"
-				        android:layout_width="63dp"
-				        android:layout_height="wrap_content"
-				        android:text="Début"
-				        android:textSize="15sp" />
-				    
-				    <TextView
-				       android:id="@+id/progDebut"
-				       android:layout_width="wrap_content"
-				       android:layout_height="wrap_content"
-				       android:textSize="15sp"  
-				       android:gravity="center"
-				       android:layout_below="@id/progDescription"   
-				       android:textStyle="bold" />
-	    		</LinearLayout>
-				
-
-				<LinearLayout
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content" >
-	    
-				    <TextView
-				        android:id="@+id/TextViewprogFin"
-				        android:layout_width="65dp"
-				        android:layout_height="wrap_content"
-				        android:text="Fin"
-				        android:textSize="15sp" />
-				    
-				    <TextView
-			          android:id="@+id/progFin"
-			          android:layout_width="wrap_content"
-			          android:layout_height="wrap_content"
-			          android:textSize="15sp"  
-			          android:gravity="center"   
-			          android:layout_below="@id/progDescription"
-					  android:textStyle="bold" />
-	    		</LinearLayout>
-	    		
-				<LinearLayout
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content" >
-	    
-				    <TextView
-				        android:id="@+id/genre"
-				        android:layout_width="65dp"
-				        android:layout_height="wrap_content"
-				        android:text="Fin"
-				        android:textSize="15sp" />
-				    
-				    <TextView
-			          android:id="@+id/duree"
-			          android:layout_width="wrap_content"
-			          android:layout_height="wrap_content"
-			          android:textSize="15sp"  
-			          android:gravity="center"   
-			          android:layout_below="@id/progDescription"
-					  android:textStyle="bold" />
-				    
-				    <ProgressBar
-				        android:id="@+id/progressTest"
-				        android:layout_width="fill_parent"
-						android:layout_height="wrap_content"
-						style="?android:attr/progressBarStyleHorizontal"
-						android:max="100"
-						/>
-	    		</LinearLayout>
-				
-	    	</LinearLayout>
-	    	
-	   	</LinearLayout>
-
-	</LinearLayout>
-    
 </RelativeLayout>
