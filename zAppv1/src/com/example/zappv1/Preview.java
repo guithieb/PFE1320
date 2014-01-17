@@ -1,5 +1,15 @@
 package com.example.zappv1;
 
+
+import infoprog.BaseProgramme;
+import infoprog.BaseProgrammeSerialize;
+import infoprog.ProgrammeFilm;
+import infoprog.ProgrammeFilmSerialize;
+import infoprog.ProgrammeMag;
+import infoprog.ProgrammeMagSerialize;
+import infoprog.ProgrammeSerie;
+import infoprog.ProgrammeSerieSerialize;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +28,6 @@ import org.apache.http.client.ClientProtocolException;
 import com.example.cloud.ChaineAdapter;
 import com.example.cloud.EPGChaine;
 import com.example.cloud.EPGChaineSerialize;
-import com.example.cloud.getChannelTask;
 import com.example.remote.BaseApi;
 import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
@@ -72,6 +81,12 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	/*** IMAGE Melvin ***/
 	private EPGChaine epgChaine;
 
+	private BaseProgramme basePg;
+	private ProgrammeFilm pgFilm;
+	private ProgrammeSerie pgSerie;
+	private ProgrammeMag pgMag;
+
+
 	/*** PLAYER ZAPP ***/
 	//VideoView playerSurfaceView;
 	// besoin du format 3gp != stream
@@ -90,7 +105,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	//private static final String DEFAULT_BOX_URL = "http://192.168.0.24:8080/api.bbox.lan/V0";
 	public static final String SUFFIXE_URL = "/api.bbox.lan/V0";
 	public static String URL_HTTP = "";
-	private Button programUp,programDown;
 	String channel;
 	String description;
 	String nom;
@@ -106,6 +120,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	private ChaineAdapter adapter;
 	private GestureDetectorCompat mDetector; 
 	int id;
+String progId;
 
 	AlarmManager am;
 
@@ -171,65 +186,28 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			textChaine.setText(channel);
 
 			chaineId = extra.getString("chaineId");
+
+
+			progId= extra.getString("progid");
+			Log.d(TAG,"PROGRAMMEID"+progId);
 			getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),chaineId);
-			gtc.execute();
-			/*channel = extra.getString("chaineNom");
-			textChaine.setText(channel);
-
-			nom = extra.getString("progNom");
-			textNom.setText(nom);
-
-			description = extra.getString("progDescription");
-			nom = extra.getString("progNom");
-			textNom.setText(Html.fromHtml(nom));
-			nom = extra.getString("progNom");
-			textNom.setText(nom);			
-			description = extra.getString("progDescription");
-			textDescription.setText(Html.fromHtml(description));
-			textDescription.setText(description);
-
-
-			debut = extra.getString("progDebut");
-			Log.d(TAG,"DATE"+debut);
-			String[] parse = debut.split("T");
-			String[] debutProg = parse[1].split("Z");
-			textDebut.setText("Début: "+debutProg[0]+" - ");
-
-			fin = extra.getString("progFin");
-			Log.d(TAG,"DATE"+fin);
-			fin = extra.getString("progFin");
-			String[] parse2 = fin.split("T");
-			String[] finProg = parse2[1].split("Z");
-			textFin.setText("Fin: "+finProg[0]);
-			 */
+			getBaseProgrammeTask gbpt = new getBaseProgrammeTask(basePg,getApplicationContext(),progId);
+			gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			gbpt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			
 
 			id = Integer.parseInt(chaineId);
 		}
 
 
-		/*		//Création des boutons Prog+ et Prog-
-		programUp = (Button)findViewById(R.id.programUp);
-		programUp.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View v) {
-				sendKeyPressed(UserInterfaceApi.CHANNEL_UP);     
-			}
 
-		});
+		
 
-		programDown = (Button)findViewById(R.id.programDown);
-		programDown.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View v) {
-				sendKeyPressed(UserInterfaceApi.CHANNEL_DOWN);     
-			}
-
-		});
-		 */
 		//Récuperation de l'adresse ip de la box grâce aux préférences 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		ip = prefs.getString(BOX_PREFERENCES,"null");
 		Log.d(TAG,"IP22"+ip);
+
 
 		URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
 
@@ -239,8 +217,12 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 
 
-	}
+		URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
 
+		// execution de l'image
+		//TacheAffiche nouvelleTache = new TacheAffiche();
+		//nouvelleTache.execute();
+	}
 
 	private void sendKeyPressed(String key){
 		new SendKeyPressedTask().execute(
@@ -262,8 +244,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				return params[1];
 			}
 		}     
-
-
 	}
 
 
@@ -294,8 +274,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			float velocityY) {
 		if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH) {  return false;  }
 		// TODO Auto-generated method stub
-
-
 		/* positive value means right to left direction */
 
 		final float distance = e1.getX() - e2.getX();
@@ -326,7 +304,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		{
 			Log.d(TAG,"TASK RIGHT OK");
 		}
-
 
 
 		if(gtc.getStatus() == AsyncTask.Status.FINISHED)
@@ -368,8 +345,9 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		}
 
 
-
 	}
+
+
 
 
 
@@ -444,6 +422,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 		protected void onPostExecute(String result){
 			super.onPostExecute(result);
+
 			Log.d(LOG_TAG,"POSTEXECUTE");
 			if (result!=null)
 			{	Log.d(LOG_TAG,"RESULT "+result);
@@ -471,6 +450,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		}
 
 	}
+
 	/*** ACTION MENU ***/
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -542,4 +522,96 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		 }
 		 */
 	/*** END ALARM AVEC NOTIFICATION ***/
+
+	private class getBaseProgrammeTask extends AsyncTask <String,Void,String>
+	{
+		BaseProgramme bp;
+		Context context;
+		String id;
+		
+		public getBaseProgrammeTask(BaseProgramme b, Context context, String id)
+		{
+			this.bp = b;
+			this.context = context;
+			this.id = id;
+		}
+		
+		@Override
+		protected String doInBackground(String... params){
+			//Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+			//String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
+			//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+			String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?programId="+id;
+			try {
+				HttpResponse response = BaseApi.executeHttpGet(url);
+				HttpEntity entity = response.getEntity();
+				if (entity !=null)
+				{
+					BufferedReader r = new BufferedReader(new InputStreamReader(entity.getContent()));
+					StringBuilder total = new StringBuilder();
+					String line;
+					while ((line = r.readLine()) != null) {
+						total.append(line);
+					}
+					Log.d(LOG_TAG,"TOTAL "+total.toString());
+					return total.toString();
+				}
+
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
+		protected void onPostExecute(String result){
+			super.onPostExecute(result);
+			
+			if (result!=null)
+			{	
+			BaseProgrammeSerialize bpz = new Gson().fromJson(result,BaseProgrammeSerialize.class);
+			bp = bpz;
+			
+			Log.d(LOG_TAG,"TVSHOW"+result.toString());
+			
+			if(bp.getProgramme().getListeGenres().getGenre().equals("Série"))
+			{
+				Log.d(LOG_TAG,"TSHOW"+result.toString());
+				ProgrammeSerieSerialize pss = new Gson().fromJson(result,ProgrammeSerieSerialize.class);
+				pgSerie = pss;
+				Log.d(LOG_TAG,"SERIENOM"+pgSerie.getProgramme().getSerie().getEpisode());
+			}
+			
+			else if((bp.getProgramme().getListeGenres().getGenre().equals("Film"))||
+					(bp.getProgramme().getListeGenres().getGenre().equals("Téléfilm"))||
+					(bp.getProgramme().getListeGenres().getGenre().equals("Jeu"))||
+					(bp.getProgramme().getListeGenres().getGenre().equals("Divertissement"))){
+				Log.d(LOG_TAG,"TSHOW"+result.toString());
+				ProgrammeFilmSerialize pfs = new Gson().fromJson(result,ProgrammeFilmSerialize.class);
+				pgFilm = pfs;
+				Log.d(LOG_TAG,"SERIENOM"+pgFilm.getProgramme().getImagette());
+			}
+			
+			else if ((bp.getProgramme().getListeGenres().getGenre().equals("Magazine"))||
+					(bp.getProgramme().getListeGenres().getGenre().equals("Information"))){
+				Log.d(LOG_TAG,"TSHOW"+result.toString());
+				ProgrammeMagSerialize pms = new Gson().fromJson(result,ProgrammeMagSerialize.class);
+				pgMag = pms;
+				Log.d(LOG_TAG,"SERIENOM"+pgMag.getProgramme().getImagette());
+			}
+			
+			else {
+				Log.d(LOG_TAG,"SERIENOM"+bp.getProgramme().getImagette());
+			}
+			
+		}
+		
+		
+	}
+
+}
+
 }

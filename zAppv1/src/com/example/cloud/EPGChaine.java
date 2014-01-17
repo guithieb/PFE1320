@@ -12,8 +12,8 @@ import java.util.Date;
 
 public class EPGChaine {
 
-	// tout passer en public ?
-	private String id;
+
+	public String id; //private avant maj BDD
 	private String nom;
 	private String logo;
 	private ListeProgramme ListeProgrammes;
@@ -73,7 +73,8 @@ public class EPGChaine {
 		
 	public class Programme{
 		
-		private int id;
+
+		private String id;
 		private String nom, description;
 		private String debut,fin;
 		
@@ -82,10 +83,10 @@ public class EPGChaine {
 		  
 		}
 		
-		public int getId() {
+		public String getId() {
 			return id;
 		}
-		public void setId(int id) {
+		public void setId(String id) {
 			this.id = id;
 		}
 		public String getNom() {

@@ -2,6 +2,7 @@ package com.example.cloud;
 
 import java.io.IOException;
 import java.io.InputStream;
+
 import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,6 +32,7 @@ public class ChaineAdapter extends BaseAdapter {
 		TextView progName;
 		TextView identifiant;
 		ImageView photo;
+
 		
 	}
 	
@@ -48,13 +50,6 @@ public class ChaineAdapter extends BaseAdapter {
 		this.listeChaine = listeChaine;
 	}	
 	
-
-	
-
-	
-	
-	
-
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
@@ -106,11 +101,9 @@ public boolean isEmpty()
 		ch.chaineName.setText(application.getNom());
 		Log.d(LOG_TAG, "id" +application.getId());
 		 
-
 		BitmapWorkerTask task = new BitmapWorkerTask(ch.photo);
 		task.execute(application.getLogo());
-		
-	    /* Drawable drawable = LoadImageFromWebOperations(application.getLogo());
+		/* Drawable drawable = LoadImageFromWebOperations(application.getLogo());
 	     ch.logo.setImageDrawable(drawable);*/
 		ch.identifiant.setText(application.getId()+". ");
 		ch.chaineName.setText(Html.fromHtml(application.getNom()));
@@ -130,6 +123,7 @@ public boolean isEmpty()
 	return null;
 	}
 	}*/
+
 
 
 class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
@@ -167,5 +161,6 @@ class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
           }
       }
   }
+
 }
 }
