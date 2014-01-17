@@ -1,6 +1,5 @@
 package com.example.zappv1;
 
-
 import infoprog.BaseProgramme;
 import infoprog.BaseProgrammeSerialize;
 import infoprog.ProgrammeFilm;
@@ -66,6 +65,7 @@ import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,12 +80,10 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 	/*** IMAGE Melvin ***/
 	private EPGChaine epgChaine;
-
 	private BaseProgramme basePg;
 	private ProgrammeFilm pgFilm;
 	private ProgrammeSerie pgSerie;
 	private ProgrammeMag pgMag;
-
 
 	/*** PLAYER ZAPP ***/
 	//VideoView playerSurfaceView;
@@ -114,13 +112,15 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	TextView textNom;
 	TextView textDescription;
 	TextView textDebut,textFin;
+	TextView textDuree, textGenre;
 	Bundle extra;
 	ArrayList<EPGChaine> epg = new ArrayList<EPGChaine>();
 	private static final String DEBUG_TAG = "Gestures";
 	private ChaineAdapter adapter;
 	private GestureDetectorCompat mDetector; 
 	int id;
-String progId;
+	String progId;
+	ProgressBar mProgressBar;
 
 	AlarmManager am;
 
@@ -153,6 +153,9 @@ String progId;
 		textDescription = (TextView)findViewById(R.id.progDescription);
 		textDebut = (TextView) findViewById(R.id.progDebut);
 		textFin = (TextView) findViewById(R.id.progFin);
+		textGenre = (TextView) findViewById(R.id.genre);
+		textDuree = (TextView) findViewById(R.id.duree);
+		mProgressBar = (ProgressBar) findViewById(R.id.progressTest);
 
 		// Instantiate the gesture detector with the
 		// application context and an implementation of
@@ -186,8 +189,6 @@ String progId;
 			textChaine.setText(channel);
 
 			chaineId = extra.getString("chaineId");
-
-
 			progId= extra.getString("progid");
 			Log.d(TAG,"PROGRAMMEID"+progId);
 			getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),chaineId);
@@ -195,27 +196,13 @@ String progId;
 			gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			gbpt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			
-
 			id = Integer.parseInt(chaineId);
 		}
-
-
-
-		
 
 		//Récuperation de l'adresse ip de la box grâce aux préférences 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		ip = prefs.getString(BOX_PREFERENCES,"null");
 		Log.d(TAG,"IP22"+ip);
-
-
-		URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
-
-		// execution de l'image
-		//TacheAffiche nouvelleTache = new TacheAffiche();
-		//nouvelleTache.execute();
-
-
 
 		URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
 
@@ -305,7 +292,6 @@ String progId;
 			Log.d(TAG,"TASK RIGHT OK");
 		}
 
-
 		if(gtc.getStatus() == AsyncTask.Status.FINISHED)
 		{
 			Log.d(TAG,"TASK RIGHT FIN");
@@ -323,7 +309,7 @@ String progId;
 		//sendKeyPressed(UserInterfaceApi.CHANNEL_UP); 
 
 		id--;
-		if(id<=0) id=id+20;
+		if(id<=0) id=id+19;
 		getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),Integer.toString(id));
 		gtc.execute();
 		Log.d(TAG,"TASK OK");
@@ -331,8 +317,6 @@ String progId;
 		{
 			Log.d(TAG,"TASK RIGHT OK");
 		}
-
-
 
 		if(gtc.getStatus() == AsyncTask.Status.FINISHED)
 		{
@@ -343,14 +327,7 @@ String progId;
 		{
 			Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
 		}
-
-
 	}
-
-
-
-
-
 
 	@Override
 	public void onLongPress(MotionEvent e) {
@@ -422,14 +399,13 @@ String progId;
 
 		protected void onPostExecute(String result){
 			super.onPostExecute(result);
-
-			Log.d(LOG_TAG,"POSTEXECUTE");
+		
 			if (result!=null)
-			{	Log.d(LOG_TAG,"RESULT "+result);
+			{	
 			EPGChaineSerialize ch = new Gson().fromJson(result,EPGChaineSerialize.class);
-			Log.d(LOG_TAG,"CH "+ch.toString());
-			//Log.d(LOG_TAG,"CH"+ch.toString());
-			Log.d(LOG_TAG,"RESULTCHANNEL"+result);
+			
+			
+			
 			//adapter.notifyDataSetChanged();
 			chaine = ch;
 			if(chaine != null)
@@ -437,7 +413,7 @@ String progId;
 			textChaine.setText(chaine.getNom());
 			textNom.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getNom()));
 			textDescription.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getDescription()));
-
+			
 			String[] parse = chaine.getListeProgrammes().getProgrammes().getDebut().split("T");
 			String[] debutProg = parse[1].split("Z");
 			textDebut.setText(/*"Début: "+*/debutProg[0]/*+" - "*/);
@@ -445,12 +421,13 @@ String progId;
 			String[] parse2 = chaine.getListeProgrammes().getProgrammes().getFin().split("T");
 			String[] finProg = parse2[1].split("Z");
 			textFin.setText(/*"Fin: "+*/finProg[0]);
+			getBaseProgrammeTask gbpt = new getBaseProgrammeTask(basePg,getApplicationContext(),chaine.getListeProgrammes().getProgrammes().getId());
+			gbpt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
 			}
 		}
 
 	}
-
 	/*** ACTION MENU ***/
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -577,7 +554,7 @@ String progId;
 			
 			Log.d(LOG_TAG,"TVSHOW"+result.toString());
 			
-			if(bp.getProgramme().getListeGenres().getGenre().equals("Série"))
+			/*if(bp.getProgramme().getListeGenres().getGenre().equals("Série"))
 			{
 				Log.d(LOG_TAG,"TSHOW"+result.toString());
 				ProgrammeSerieSerialize pss = new Gson().fromJson(result,ProgrammeSerieSerialize.class);
@@ -588,6 +565,7 @@ String progId;
 			else if((bp.getProgramme().getListeGenres().getGenre().equals("Film"))||
 					(bp.getProgramme().getListeGenres().getGenre().equals("Téléfilm"))||
 					(bp.getProgramme().getListeGenres().getGenre().equals("Jeu"))||
+					(bp.getProgramme().getListeGenres().getGenre().equals("Documentaire"))||
 					(bp.getProgramme().getListeGenres().getGenre().equals("Divertissement"))){
 				Log.d(LOG_TAG,"TSHOW"+result.toString());
 				ProgrammeFilmSerialize pfs = new Gson().fromJson(result,ProgrammeFilmSerialize.class);
@@ -596,6 +574,7 @@ String progId;
 			}
 			
 			else if ((bp.getProgramme().getListeGenres().getGenre().equals("Magazine"))||
+					(bp.getProgramme().getListeGenres().getGenre().equals("Emission jeunesse"))||
 					(bp.getProgramme().getListeGenres().getGenre().equals("Information"))){
 				Log.d(LOG_TAG,"TSHOW"+result.toString());
 				ProgrammeMagSerialize pms = new Gson().fromJson(result,ProgrammeMagSerialize.class);
@@ -605,13 +584,35 @@ String progId;
 			
 			else {
 				Log.d(LOG_TAG,"SERIENOM"+bp.getProgramme().getImagette());
-			}
+			}*/
+			textGenre.setText(bp.getProgramme().getListeGenres().getGenre());
+			String[] parse2 = bp.getProgramme().getDiffusion().getDuree().split("T");
+			String[] DureeProg = parse2[1].split("M");
+			textDuree.setText(DureeProg[0]);
+			//duree du programme en minutes
+			String[] duree = DureeProg[0].split("H");
+			int dm = (Integer.parseInt(duree[0])*60)+Integer.parseInt(duree[1]);
+			Log.d(LOG_TAG,"HEURERATIO"+dm);
+			//heure actuelle en minutes
+			Calendar c = Calendar.getInstance(); 
+			int heure = c.get(Calendar.HOUR_OF_DAY);
+			int minutes = c.get(Calendar.MINUTE);
+			//heure du debut en minutes
+			String[] parse3 = bp.getProgramme().getDiffusion().getDebut().split("T");
+			String[] debutProg = parse3[1].split("Z");
+			String[] debut = debutProg[0].split(":");
+			int dd = (Integer.parseInt(debut[0])*60)+Integer.parseInt(debut[1]);
 			
+			//difference entre heure actuelle et debut programme
+			int difference = (minutes+heure*60) - dd;
+			//ratio pour progress bar
+			double ratio = (double) difference/ (double) dm;
+			Log.d(LOG_TAG,"HEURERATIO"+ratio);
+			mProgressBar.setProgress((int) (ratio*100));
 		}
 		
 		
 	}
 
 }
-
 }
