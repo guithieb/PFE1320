@@ -2,6 +2,7 @@ package com.example.cloud;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +30,7 @@ public class ChaineAdapter extends BaseAdapter {
 		TextView chaineName;
 		TextView progName;
 		TextView identifiant;
+		ImageView photo;
 		
 	}
 	
@@ -90,6 +93,7 @@ public boolean isEmpty()
 			ch.identifiant =(TextView) convertView.findViewById(R.id.identifiant);
 			ch.chaineName = (TextView) convertView.findViewById(R.id.chaineName);
 			ch.progName = (TextView) convertView.findViewById(R.id.progName);
+			ch.photo = (ImageView) convertView.findViewById(R.id.Picture);
 			convertView.setTag(ch);
 			
 	
@@ -102,6 +106,10 @@ public boolean isEmpty()
 		ch.chaineName.setText(application.getNom());
 		Log.d(LOG_TAG, "id" +application.getId());
 		 
+
+		BitmapWorkerTask task = new BitmapWorkerTask(ch.photo);
+		task.execute(application.getLogo());
+		
 	    /* Drawable drawable = LoadImageFromWebOperations(application.getLogo());
 	     ch.logo.setImageDrawable(drawable);*/
 		ch.identifiant.setText(application.getId()+". ");
@@ -122,4 +130,42 @@ public boolean isEmpty()
 	return null;
 	}
 	}*/
+
+
+class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
+  
+  private final WeakReference<ImageView> imageViewReference;
+  private String data;
+
+  public BitmapWorkerTask(ImageView imageView) {
+      // Use a WeakReference to ensure the ImageView can be garbage
+      // collected
+      imageViewReference = new WeakReference<ImageView>(imageView);
+  }
+
+  // Decode image in background.
+  protected Bitmap doInBackground(String... params) {
+      data = params[0];
+      try {
+         return BitmapFactory.decodeStream((InputStream) new URL(data)
+                  .getContent());
+      } catch (MalformedURLException e) {
+          e.printStackTrace();
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+      return null;
+  }
+
+  // Once complete, see if ImageView is still around and set bitmap.
+  @Override
+  protected void onPostExecute(Bitmap bitmap) {
+      if (imageViewReference != null && bitmap != null) {
+          final ImageView imageView = imageViewReference.get();
+          if (imageView != null) {
+              imageView.setImageBitmap(bitmap);
+          }
+      }
+  }
+}
 }
