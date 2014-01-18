@@ -17,16 +17,16 @@ public class EPGChaine {
 	private String nom;
 	private String logo;
 	private ListeProgramme ListeProgrammes;
-	
+
 	public EPGChaine()
 	{
-	  
+
 	}
 
 	public void setId(String id){
 		this.id = id;
 	}
-	
+
 	public String getNom() {
 		return nom;
 	}
@@ -58,10 +58,10 @@ public class EPGChaine {
 
 	public class ListeProgramme{
 		private Programme Programme;
-		
-		
+
+
 		public ListeProgramme(){
-		 
+
 		}
 		public Programme getProgrammes() {
 			return Programme;
@@ -70,55 +70,53 @@ public class EPGChaine {
 		public void setProgrammes(Programme programmes) {
 			this.Programme = programmes;
 		}
-		
-	public class Programme{
-		
 
-		private String id;
-		private String nom, description;
-		private String debut,fin;
-		
-		public Programme()
-		{
-		  
+		public class Programme{
+
+
+			private String id;
+			private String nom, description;
+			private String debut,fin;
+
+			public Programme()
+			{
+
+			}
+
+			public String getId() {
+				return id;
+			}
+			public void setId(String id) {
+				this.id = id;
+			}
+			public String getNom() {
+				return nom;
+			}
+			public void setNom(String nom) {
+				this.nom = nom;
+			}
+			public String getDescription() {
+				return description;
+			}
+			public void setDescription(String description) {
+				this.description = description;
+			}
+			public String getDebut() {
+				return debut;
+			}
+			public void setDebut(String debut) {
+				this.debut = debut;
+			}
+			public String getFin() {
+				return fin;
+			}
+			public void setFin(String fin) {
+				this.fin = fin;
+			}	
+
 		}
-		
-		public String getId() {
-			return id;
-		}
-		public void setId(String id) {
-			this.id = id;
-		}
-		public String getNom() {
-			return nom;
-		}
-		public void setNom(String nom) {
-			this.nom = nom;
-		}
-		public String getDescription() {
-			return description;
-		}
-		public void setDescription(String description) {
-			this.description = description;
-		}
-		public String getDebut() {
-			return debut;
-		}
-		public void setDebut(String debut) {
-			this.debut = debut;
-		}
-		public String getFin() {
-			return fin;
-		}
-		public void setFin(String fin) {
-			this.fin = fin;
-		}
-		
-		
-	}
-	
-	
+
 	}
 }
-	
+
 
