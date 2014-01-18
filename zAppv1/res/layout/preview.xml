@@ -120,15 +120,15 @@
             android:id="@+id/TextViewNextprog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Prochain Programme: "
-            android:textSize="20sp"
+            android:text="A suivre:"
+            android:textSize="18sp"
             android:textStyle="bold" />
         
         <TextView
             android:id="@+id/next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:layout_below="@id/TextViewNextprog"
             android:textStyle="bold" />
         
@@ -138,7 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/next"
             android:gravity="center"
-            android:textSize="15sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
@@ -148,7 +148,7 @@
             android:layout_below="@id/next"
             android:layout_toRightOf="@id/progNextDebut"
             android:gravity="center"
-            android:textSize="15sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
     </RelativeLayout>
