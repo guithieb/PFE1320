@@ -28,6 +28,8 @@ import org.apache.http.client.ClientProtocolException;
 import com.example.cloud.ChaineAdapter;
 import com.example.cloud.EPGChaine;
 import com.example.cloud.EPGChaineSerialize;
+import com.example.cloud.EPGNext;
+import com.example.cloud.EPGNextSerialize;
 import com.example.remote.BaseApi;
 import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
@@ -81,6 +83,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 	/*** IMAGE Melvin ***/
 	private EPGChaine epgChaine;
+	private EPGNext nextprog;
 	private BaseProgramme basePg;
 	private ProgrammeFilm pgFilm;
 	private ProgrammeSerie pgSerie;
@@ -108,12 +111,12 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	String description;
 	String nom;
 	String chaineId;
-	String debut, fin;
+	String debutNext, fin;
 	TextView textChaine;
 	TextView textNom;
 	TextView textDescription;
-	TextView textDebut,textFin;
-	TextView textDuree, textGenre;
+	TextView textDebut,textFin, textNextDebut, textNextFin;
+	TextView textDuree, textGenre, textNext;
 	ImageView imagette;
 	Bundle extra;
 	ArrayList<EPGChaine> epg = new ArrayList<EPGChaine>();
@@ -145,11 +148,11 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		/*** ACTION BAR ***/
 		ActionBar actionbar = getActionBar();
 		actionbar.show();
-		
+
 		/*** ALARM MANAGER ***/
 		//am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 		//setOneTimeAlarm();
-		
+
 		textChaine = (TextView)findViewById(R.id.chaineName);
 		textNom = (TextView)findViewById(R.id.progNom);
 		textDescription = (TextView)findViewById(R.id.progDescription);
@@ -159,6 +162,9 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		textDuree = (TextView) findViewById(R.id.duree);
 		mProgressBar = (ProgressBar) findViewById(R.id.progressTest);
 		imagette = (ImageView) findViewById(R.id.imagette);
+		textNext = (TextView) findViewById(R.id.next);
+		textNextDebut = (TextView) findViewById(R.id.progNextDebut);
+		textNextFin = (TextView) findViewById(R.id.progNextFin);
 
 		// Instantiate the gesture detector with the
 		// application context and an implementation of
@@ -188,6 +194,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		extra = getIntent().getExtras();
 		if(extra != null)
 		{
+			fin = extra.getString("progFin");
 			channel = extra.getString("chaineNom");
 			textChaine.setText(channel);
 
@@ -196,9 +203,11 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			Log.d(TAG,"PROGRAMMEID"+progId);
 			getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),chaineId);
 			getBaseProgrammeTask gbpt = new getBaseProgrammeTask(basePg,getApplicationContext(),progId);
+			getNextProgramTask gnext = new getNextProgramTask(nextprog,getApplicationContext(),chaineId, fin);
 			gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			gbpt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-			
+			gnext.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
 			id = Integer.parseInt(chaineId);
 		}
 
@@ -402,31 +411,32 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 		protected void onPostExecute(String result){
 			super.onPostExecute(result);
-		
+
 			if (result!=null)
 			{	
-			EPGChaineSerialize ch = new Gson().fromJson(result,EPGChaineSerialize.class);
-			
-			
-			
-			//adapter.notifyDataSetChanged();
-			chaine = ch;
-			if(chaine != null)
-				Log.d(LOG_TAG,"CHAINE"+chaine.getListeProgrammes().getProgrammes().getNom());
-			textChaine.setText(chaine.getNom());
-			textNom.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getNom()));
-			textDescription.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getDescription()));
-			
-			String[] parse = chaine.getListeProgrammes().getProgrammes().getDebut().split("T");
-			String[] debutProg = parse[1].split("Z");
-			textDebut.setText(/*"Début: "+*/debutProg[0]+" - ");
+				EPGChaineSerialize ch = new Gson().fromJson(result,EPGChaineSerialize.class);
 
-			String[] parse2 = chaine.getListeProgrammes().getProgrammes().getFin().split("T");
-			String[] finProg = parse2[1].split("Z");
-			textFin.setText(finProg[0]);
-			getBaseProgrammeTask gbpt = new getBaseProgrammeTask(basePg,getApplicationContext(),chaine.getListeProgrammes().getProgrammes().getId());
-			gbpt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
+
+				//adapter.notifyDataSetChanged();
+				chaine = ch;
+				if(chaine != null)
+					Log.d(LOG_TAG,"CHAINE"+chaine.getListeProgrammes().getProgrammes().getNom());
+				textChaine.setText(chaine.getNom());
+				textNom.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getNom()));
+				textDescription.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getDescription()));
+
+				String[] parse = chaine.getListeProgrammes().getProgrammes().getDebut().split("T");
+				String[] debutProg = parse[1].split("Z");
+				textDebut.setText(/*"Début: "+*/debutProg[0]+" - ");
+
+				String[] parse2 = chaine.getListeProgrammes().getProgrammes().getFin().split("T");
+				String[] finProg = parse2[1].split("Z");
+				textFin.setText(finProg[0]);
+				getBaseProgrammeTask gbpt = new getBaseProgrammeTask(basePg,getApplicationContext(),chaine.getListeProgrammes().getProgrammes().getId());
+				getNextProgramTask gnext = new getNextProgramTask(nextprog,getApplicationContext(),chaine.getId(), chaine.getListeProgrammes().getProgrammes().getFin());
+				gbpt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				gnext.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			}
 		}
 
@@ -451,19 +461,19 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			//return true;
 			makeToast("ALARME...");
 			//setOneTimeAlarm();
-			
+
 			//default:
 			// return super.onOptionsItemSelected(item);
 		}
 		return true;
 	}
-	
+
 	public void makeToast(String message) {
 		// with jam obviously
 		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 	}
 	/*** END ACTION MENU ***/
-	
+
 	/*** ALARM AVEC NOTIFICATION ***/
 	/*
 	public class TimeAlarm extends BroadcastReceiver {
@@ -484,7 +494,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		  nm.notify(1, notif);
 		 }
 		}
-	
+
 	 public void setOneTimeAlarm() {
 		  Intent intent = new Intent(this, TimeAlarm.class);
 		  PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
@@ -500,7 +510,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		  am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
 		    (5 * 1000), pendingIntent);
 		 }
-		 */
+	 */
 	/*** END ALARM AVEC NOTIFICATION ***/
 
 	private class getBaseProgrammeTask extends AsyncTask <String,Void,String>
@@ -508,14 +518,14 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		BaseProgramme bp;
 		Context context;
 		String id;
-		
+
 		public getBaseProgrammeTask(BaseProgramme b, Context context, String id)
 		{
 			this.bp = b;
 			this.context = context;
 			this.id = id;
 		}
-		
+
 		@Override
 		protected String doInBackground(String... params){
 			//Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
@@ -546,26 +556,26 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			}
 			return null;
 		}
-		
+
 		protected void onPostExecute(String result){
 			super.onPostExecute(result);
-			
+
 			if (result!=null)
 			{	
-			BaseProgrammeSerialize bpz = new Gson().fromJson(result,BaseProgrammeSerialize.class);
-			bp = bpz;
-			
-			Log.d(LOG_TAG,"TVSHOW"+result.toString());
-			
-			/*if(bp.getProgramme().getListeGenres().getGenre().equals("Série"))
+				BaseProgrammeSerialize bpz = new Gson().fromJson(result,BaseProgrammeSerialize.class);
+				bp = bpz;
+
+				Log.d(LOG_TAG,"TVSHOW"+result.toString());
+
+				/*if(bp.getProgramme().getListeGenres().getGenre().equals("Série"))
 			{
 				Log.d(LOG_TAG,"TSHOW"+result.toString());
 				ProgrammeSerieSerialize pss = new Gson().fromJson(result,ProgrammeSerieSerialize.class);
 				pgSerie = pss;
 				Log.d(LOG_TAG,"SERIENOM"+pgSerie.getProgramme().getSerie().getEpisode());
-				
+
 			}
-			
+
 			else if((bp.getProgramme().getListeGenres().getGenre().equals("Film"))||
 					(bp.getProgramme().getListeGenres().getGenre().equals("Téléfilm"))||
 					(bp.getProgramme().getListeGenres().getGenre().equals("Jeu"))||
@@ -576,7 +586,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				pgFilm = pfs;
 				Log.d(LOG_TAG,"SERIENOM"+pgFilm.getProgramme().getImagette());
 			}
-			
+
 			else if ((bp.getProgramme().getListeGenres().getGenre().equals("Magazine"))||
 					(bp.getProgramme().getListeGenres().getGenre().equals("Emission jeunesse"))||
 					(bp.getProgramme().getListeGenres().getGenre().equals("Information"))){
@@ -585,80 +595,166 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				pgMag = pms;
 				Log.d(LOG_TAG,"SERIENOM"+pgMag.getProgramme().getImagette());
 			}
-			
+
 			else {
 				Log.d(LOG_TAG,"SERIENOM"+bp.getProgramme().getImagette());
 			}*/
-			textGenre.setText(bp.getProgramme().getListeGenres().getGenre());
-			String[] parse2 = bp.getProgramme().getDiffusion().getDuree().split("T");
-			String[] DureeProg = parse2[1].split("M");
-			textDuree.setText(DureeProg[0]);
-			//duree du programme en minutes
-			String[] duree = DureeProg[0].split("H");
-			int dm = (Integer.parseInt(duree[0])*60)+Integer.parseInt(duree[1]);
-			Log.d(LOG_TAG,"HEURERATIO"+dm);
-			//heure actuelle en minutes
-			Calendar c = Calendar.getInstance(); 
-			int heure = c.get(Calendar.HOUR_OF_DAY);
-			int minutes = c.get(Calendar.MINUTE);
-			//heure du debut en minutes
-			String[] parse3 = bp.getProgramme().getDiffusion().getDebut().split("T");
-			String[] debutProg = parse3[1].split("Z");
-			String[] debut = debutProg[0].split(":");
-			int dd = (Integer.parseInt(debut[0])*60)+Integer.parseInt(debut[1]);
-			
-			//difference entre heure actuelle et debut programme
-			int difference = (minutes+heure*60) - dd;
-			//ratio pour progress bar
-			double ratio = (double) difference/ (double) dm;
-			Log.d(LOG_TAG,"HEURERATIO"+ratio);
-			mProgressBar.setProgress((int) (ratio*100));
-			
-			if (bp.getProgramme().getImagette() != null){ 
-				BitmapWorkerTask task = new BitmapWorkerTask(imagette);
-				task.execute(bp.getProgramme().getImagette());
+				textGenre.setText(bp.getProgramme().getListeGenres().getGenre());
+				String[] parse2 = bp.getProgramme().getDiffusion().getDuree().split("T");
+				String[] DureeProg = parse2[1].split("M");
+				textDuree.setText(DureeProg[0]);
+				//duree du programme en minutes
+				String[] duree = DureeProg[0].split("H");
+				int dm = (Integer.parseInt(duree[0])*60)+Integer.parseInt(duree[1]);
+				Log.d(LOG_TAG,"HEURERATIO"+dm);
+				//heure actuelle en minutes
+				Calendar c = Calendar.getInstance(); 
+				int heure = c.get(Calendar.HOUR_OF_DAY);
+				int minutes = c.get(Calendar.MINUTE);
+				//heure du debut en minutes
+				String[] parse3 = bp.getProgramme().getDiffusion().getDebut().split("T");
+				String[] debutProg = parse3[1].split("Z");
+				String[] debut = debutProg[0].split(":");
+				int dd = (Integer.parseInt(debut[0])*60)+Integer.parseInt(debut[1]);
+
+				//difference entre heure actuelle et debut programme
+				int difference = (minutes+heure*60) - dd;
+				//ratio pour progress bar
+				double ratio = (double) difference/ (double) dm;
+				Log.d(LOG_TAG,"HEURERATIO"+ratio);
+				mProgressBar.setProgress((int) (ratio*100));
+				
+				if (bp.getProgramme().getImagette() != null){ 
+					BitmapWorkerTask task = new BitmapWorkerTask(imagette);
+					task.execute(bp.getProgramme().getImagette());
+				}else{
+					imagette.setImageResource(R.drawable.noimage);
 				}
+
+			}
+
+
 		}
-		
-		
+
 	}
-
-}
 	class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
-		  
-		  private final WeakReference<ImageView> imageViewReference;
-		  private String data;
 
-		  public BitmapWorkerTask(ImageView imageView) {
-		      // Use a WeakReference to ensure the ImageView can be garbage
-		      // collected
-		      imageViewReference = new WeakReference<ImageView>(imageView);
-		  }
+		private final WeakReference<ImageView> imageViewReference;
+		private String data;
 
-		  // Decode image in background.
-		  protected Bitmap doInBackground(String... params) {
-		      data = params[0];
-		      try {
-		         return BitmapFactory.decodeStream((InputStream) new URL(data)
-		                  .getContent());
-		      } catch (MalformedURLException e) {
-		          e.printStackTrace();
-		      } catch (IOException e) {
-		          e.printStackTrace();
-		      }
-		      return null;
-		  }
-
-		  // Once complete, see if ImageView is still around and set bitmap
-		  @Override
-		  protected void onPostExecute(Bitmap bitmap) {
-		      if (imageViewReference != null && bitmap != null) {
-		          final ImageView imageView = imageViewReference.get();
-		          if (imageView != null) {
-		              imageView.setImageBitmap(bitmap);
-		          }
-		      }
-		  }
-
+		public BitmapWorkerTask(ImageView imageView) {
+			// Use a WeakReference to ensure the ImageView can be garbage
+			// collected
+			imageViewReference = new WeakReference<ImageView>(imageView);
 		}
+
+		// Decode image in background.
+		protected Bitmap doInBackground(String... params) {
+			data = params[0];
+			try {
+				return BitmapFactory.decodeStream((InputStream) new URL(data)
+				.getContent());
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		// Once complete, see if ImageView is still around and set bitmap
+		@Override
+		protected void onPostExecute(Bitmap bitmap) {
+			if (imageViewReference != null && bitmap != null) {
+				final ImageView imageView = imageViewReference.get();
+				if (imageView != null) {
+					imageView.setImageBitmap(bitmap);
+				}
+			}
+		}
+
+	}
+	private class getNextProgramTask extends AsyncTask<String, Void, String> {
+
+		EPGNext prog;
+
+		BaseAdapter adapter;
+		Context context;
+		String id;
+		String fin;
+		public static final String LOG_TAG = "debug";
+		public getNextProgramTask(EPGNext nextprog, Context c,String id, String fin) {
+			this.prog = nextprog;
+			this.context = c;
+			this.id=id;
+			this.fin = fin;
+		}
+
+		//Fonction qui se lance à l'appel de cette classe
+		@Override
+		protected String doInBackground(String... params){
+			//Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+			//String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
+			//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+			String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/?TVChannelsId="+id+"&period=1";
+			try {
+				HttpResponse response = BaseApi.executeHttpGet(url);
+				HttpEntity entity = response.getEntity();
+				if (entity !=null)
+				{
+					BufferedReader r = new BufferedReader(new InputStreamReader(entity.getContent()));
+					StringBuilder total = new StringBuilder();
+					String line;
+					while ((line = r.readLine()) != null) {
+						total.append(line);
+					}
+					//Log.d(LOG_TAG,"TOTAL "+total.toString());
+					return total.toString();
+				}
+
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		//Fonction qui se lance après l'éxécution de la fonction doInBackground
+
+		protected void onPostExecute(String result){
+			super.onPostExecute(result);
+
+			if (result!=null)
+			{
+				Log.d(LOG_TAG,"RESULT"+result.toString());
+				EPGNextSerialize next = new Gson().fromJson(result,EPGNextSerialize.class);
+
+
+
+				//adapter.notifyDataSetChanged();
+				prog = next;
+				int j=0;
+				if(prog != null)
+					Log.d(LOG_TAG,"CHAINE"+prog.getListeProgrammes().getProgrammes().get(0).getNom());
+				for (int i=0; i<prog.getListeProgrammes().getProgrammes().size(); i++){
+					if (prog.getListeProgrammes().getProgrammes().get(i).getDebut().equals(fin)){
+						j = i;
+						textNext.setText(Html.fromHtml(prog.getListeProgrammes().getProgrammes().get(j).getNom()));
+
+						String[] parse = prog.getListeProgrammes().getProgrammes().get(i).getDebut().split("T");
+						String[] debutProg = parse[1].split("Z");
+						textNextDebut.setText(debutProg[0]+" - ");
+						String[] parse2 = prog.getListeProgrammes().getProgrammes().get(i).getFin().split("T");
+						String[] finProg = parse2[1].split("Z");
+						textNextFin.setText(finProg[0]);
+					}
+				}
+
+			}
+		}
+
+	}
 }
