@@ -48,6 +48,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -69,6 +70,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 /**
  * 
@@ -124,6 +126,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	String progId;
 	ProgressBar mProgressBar;
 
+
 	AlarmManager am;
 
 
@@ -159,6 +162,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		textDuree = (TextView) findViewById(R.id.duree);
 		mProgressBar = (ProgressBar) findViewById(R.id.progressTest);
 		imagette = (ImageView) findViewById(R.id.imagette);
+
+
 
 		// Instantiate the gesture detector with the
 		// application context and an implementation of
@@ -208,7 +213,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		Log.d(TAG,"IP22"+ip);
 
 		URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
-
+		
+		
 		// execution de l'image
 		//TacheAffiche nouvelleTache = new TacheAffiche();
 		//nouvelleTache.execute();
@@ -369,8 +375,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		//Fonction qui se lance à l'appel de cette classe
 		@Override
 		protected String doInBackground(String... params){
-			//Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
-			//String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
+		
 			//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
 			String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/?TVChannelsId="+id;
 			try {
@@ -518,8 +523,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		
 		@Override
 		protected String doInBackground(String... params){
-			//Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
-			//String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
 			//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
 			String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?programId="+id;
 			try {
@@ -661,4 +664,5 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		  }
 
 		}
+
 }

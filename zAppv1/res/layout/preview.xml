@@ -105,6 +105,7 @@
             android:layout_below="@id/TextViewprogDescription"
             android:textSize="15sp"
             android:textStyle="italic" />
+        
     </RelativeLayout>
 
 </RelativeLayout>
