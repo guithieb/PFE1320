@@ -167,7 +167,7 @@ public class MainActivity extends FragmentActivity {
 
 		/*** Module ID IP téléphone ***/
 		// On lance la librairie qui gère les devices, avec la callback pour les notifications natives
-		DeviceWatcher deviceWatcher = DeviceWatcher.getInstance(getApplicationContext()/*,MainActivity.class,R.drawable.ic_launcher*/);
+		final DeviceWatcher deviceWatcher = DeviceWatcher.getInstance(getApplicationContext()/*,MainActivity.class,R.drawable.ic_launcher*/);
 		// On crée pour cela un DeviceManager
 		DeviceManager deviceManager = new DeviceManager() {
 			@Override
@@ -202,8 +202,11 @@ public class MainActivity extends FragmentActivity {
 						//Identification de la box par le nom de son attribut DeviceType
 						if(device.deviceType != null){
 							if(device.deviceType.contains("urn:schemas-upnp-org:device:MediaRenderer:1")) 
+							{
 								Log.d(TAG,"TEST REUSSI"+device.friendlyName);
 							ip=device.ip;
+							deviceWatcher.stop();
+							}
 							//On met dans les préférences du téléphone l'adresse ip pour que l'on puisse la retrouver dans 
 							//n'importe quelle vue
 							SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
