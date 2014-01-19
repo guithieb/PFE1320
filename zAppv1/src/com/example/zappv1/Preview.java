@@ -424,7 +424,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 					Log.d(LOG_TAG,"CHAINE"+chaine.getListeProgrammes().getProgrammes().getNom());
 				textChaine.setText(chaine.getNom());
 				textNom.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getNom()));
-				textDescription.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getDescription()));
+				
 
 				String[] parse = chaine.getListeProgrammes().getProgrammes().getDebut().split("T");
 				String[] debutProg = parse[1].split("Z");
@@ -743,7 +743,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 					if (prog.getListeProgrammes().getProgrammes().get(i).getDebut().equals(fin)){
 						j = i;
 						textNext.setText(Html.fromHtml(prog.getListeProgrammes().getProgrammes().get(j).getNom()));
-
+						textDescription.setText(Html.fromHtml(prog.getListeProgrammes().getProgrammes().get(j).getDescription()));	
 						String[] parse = prog.getListeProgrammes().getProgrammes().get(i).getDebut().split("T");
 						String[] debutProg = parse[1].split("Z");
 						textNextDebut.setText(debutProg[0]+" - ");
