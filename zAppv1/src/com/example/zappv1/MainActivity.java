@@ -135,9 +135,9 @@ public class MainActivity extends FragmentActivity {
 		final DrawerLayout drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
 		
 		// DrawerToggle (bouton home pour activer/désactiver le navigation drawer ; avec l'icone du drawer)
-		drawerToggle = new ActionBarDrawerToggle(this, drawer, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close);
+		drawerToggle = new ActionBarDrawerToggle(this, drawer, R.drawable.ic_list, R.string.drawer_open, R.string.drawer_close);
 		drawer.setDrawerListener(drawerToggle);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		//getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
 		updateContent();
 		final ListView navList = (ListView) findViewById(R.id.drawer);
