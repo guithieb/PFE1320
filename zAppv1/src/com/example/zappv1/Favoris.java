@@ -1,7 +1,9 @@
 package com.example.zappv1;
 
 import android.os.Bundle;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +40,19 @@ public class Favoris extends Fragment{
         listeFavori = (ListView) root.findViewById(R.id.chaines);
         channels = "";
         if (channels.equals("")){
+        	AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+            builder1.setMessage("Aucun favoris enregistrés.");
+            builder1.setCancelable(true);
+            builder1.setPositiveButton("Ok",
+                    new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+           
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
         }
         else if (channels.equals("1")||channels.equals("2")||channels.equals("3")||channels.equals("4")||
         		channels.equals("5")||channels.equals("6")||channels.equals("7")||channels.equals("8")||
