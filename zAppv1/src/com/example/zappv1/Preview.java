@@ -684,40 +684,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 					ProgrammeMagSerialize pms = new Gson().fromJson(result,ProgrammeMagSerialize.class);
 					pgMag = pms;
 
-
-
-					/*if(bp.getProgramme().getListeGenres().getGenre().equals("Série"))
-			{
-				Log.d(LOG_TAG,"TSHOW"+result.toString());
-				ProgrammeSerieSerialize pss = new Gson().fromJson(result,ProgrammeSerieSerialize.class);
-				pgSerie = pss;
-				Log.d(LOG_TAG,"SERIENOM"+pgSerie.getProgramme().getSerie().getEpisode());
-
-			}
-
-			else if((bp.getProgramme().getListeGenres().getGenre().equals("Film"))||
-					(bp.getProgramme().getListeGenres().getGenre().equals("Téléfilm"))||
-					(bp.getProgramme().getListeGenres().getGenre().equals("Jeu"))||
-					(bp.getProgramme().getListeGenres().getGenre().equals("Documentaire"))||
-					(bp.getProgramme().getListeGenres().getGenre().equals("Divertissement"))){
-				Log.d(LOG_TAG,"TSHOW"+result.toString());
-				ProgrammeFilmSerialize pfs = new Gson().fromJson(result,ProgrammeFilmSerialize.class);
-				pgFilm = pfs;
-				Log.d(LOG_TAG,"SERIENOM"+pgFilm.getProgramme().getImagette());
-			}
-
-			else if ((bp.getProgramme().getListeGenres().getGenre().equals("Magazine"))||
-					(bp.getProgramme().getListeGenres().getGenre().equals("Emission jeunesse"))||
-					(bp.getProgramme().getListeGenres().getGenre().equals("Information"))){
-				Log.d(LOG_TAG,"TSHOW"+result.toString());
-				ProgrammeMagSerialize pms = new Gson().fromJson(result,ProgrammeMagSerialize.class);
-				pgMag = pms;
-				Log.d(LOG_TAG,"SERIENOM"+pgMag.getProgramme().getImagette());
-			}
-
-			else {
-				Log.d(LOG_TAG,"SERIENOM"+bp.getProgramme().getImagette());
-			}*/
 					textGenre.setText(pgMag.getProgramme().getListeGenres().getGenre());
 					String[] parse2 = pgMag.getProgramme().getDiffusion().getDuree().split("T");
 					String[] DureeProg = parse2[1].split("M");

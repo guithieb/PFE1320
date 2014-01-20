@@ -8,10 +8,21 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="46dip"  
-        android:layout_gravity="top|center"  
-        android:gravity="center"                                     
-        android:textStyle="bold"
-        android:text="FAVORIS" />
-
+        android:layout_gravity="top|center"
+        android:gravity="center"
+        android:text="FAVORIS"
+        android:textSize="46dip"
+        android:textStyle="bold" />
+	
+    <ListView
+        android:id="@+id/chaines"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:columnWidth="120dp"
+        android:gravity="center"
+        android:horizontalSpacing="10dp"
+        android:numColumns="2"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp" >
+    </ListView>
 </LinearLayout>
