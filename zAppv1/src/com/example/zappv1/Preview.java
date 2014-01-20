@@ -633,7 +633,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 		protected void onPostExecute(String result){
 			super.onPostExecute(result);
-
+			//Test Guillaume Push
 			if (result!=null)
 			{	
 				BaseProgrammeSerialize bpz = new Gson().fromJson(result,BaseProgrammeSerialize.class);

@@ -205,7 +205,7 @@ public class MainActivity extends FragmentActivity {
 							{
 								Log.d(TAG,"TEST REUSSI"+device.friendlyName);
 							ip=device.ip;
-							deviceWatcher.stop();
+							//deviceWatcher.stop();
 							}
 							//On met dans les préférences du téléphone l'adresse ip pour que l'on puisse la retrouver dans 
 							//n'importe quelle vue
