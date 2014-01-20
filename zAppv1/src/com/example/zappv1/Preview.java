@@ -32,11 +32,14 @@ import com.example.cloud.EPGChaine;
 import com.example.cloud.EPGChaineSerialize;
 import com.example.cloud.EPGNext;
 import com.example.cloud.EPGNextSerialize;
+import com.example.favoris.DataBase;
+import com.example.favoris.FeedReaderDbHelperFavoris;
 import com.example.remote.BaseApi;
 import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
 import com.google.gson.Gson;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -69,6 +72,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -109,6 +113,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	//private static final String DEFAULT_BOX_URL = "http://192.168.0.24:8080/api.bbox.lan/V0";
 	public static final String SUFFIXE_URL = "/api.bbox.lan/V0";
 	public static String URL_HTTP = "";
+	private Toast toast;
+	int toast_duration;
 	String channel;
 	String description;
 	String nom;
@@ -120,6 +126,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	TextView textDebut,textFin, textNextDebut, textNextFin;
 	TextView textDuree, textGenre, textNext;
 	ImageView imagette;
+	CheckBox checkboxfavoris;
 	Button play;
 	Bundle extra;
 	ArrayList<EPGChaine> epg = new ArrayList<EPGChaine>();
@@ -130,14 +137,11 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	String progId;
 	ProgressBar mProgressBar;
 
-	AlarmManager am;
-
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preview);
-
 		/* PLAYER 
 		playerSurfaceView = (VideoView)findViewById(R.id.playersurface);
 
@@ -152,10 +156,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		ActionBar actionbar = getActionBar();
 		actionbar.show();
 
-		/*** ALARM MANAGER ***/
-		//am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-		//setOneTimeAlarm();
-
 		textChaine = (TextView)findViewById(R.id.chaineName);
 		textNom = (TextView)findViewById(R.id.progNom);
 		textDescription = (TextView)findViewById(R.id.progDescription);
@@ -169,6 +169,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		textNextDebut = (TextView) findViewById(R.id.progNextDebut);
 		textNextFin = (TextView) findViewById(R.id.progNextFin);
 		play = (Button) findViewById(R.id.buttonplay);
+		checkboxfavoris = (CheckBox) findViewById(R.id.checkBox1);
 
 		// Instantiate the gesture detector with the
 		// application context and an implementation of
@@ -185,13 +186,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		//Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 		//ImageView imageView = (ImageView) findViewById(R.id.Picture);
 		//imageView.setImageBitmap(bmp);
-
-		/*
-		 * TextView textView = (TextView) findViewById(R.id.DATE);
-			Date date = new Date(location.getTime());
-			DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getApplicationContext());
-			textView .setText("Time: " + dateFormat.format(date));
-		 */
 
 		//R�cuperation du nom de la chaine envoy� dans la vue ListeChaine
 		Bundle extra = getIntent().getExtras();
@@ -223,9 +217,28 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
 		Log.d(TAG,"IP"+ip);
 
-		// execution de l'image
-		//TacheAffiche nouvelleTache = new TacheAffiche();
-		//nouvelleTache.execute();
+
+		/*** OPEN DATABASE ***/
+		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
+		Log.d(TAG,"BDD OPEN");
+		if (mDbHelper.checkDataBase() == true){
+			Log.d(TAG,"BDD IS IN DB");
+			DataBase.setFavorite(mDbHelper.isInDB(channel));
+			if(DataBase.isFavorite()){
+				checkboxfavoris.setChecked(true);
+			}
+			else {checkboxfavoris.setChecked(false);}
+		}else {Log.d(TAG,"BDD IS NOT IN DB");
+		checkboxfavoris.setChecked(false);
+		}
+		/*checkboxfavoris.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+			}
+		});*/
 		play.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
@@ -842,5 +855,44 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		}
 
 
+	}
+
+	public void addFavoristoDB(View view) {
+		if(DataBase.isFavorite())
+		{
+			// Do something in response to button
+			//FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
+			//mDbHelper.deleteMovie(DataBase.id);
+			DataBase.setFavorite(false);
+			toast.cancel();
+			this.setDeletedToast();
+			toast.show();
+			checkboxfavoris.setChecked(false);
+		}else
+		{
+			// Do something in response to button
+			FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
+			Log.d(TAG,"BDD CHANNEL" +chaineId);
+			mDbHelper.saveFavoris(chaineId);    // A VOIR !!!!
+			DataBase.setFavorite(true);
+			toast.cancel();
+			this.setAddedToast();
+			toast.show();
+			checkboxfavoris.setChecked(true);
+			Log.d(TAG,"BDD OK");
+		}
+	}
+
+	@SuppressLint("ShowToast")
+	private void setAddedToast(){
+		Context context = getApplicationContext();
+		CharSequence text = "Film ajouté avec succès!";
+		toast = Toast.makeText(context, text, toast_duration);
+	}
+	@SuppressLint("ShowToast")
+	private void setDeletedToast(){
+		Context context = getApplicationContext();
+		CharSequence text = "Film supprimé avec succès!";
+		toast = Toast.makeText(context, text, toast_duration);
 	}
 }

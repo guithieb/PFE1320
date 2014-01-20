@@ -38,7 +38,9 @@ public class Favoris extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.favoris, null);
         listeFavori = (ListView) root.findViewById(R.id.chaines);
+        //récupération du contenu de la base de données
         channels = "";
+        //affichage de la liste des favoris en fonction de la base de données
         if (channels.equals("")){
         	AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
             builder1.setMessage("Aucun favoris enregistrés.");
