@@ -23,7 +23,7 @@ public class ProgrammeFilm  {
 	{
 		private String id;
 		private String titre;
-		private String description;
+		//private String description;
 		private ListeGenre ListeGenres;
 		private String codeParental;
 		private Diffusion Diffusion;
@@ -53,13 +53,13 @@ public class ProgrammeFilm  {
 		}
 
 
-		public String getDescription() {
+		/*public String getDescription() {
 			return description;
 		}
 
 		public void setDescription(String description) {
 			this.description = description;
-		}
+		}*/
 
 		public ListeGenre getListeGenres() {
 			return ListeGenres;

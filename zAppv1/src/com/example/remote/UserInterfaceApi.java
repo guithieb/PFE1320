@@ -22,6 +22,16 @@ public class UserInterfaceApi extends BaseApi {
   
   public static final  String CHANNEL_DOWN = "P-";
   public static final  String CHANNEL_UP = "P+";
+  public static final  String CHANNEL_0 = "0";
+  public static final  String CHANNEL_1 = "1";
+  public static final  String CHANNEL_2 = "2";
+  public static final  String CHANNEL_3 = "3";
+  public static final  String CHANNEL_4 = "4";
+  public static final  String CHANNEL_5 = "5";
+  public static final  String CHANNEL_6 = "6";
+  public static final  String CHANNEL_7 = "7";
+  public static final  String CHANNEL_8 = "8";
+  public static final  String CHANNEL_9 = "9";
   
   public static void sendKey(String baseUrl, String key, String keyType) throws ServerException {
     Log.d(LOG_TAG, "sendKey() url=" + (baseUrl + URL_SUFFIX_SEND_KEY) + ", key=" + key + ", keyType=" + keyType);

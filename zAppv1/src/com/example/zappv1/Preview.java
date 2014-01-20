@@ -1,5 +1,6 @@
 package com.example.zappv1;
 
+
 import infoprog.BaseProgramme;
 import infoprog.BaseProgrammeSerialize;
 import infoprog.ProgrammeFilm;
@@ -20,6 +21,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.CountDownLatch;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -118,6 +120,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	TextView textDebut,textFin, textNextDebut, textNextFin;
 	TextView textDuree, textGenre, textNext;
 	ImageView imagette;
+	Button play;
 	Bundle extra;
 	ArrayList<EPGChaine> epg = new ArrayList<EPGChaine>();
 	private static final String DEBUG_TAG = "Gestures";
@@ -165,6 +168,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		textNext = (TextView) findViewById(R.id.next);
 		textNextDebut = (TextView) findViewById(R.id.progNextDebut);
 		textNextFin = (TextView) findViewById(R.id.progNextFin);
+		play = (Button) findViewById(R.id.buttonplay);
 
 		// Instantiate the gesture detector with the
 		// application context and an implementation of
@@ -217,20 +221,84 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		Log.d(TAG,"IP22"+ip);
 
 		URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
+		Log.d(TAG,"IP"+ip);
 
 		// execution de l'image
 		//TacheAffiche nouvelleTache = new TacheAffiche();
 		//nouvelleTache.execute();
+		play.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+
+				switch(id)
+				{
+
+				case 1: sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+				break;
+				case 2: sendKeyPressed(UserInterfaceApi.CHANNEL_2);
+				break;
+				case 3: sendKeyPressed(UserInterfaceApi.CHANNEL_3);
+				break;
+				case 4: sendKeyPressed(UserInterfaceApi.CHANNEL_4);
+				break;
+				case 5: sendKeyPressed(UserInterfaceApi.CHANNEL_5);
+				break;
+				case 6: sendKeyPressed(UserInterfaceApi.CHANNEL_6);
+				break;
+				case 7: sendKeyPressed(UserInterfaceApi.CHANNEL_7);
+				break;
+				case 8: sendKeyPressed(UserInterfaceApi.CHANNEL_8);
+				break;
+				case 9: sendKeyPressed(UserInterfaceApi.CHANNEL_9);
+				break;
+				case 11 : 
+					//final CountDownLatch countdownlatch = new CountDownLatch(2);
+					sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+					sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+					break;
+				case 12:  sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+				sendKeyPressed(UserInterfaceApi.CHANNEL_2);
+				break;
+				case 13:  sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+				sendKeyPressed(UserInterfaceApi.CHANNEL_3);
+				break;
+				case 14:  sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+				sendKeyPressed(UserInterfaceApi.CHANNEL_4);
+				break;
+				case 15:  sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+				sendKeyPressed(UserInterfaceApi.CHANNEL_5);
+				break;
+				case 16:  sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+				sendKeyPressed(UserInterfaceApi.CHANNEL_6);
+				break;
+				case 17:  sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+				sendKeyPressed(UserInterfaceApi.CHANNEL_7);
+				break;
+				case 18:  sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+				sendKeyPressed(UserInterfaceApi.CHANNEL_8);
+				break;
+				case 19:  sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+				sendKeyPressed(UserInterfaceApi.CHANNEL_9);
+				break;
+
+
+				default : break;
+
+				}
+				// Perform action on click
+			}
+		});
 	}
 
-	private void sendKeyPressed(String key){
+	void sendKeyPressed(String key) {
 		new SendKeyPressedTask().execute(
-				new String[] { URL_HTTP/*DEFAULT_BOX_URL*/ , key});    
+				new String[] { URL_HTTP , key});;  
+
 	}
 
 	//Appel de la fonction SendKey de la classe UserIntefaceApi pour pouvoir envoyer les commande de remote
 	private class SendKeyPressedTask extends AsyncTask<String, Void, String> {
 		private Exception mException = null;
+
 
 		//Fonction obligatoire dans un AsynTask, réalise le traitement de manière asynchrone dans un thread séparé
 		@Override
@@ -416,7 +484,12 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			{	
 				EPGChaineSerialize ch = new Gson().fromJson(result,EPGChaineSerialize.class);
 
-
+				//adapter.notifyDataSetChanged();
+				chaine = ch;
+				if(chaine != null)
+					Log.d(LOG_TAG,"CHAINE"+chaine.getListeProgrammes().getProgrammes().getNom());
+				textChaine.setText(chaine.getNom());
+				textNom.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getNom()));
 
 				//adapter.notifyDataSetChanged();
 				chaine = ch;
@@ -424,7 +497,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 					Log.d(LOG_TAG,"CHAINE"+chaine.getListeProgrammes().getProgrammes().getNom());
 				textChaine.setText(chaine.getNom());
 				textNom.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getNom()));
-				
+				textDescription.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getDescription()));
+
 
 				String[] parse = chaine.getListeProgrammes().getProgrammes().getDebut().split("T");
 				String[] debutProg = parse[1].split("Z");
@@ -567,7 +641,52 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 				Log.d(LOG_TAG,"TVSHOW"+result.toString());
 
-				/*if(bp.getProgramme().getListeGenres().getGenre().equals("Série"))
+				if (result.toString().contains("[")){
+					Log.d(LOG_TAG,"TVSHOW ARRAY Artiste");
+					ProgrammeFilmSerialize pfs = new Gson().fromJson(result,ProgrammeFilmSerialize.class);
+					pgFilm = pfs;
+
+					textGenre.setText(pgFilm.getProgramme().getListeGenres().getGenre());
+					String[] parse2 = pgFilm.getProgramme().getDiffusion().getDuree().split("T");
+					String[] DureeProg = parse2[1].split("M");
+					textDuree.setText(DureeProg[0]);
+					//duree du programme en minutes
+					String[] duree = DureeProg[0].split("H");
+					int dm = (Integer.parseInt(duree[0])*60)+Integer.parseInt(duree[1]);
+					Log.d(LOG_TAG,"HEURERATIO"+dm);
+					//heure actuelle en minutes
+					Calendar c = Calendar.getInstance(); 
+					int heure = c.get(Calendar.HOUR_OF_DAY);
+					int minutes = c.get(Calendar.MINUTE);
+					//heure du debut en minutes
+					String[] parse3 = pgFilm.getProgramme().getDiffusion().getDebut().split("T");
+					String[] debutProg = parse3[1].split("Z");
+					String[] debut = debutProg[0].split(":");
+					int dd = (Integer.parseInt(debut[0])*60)+Integer.parseInt(debut[1]);
+
+					//difference entre heure actuelle et debut programme
+					int difference = (minutes+heure*60) - dd;
+					//ratio pour progress bar
+					double ratio = (double) difference/ (double) dm;
+					Log.d(LOG_TAG,"HEURERATIO"+ratio);
+					mProgressBar.setProgress((int) (ratio*100));
+
+					if (pgFilm.getProgramme().getImagette() != null){ 
+						BitmapWorkerTask task = new BitmapWorkerTask(imagette);
+						task.execute(pgFilm.getProgramme().getImagette());
+					}else{
+						imagette.setImageResource(R.drawable.noimage);
+					}
+				}
+
+				else {
+					Log.d(LOG_TAG,"TVSHOW OBJECT Artiste");
+					ProgrammeMagSerialize pms = new Gson().fromJson(result,ProgrammeMagSerialize.class);
+					pgMag = pms;
+
+
+
+					/*if(bp.getProgramme().getListeGenres().getGenre().equals("Série"))
 			{
 				Log.d(LOG_TAG,"TSHOW"+result.toString());
 				ProgrammeSerieSerialize pss = new Gson().fromJson(result,ProgrammeSerieSerialize.class);
@@ -599,36 +718,37 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			else {
 				Log.d(LOG_TAG,"SERIENOM"+bp.getProgramme().getImagette());
 			}*/
-				textGenre.setText(bp.getProgramme().getListeGenres().getGenre());
-				String[] parse2 = bp.getProgramme().getDiffusion().getDuree().split("T");
-				String[] DureeProg = parse2[1].split("M");
-				textDuree.setText(DureeProg[0]);
-				//duree du programme en minutes
-				String[] duree = DureeProg[0].split("H");
-				int dm = (Integer.parseInt(duree[0])*60)+Integer.parseInt(duree[1]);
-				Log.d(LOG_TAG,"HEURERATIO"+dm);
-				//heure actuelle en minutes
-				Calendar c = Calendar.getInstance(); 
-				int heure = c.get(Calendar.HOUR_OF_DAY);
-				int minutes = c.get(Calendar.MINUTE);
-				//heure du debut en minutes
-				String[] parse3 = bp.getProgramme().getDiffusion().getDebut().split("T");
-				String[] debutProg = parse3[1].split("Z");
-				String[] debut = debutProg[0].split(":");
-				int dd = (Integer.parseInt(debut[0])*60)+Integer.parseInt(debut[1]);
+					textGenre.setText(pgMag.getProgramme().getListeGenres().getGenre());
+					String[] parse2 = pgMag.getProgramme().getDiffusion().getDuree().split("T");
+					String[] DureeProg = parse2[1].split("M");
+					textDuree.setText(DureeProg[0]);
+					//duree du programme en minutes
+					String[] duree = DureeProg[0].split("H");
+					int dm = (Integer.parseInt(duree[0])*60)+Integer.parseInt(duree[1]);
+					Log.d(LOG_TAG,"HEURERATIO"+dm);
+					//heure actuelle en minutes
+					Calendar c = Calendar.getInstance(); 
+					int heure = c.get(Calendar.HOUR_OF_DAY);
+					int minutes = c.get(Calendar.MINUTE);
+					//heure du debut en minutes
+					String[] parse3 = pgMag.getProgramme().getDiffusion().getDebut().split("T");
+					String[] debutProg = parse3[1].split("Z");
+					String[] debut = debutProg[0].split(":");
+					int dd = (Integer.parseInt(debut[0])*60)+Integer.parseInt(debut[1]);
 
-				//difference entre heure actuelle et debut programme
-				int difference = (minutes+heure*60) - dd;
-				//ratio pour progress bar
-				double ratio = (double) difference/ (double) dm;
-				Log.d(LOG_TAG,"HEURERATIO"+ratio);
-				mProgressBar.setProgress((int) (ratio*100));
-				
-				if (bp.getProgramme().getImagette() != null){ 
-					BitmapWorkerTask task = new BitmapWorkerTask(imagette);
-					task.execute(bp.getProgramme().getImagette());
-				}else{
-					imagette.setImageResource(R.drawable.noimage);
+					//difference entre heure actuelle et debut programme
+					int difference = (minutes+heure*60) - dd;
+					//ratio pour progress bar
+					double ratio = (double) difference/ (double) dm;
+					Log.d(LOG_TAG,"HEURERATIO"+ratio);
+					mProgressBar.setProgress((int) (ratio*100));
+
+					if (pgMag.getProgramme().getImagette() != null){ 
+						BitmapWorkerTask task = new BitmapWorkerTask(imagette);
+						task.execute(bp.getProgramme().getImagette());
+					}else{
+						imagette.setImageResource(R.drawable.noimage);
+					}
 				}
 
 			}
@@ -733,7 +853,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				EPGNextSerialize next = new Gson().fromJson(result,EPGNextSerialize.class);
 
 
-
 				//adapter.notifyDataSetChanged();
 				prog = next;
 				int j=0;
@@ -743,7 +862,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 					if (prog.getListeProgrammes().getProgrammes().get(i).getDebut().equals(fin)){
 						j = i;
 						textNext.setText(Html.fromHtml(prog.getListeProgrammes().getProgrammes().get(j).getNom()));
-						textDescription.setText(Html.fromHtml(prog.getListeProgrammes().getProgrammes().get(j).getDescription()));	
+
 						String[] parse = prog.getListeProgrammes().getProgrammes().get(i).getDebut().split("T");
 						String[] debutProg = parse[1].split("Z");
 						textNextDebut.setText(debutProg[0]+" - ");
@@ -755,6 +874,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 			}
 		}
+
 
 	}
 }

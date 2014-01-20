@@ -27,8 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/chaineName"
             android:textSize="20sp"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/genre"
@@ -65,14 +64,13 @@
             android:gravity="center"
             android:textSize="15sp"
             android:textStyle="bold" />
-        
+
         <ImageView
-        android:id="@+id/imagette"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="fitCenter"
-        android:layout_alignParentRight="true"
-         />
+            android:id="@+id/imagette"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitCenter" />
 
         <ProgressBar
             android:id="@+id/progressTest"
@@ -91,11 +89,18 @@
         android:layout_below="@+id/relativeLayout1"
         android:layout_marginTop="19dp" >
 
+        <Button
+            android:id="@+id/buttonplay"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Regarder" />
+
         <TextView
             android:id="@+id/TextViewprogDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Résumé"
+            android:layout_below="@id/buttonplay"
             android:textSize="25sp"
             android:textStyle="bold" />
 
@@ -107,14 +112,14 @@
             android:textSize="15sp"
             android:textStyle="italic" />
     </RelativeLayout>
-    
+
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/relativeLayout2"
         android:layout_below="@+id/relativeLayout2"
         android:layout_marginTop="19dp" >
-		
+
         <TextView
             android:id="@+id/TextViewNextprog"
             android:layout_width="wrap_content"
@@ -122,16 +127,16 @@
             android:text="A suivre:"
             android:textSize="18sp"
             android:textStyle="bold" />
-        
+
         <TextView
             android:id="@+id/next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
             android:layout_below="@id/TextViewNextprog"
+            android:textSize="15sp"
             android:textStyle="bold" />
-        
-         <TextView
+
+        <TextView
             android:id="@+id/progNextDebut"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -149,7 +154,6 @@
             android:gravity="center"
             android:textSize="12sp"
             android:textStyle="bold" />
-
     </RelativeLayout>
 
 </RelativeLayout>
