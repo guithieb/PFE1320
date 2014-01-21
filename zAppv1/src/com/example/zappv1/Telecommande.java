@@ -4,6 +4,7 @@ import android.inputmethodservice.Keyboard;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,7 +28,7 @@ import com.example.zappv1.R;
 
 
 
-public class Telecommande extends Fragment{
+public class Telecommande extends Activity{
 
 	private SeekBar seekBar1;
 	EditText ecran;
@@ -42,31 +43,29 @@ public class Telecommande extends Fragment{
 	ImageButton back;
 	Toast toast;  
 	
-	public static Fragment newInstance(Context context){
-		Telecommande f = new Telecommande();
-
-		return f;
-	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
-		View root = (View) inflater.inflate(R.layout.telecommande, null);
-		seekBar1 = (SeekBar) root.findViewById(R.id.seekBar1);
-		button0 = (Button) root.findViewById(R.id.button0);
-		button1 = (Button) root.findViewById(R.id.button1);
-		button2 = (Button) root.findViewById(R.id.button2);
-		button3 = (Button) root.findViewById(R.id.button3);
-		button4 = (Button) root.findViewById(R.id.button4);
-		button5 = (Button) root.findViewById(R.id.button5);
-		button6 = (Button) root.findViewById(R.id.button6);
-		button7 = (Button) root.findViewById(R.id.button7);
-		button8 = (Button) root.findViewById(R.id.button8);
-		button9 = (Button) root.findViewById(R.id.button9);
-		buttonOk = (Button) root.findViewById(R.id.buttonOk);
-		plus = (Button) root.findViewById(R.id.plus);
-		moins = (Button) root.findViewById(R.id.moins);
-		back = (ImageButton) root.findViewById(R.id.back);
-		ecran = (EditText) root.findViewById(R.id.EditText01);
+	public void onCreate(Bundle savedInstanceState) { 
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.telecommande);
+		
+		
+		seekBar1 = (SeekBar) findViewById(R.id.seekBar1);
+		button0 = (Button) findViewById(R.id.button0);
+		button1 = (Button) findViewById(R.id.button1);
+		button2 = (Button) findViewById(R.id.button2);
+		button3 = (Button) findViewById(R.id.button3);
+		button4 = (Button) findViewById(R.id.button4);
+		button5 = (Button) findViewById(R.id.button5);
+		button6 = (Button) findViewById(R.id.button6);
+		button7 = (Button) findViewById(R.id.button7);
+		button8 = (Button) findViewById(R.id.button8);
+		button9 = (Button) findViewById(R.id.button9);
+		buttonOk = (Button) findViewById(R.id.buttonOk);
+		plus = (Button) findViewById(R.id.plus);
+		moins = (Button) findViewById(R.id.moins);
+		back = (ImageButton) findViewById(R.id.back);
+		ecran = (EditText) findViewById(R.id.EditText01);
 
 	   	 
 		seekBar1.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
@@ -88,7 +87,7 @@ public class Telecommande extends Fragment{
          });
 
 		//récupérer l'IP de la box
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		ip = prefs.getString(BOX_PREFERENCES,"null");
 		Log.d(TAG,"IP22"+ip);
 
@@ -154,7 +153,7 @@ public class Telecommande extends Fragment{
 		buttonOk.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if(ecran.getText().toString().isEmpty()){
-					AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+					AlertDialog.Builder builder1 = new AlertDialog.Builder(getApplicationContext());
 					builder1.setMessage("Renseigner une chaîne");
 					builder1.setCancelable(true);
 					builder1.setPositiveButton("Ok",
@@ -239,7 +238,6 @@ public class Telecommande extends Fragment{
 			}
 		});
 
-		return root;
 	}
 
 
@@ -251,7 +249,7 @@ public class Telecommande extends Fragment{
 			ecran.setText(str);
 		}
 		else if (ecran.getText().toString().length()==2){
-			AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+			AlertDialog.Builder builder1 = new AlertDialog.Builder(getApplicationContext());
 			builder1.setMessage("seulement les chaînes entre 1 et 19");
 			builder1.setCancelable(true);
 			builder1.setPositiveButton("Ok",
@@ -270,7 +268,7 @@ public class Telecommande extends Fragment{
 				ecran.setText(str);
 			}
 			else {
-				AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+				AlertDialog.Builder builder1 = new AlertDialog.Builder(getApplicationContext());
 				builder1.setMessage("seulement les chaînes entre 1 et 19");
 				builder1.setCancelable(true);
 				builder1.setPositiveButton("Ok",

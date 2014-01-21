@@ -8,6 +8,7 @@ import infoprog.ProgrammeFilmSerialize;
 import infoprog.ProgrammeMag;
 import infoprog.ProgrammeMagSerialize;
 import infoprog.ProgrammeSerie;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +18,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -37,12 +39,15 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GestureDetectorCompat;
 import android.text.Html;
 import android.util.Log;
@@ -522,18 +527,19 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle presses on the action bar items
-		switch (item.getItemId()) {
-		case R.id.action_alarm:
-			// openSearch();
-			//Log.d(TAG,"ALARME");
-			//return true;
-			makeToast("ALARME...");
-			//setOneTimeAlarm();
+		Intent intent = new Intent(this, Telecommande.class);
 
-			//default:
-			// return super.onOptionsItemSelected(item);
+		// Handle presses on the action bar items
+		switch (item.getItemId()) 
+		{
+			case R.id.action_alarm:
+				startActivity(intent);
+				break;
+			default: 
+				break;
 		}
+	
+		
 		return true;
 	}
 

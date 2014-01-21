@@ -73,13 +73,12 @@ public class MainActivity extends FragmentActivity {
 	private ActionBarDrawerToggle actionBarDrawerToggle;
 	private int selection = 0;
 	private int oldSelection = -1;
-	final String[] data ={"Liste des chaînes","Favoris","Recommandation","Télécommande"};
+	final String[] data ={"Liste des chaînes","Favoris","Recommandation"};
 	//Liste des différentes vues liées au drawer
-	final String[] fragments ={
+	final static String[] fragments ={
 			"com.example.zappv1.ListeChaine",
 			"com.example.zappv1.Favoris",
-			"com.example.zappv1.Recommandation",
-	"com.example.zappv1.Telecommande"};
+			"com.example.zappv1.Recommandation"};
 	private static final String TAG = "MyActivity";
 	public static final String BOX_PREFERENCES = "boxPrefs";
 	private String ip;
