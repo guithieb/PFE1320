@@ -286,7 +286,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 	void sendKeyPressed(String key) {
 		new SendKeyPressedTask().execute(
-				new String[] { URL_HTTP , key});;  
+				new String[] { URL_HTTP , key});
 
 	}
 
