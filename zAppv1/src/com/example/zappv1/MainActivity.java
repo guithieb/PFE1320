@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -38,6 +39,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,7 +126,9 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-
+		/*** ACTION BAR ***/
+		ActionBar actionbar = getActionBar();
+		actionbar.show();
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActionBar().getThemedContext(), android.R.layout.simple_list_item_1, data);
 
@@ -248,14 +252,49 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
+		Intent intent = new Intent(this, Telecommande.class);
 	    if(drawerToggle.onOptionsItemSelected(item))
 	    {
 	        return true;
 	    }
+		switch (item.getItemId()) 
+		{
+			case R.id.action_alarm:
+				startActivity(intent);
+				break;
+			default: 
+				break;
+		}
 	    return super.onOptionsItemSelected(item);
 	}
 	
+	/*** ACTION MENU ***/
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu items for use in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main, menu);
+		return super.onCreateOptionsMenu(menu);
+		//return true;
+	}
+	/*@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent = new Intent(this, Telecommande.class);
 
+		// Handle presses on the action bar items
+		switch (item.getItemId()) 
+		{
+			case R.id.action_alarm:
+				startActivity(intent);
+				break;
+			default: 
+				break;
+		}
+	
+		
+		return true;
+	}
+*/
 	public static void setText(String Which,String newText) {
 		Map<String,String> v_params = new HashMap<String,String>();
 		v_params.put("functionName", "setText");
