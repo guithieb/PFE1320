@@ -1,0 +1,309 @@
+package com.example.zappv1;
+
+import android.inputmethodservice.Keyboard;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.SeekBar;
+import android.widget.Toast;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+
+import com.example.remote.ServerException;
+import com.example.remote.UserInterfaceApi;
+import com.example.zappv1.R;
+
+
+
+public class Telecommande extends Fragment{
+
+	private SeekBar seekBar1;
+	EditText ecran;
+	Button button1, button2, button3, button4, button5, button6, button7;
+	Button button8, button9, button0, buttonOk;
+	private static final String TAG = "MyActivity";
+	private String ip;
+	public static final String SUFFIXE_URL = "/api.bbox.lan/V0";
+	public static String URL_HTTP = "";
+	public static final String BOX_PREFERENCES = "boxPrefs";
+	ImageButton back;
+	Toast toast;  
+	
+	public static Fragment newInstance(Context context){
+		Telecommande f = new Telecommande();
+
+		return f;
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
+		View root = (View) inflater.inflate(R.layout.telecommande, null);
+		seekBar1 = (SeekBar) root.findViewById(R.id.seekBar1);
+		button0 = (Button) root.findViewById(R.id.button0);
+		button1 = (Button) root.findViewById(R.id.button1);
+		button2 = (Button) root.findViewById(R.id.button2);
+		button3 = (Button) root.findViewById(R.id.button3);
+		button4 = (Button) root.findViewById(R.id.button4);
+		button5 = (Button) root.findViewById(R.id.button5);
+		button6 = (Button) root.findViewById(R.id.button6);
+		button7 = (Button) root.findViewById(R.id.button7);
+		button8 = (Button) root.findViewById(R.id.button8);
+		button9 = (Button) root.findViewById(R.id.button9);
+		buttonOk = (Button) root.findViewById(R.id.buttonOk);
+		back = (ImageButton) root.findViewById(R.id.back);
+		ecran = (EditText) root.findViewById(R.id.EditText01);
+
+	   	 
+		seekBar1.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+             int progressChanged = 0;
+  
+             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+                 progressChanged = progress;
+             }
+  
+             public void onStartTrackingTouch(SeekBar seekBar) {
+                 // TODO Auto-generated method stub
+             }
+  
+             public void onStopTrackingTouch(SeekBar seekBar) {
+                 /*Toast.makeText(Reglages.this,"seek bar progress:"+progressChanged,
+                         Toast.LENGTH_SHORT,test).show();*/
+                 Log.d(TAG,"seek bar progress:"+progressChanged);
+             }
+         });
+
+		//récupérer l'IP de la box
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		ip = prefs.getString(BOX_PREFERENCES,"null");
+		Log.d(TAG,"IP22"+ip);
+
+		URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
+		Log.d(TAG,"IP"+ip);
+
+		button0.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				chiffreClick("0");
+			}
+		});
+		button1.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				chiffreClick("1");
+			}
+		});
+		button2.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				chiffreClick("2");
+			}
+		});
+		button3.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				chiffreClick("3");
+			}
+		});
+		button4.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				chiffreClick("4");
+			}
+		});
+		button5.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				chiffreClick("5");
+			}
+		});
+		button6.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				chiffreClick("6");
+			}
+		});
+		button7.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				chiffreClick("7");
+			}
+		});
+		button8.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				chiffreClick("8");
+			}
+		});
+		button9.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				chiffreClick("9");
+			}
+		});
+		back.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				DeleteClick();
+			}
+		});
+
+		buttonOk.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				if(ecran.getText().toString().isEmpty()){
+					AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+					builder1.setMessage("Renseigner une chaîne");
+					builder1.setCancelable(true);
+					builder1.setPositiveButton("Ok",
+							new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.cancel();
+						}
+					});
+					AlertDialog alert = builder1.create();
+					alert.show();
+				}else{
+
+
+					switch(Integer.parseInt(ecran.getText().toString()))
+					{
+
+					case 1: sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+					break;
+					case 2: sendKeyPressed(UserInterfaceApi.CHANNEL_2);
+					break;
+					case 3: sendKeyPressed(UserInterfaceApi.CHANNEL_3);
+					break;
+					case 4: sendKeyPressed(UserInterfaceApi.CHANNEL_4);
+					break;
+					case 5: sendKeyPressed(UserInterfaceApi.CHANNEL_5);
+					break;
+					case 6: sendKeyPressed(UserInterfaceApi.CHANNEL_6);
+					break;
+					case 7: sendKeyPressed(UserInterfaceApi.CHANNEL_7);
+					break;
+					case 8: sendKeyPressed(UserInterfaceApi.CHANNEL_8);
+					break;
+					case 9: sendKeyPressed(UserInterfaceApi.CHANNEL_9);
+					break;
+					case 11 : 
+						//final CountDownLatch countdownlatch = new CountDownLatch(2);
+						sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+						sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+						break;
+					case 12:  sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+					sendKeyPressed(UserInterfaceApi.CHANNEL_2);
+					break;
+					case 13:  sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+					sendKeyPressed(UserInterfaceApi.CHANNEL_3);
+					break;
+					case 14:  sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+					sendKeyPressed(UserInterfaceApi.CHANNEL_4);
+					break;
+					case 15:  sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+					sendKeyPressed(UserInterfaceApi.CHANNEL_5);
+					break;
+					case 16:  sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+					sendKeyPressed(UserInterfaceApi.CHANNEL_6);
+					break;
+					case 17:  sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+					sendKeyPressed(UserInterfaceApi.CHANNEL_7);
+					break;
+					case 18:  sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+					sendKeyPressed(UserInterfaceApi.CHANNEL_8);
+					break;
+					case 19:  sendKeyPressed(UserInterfaceApi.CHANNEL_1);
+					sendKeyPressed(UserInterfaceApi.CHANNEL_9);
+					break;
+
+
+					default : break;
+
+					}
+					// Perform action on click
+				}}
+		});
+
+		return root;
+	}
+
+
+
+	//voici la méthode qui est exécutée lorsque l'on clique sur un bouton chiffre
+	public void chiffreClick(String str) {
+
+		if (ecran.getText().toString().isEmpty()){
+			ecran.setText(str);
+		}
+		else if (ecran.getText().toString().length()==2){
+			AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+			builder1.setMessage("seulement les chaînes entre 1 et 19");
+			builder1.setCancelable(true);
+			builder1.setPositiveButton("Ok",
+					new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.cancel();
+				}
+			});
+
+
+			AlertDialog alert = builder1.create();
+			alert.show();
+		}else {
+			if (ecran.getText().toString().equals("1")){
+				str = ecran.getText() + str;
+				ecran.setText(str);
+			}
+			else {
+				AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+				builder1.setMessage("seulement les chaînes entre 1 et 19");
+				builder1.setCancelable(true);
+				builder1.setPositiveButton("Ok",
+						new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+
+
+				AlertDialog alert = builder1.create();
+				alert.show();
+			}
+
+		}
+	}
+	public void DeleteClick(){
+		String delete = ecran.getText().toString();
+		if (ecran.getText().toString().length()==2){
+			String[] nouveau = delete.split("");
+			ecran.setText(nouveau[1]);
+		}else{
+			ecran.setText("");
+		}
+
+	}
+	void sendKeyPressed(String key) {
+		new SendKeyPressedTask().execute(
+				new String[] { URL_HTTP , key});;  
+
+	}
+
+	//Appel de la fonction SendKey de la classe UserIntefaceApi pour pouvoir envoyer les commande de remote
+	private class SendKeyPressedTask extends AsyncTask<String, Void, String> {
+		private Exception mException = null;
+
+
+		//Fonction obligatoire dans un AsynTask, réalise le traitement de manière asynchrone dans un thread séparé
+		@Override
+		protected String doInBackground(String... params) {
+			try {
+				UserInterfaceApi.sendKey(params[0], params[1], UserInterfaceApi.TYPE_KEY_PRESSED);
+				return params[1];
+			} catch (ServerException e) {
+				mException = e;
+				return params[1];
+			}
+		}     
+	}
+
+}
