@@ -219,11 +219,11 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		checkboxfavoris.setChecked(false);
 		}
 		/*checkboxfavoris.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});*/
 		play.setOnClickListener(new View.OnClickListener() {
@@ -682,39 +682,73 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 				else {
 					Log.d(LOG_TAG,"TVSHOW OBJECT Artiste");
-					ProgrammeMagSerialize pms = new Gson().fromJson(result,ProgrammeMagSerialize.class);
-					pgMag = pms;
+					if(result.toString().contains("\"firstName\": {}")){
+						textGenre.setText(bp.getProgramme().getListeGenres().getGenre());
+						String[] parse2 = bp.getProgramme().getDiffusion().getDuree().split("T");
+						String[] DureeProg = parse2[1].split("M");
+						textDuree.setText(DureeProg[0]);
+						//duree du programme en minutes
+						String[] duree = DureeProg[0].split("H");
+						int dm = (Integer.parseInt(duree[0])*60)+Integer.parseInt(duree[1]);
+						Log.d(LOG_TAG,"HEURERATIO"+dm);
+						//heure actuelle en minutes
+						Calendar c = Calendar.getInstance(); 
+						int heure = c.get(Calendar.HOUR_OF_DAY);
+						int minutes = c.get(Calendar.MINUTE);
+						//heure du debut en minutes
+						String[] parse3 = bp.getProgramme().getDiffusion().getDebut().split("T");
+						String[] debutProg = parse3[1].split("Z");
+						String[] debut = debutProg[0].split(":");
+						int dd = (Integer.parseInt(debut[0])*60)+Integer.parseInt(debut[1]);
 
-					textGenre.setText(pgMag.getProgramme().getListeGenres().getGenre());
-					String[] parse2 = pgMag.getProgramme().getDiffusion().getDuree().split("T");
-					String[] DureeProg = parse2[1].split("M");
-					textDuree.setText(DureeProg[0]);
-					//duree du programme en minutes
-					String[] duree = DureeProg[0].split("H");
-					int dm = (Integer.parseInt(duree[0])*60)+Integer.parseInt(duree[1]);
-					Log.d(LOG_TAG,"HEURERATIO"+dm);
-					//heure actuelle en minutes
-					Calendar c = Calendar.getInstance(); 
-					int heure = c.get(Calendar.HOUR_OF_DAY);
-					int minutes = c.get(Calendar.MINUTE);
-					//heure du debut en minutes
-					String[] parse3 = pgMag.getProgramme().getDiffusion().getDebut().split("T");
-					String[] debutProg = parse3[1].split("Z");
-					String[] debut = debutProg[0].split(":");
-					int dd = (Integer.parseInt(debut[0])*60)+Integer.parseInt(debut[1]);
+						//difference entre heure actuelle et debut programme
+						int difference = (minutes+heure*60) - dd;
+						//ratio pour progress bar
+						double ratio = (double) difference/ (double) dm;
+						Log.d(LOG_TAG,"HEURERATIO"+ratio);
+						mProgressBar.setProgress((int) (ratio*100));
 
-					//difference entre heure actuelle et debut programme
-					int difference = (minutes+heure*60) - dd;
-					//ratio pour progress bar
-					double ratio = (double) difference/ (double) dm;
-					Log.d(LOG_TAG,"HEURERATIO"+ratio);
-					mProgressBar.setProgress((int) (ratio*100));
+						if (bp.getProgramme().getImagette() != null){ 
+							BitmapWorkerTask task = new BitmapWorkerTask(imagette);
+							task.execute(bp.getProgramme().getImagette());
+						}else{
+							imagette.setImageResource(R.drawable.noimage);
+						}
+					}else {
+						ProgrammeMagSerialize pms = new Gson().fromJson(result,ProgrammeMagSerialize.class);
+						pgMag = pms;
 
-					if (pgMag.getProgramme().getImagette() != null){ 
-						BitmapWorkerTask task = new BitmapWorkerTask(imagette);
-						task.execute(bp.getProgramme().getImagette());
-					}else{
-						imagette.setImageResource(R.drawable.noimage);
+						textGenre.setText(pgMag.getProgramme().getListeGenres().getGenre());
+						String[] parse2 = pgMag.getProgramme().getDiffusion().getDuree().split("T");
+						String[] DureeProg = parse2[1].split("M");
+						textDuree.setText(DureeProg[0]);
+						//duree du programme en minutes
+						String[] duree = DureeProg[0].split("H");
+						int dm = (Integer.parseInt(duree[0])*60)+Integer.parseInt(duree[1]);
+						Log.d(LOG_TAG,"HEURERATIO"+dm);
+						//heure actuelle en minutes
+						Calendar c = Calendar.getInstance(); 
+						int heure = c.get(Calendar.HOUR_OF_DAY);
+						int minutes = c.get(Calendar.MINUTE);
+						//heure du debut en minutes
+						String[] parse3 = pgMag.getProgramme().getDiffusion().getDebut().split("T");
+						String[] debutProg = parse3[1].split("Z");
+						String[] debut = debutProg[0].split(":");
+						int dd = (Integer.parseInt(debut[0])*60)+Integer.parseInt(debut[1]);
+
+						//difference entre heure actuelle et debut programme
+						int difference = (minutes+heure*60) - dd;
+						//ratio pour progress bar
+						double ratio = (double) difference/ (double) dm;
+						Log.d(LOG_TAG,"HEURERATIO"+ratio);
+						mProgressBar.setProgress((int) (ratio*100));
+
+						if (pgMag.getProgramme().getImagette() != null){ 
+							BitmapWorkerTask task = new BitmapWorkerTask(imagette);
+							task.execute(bp.getProgramme().getImagette());
+						}else{
+							imagette.setImageResource(R.drawable.noimage);
+						}
 					}
 				}
 
