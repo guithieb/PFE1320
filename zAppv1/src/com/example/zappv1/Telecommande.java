@@ -38,6 +38,7 @@ public class Telecommande extends Fragment{
 	public static final String SUFFIXE_URL = "/api.bbox.lan/V0";
 	public static String URL_HTTP = "";
 	public static final String BOX_PREFERENCES = "boxPrefs";
+	Button moins, plus;
 	ImageButton back;
 	Toast toast;  
 	
@@ -62,6 +63,8 @@ public class Telecommande extends Fragment{
 		button8 = (Button) root.findViewById(R.id.button8);
 		button9 = (Button) root.findViewById(R.id.button9);
 		buttonOk = (Button) root.findViewById(R.id.buttonOk);
+		plus = (Button) root.findViewById(R.id.plus);
+		moins = (Button) root.findViewById(R.id.moins);
 		back = (ImageButton) root.findViewById(R.id.back);
 		ecran = (EditText) root.findViewById(R.id.EditText01);
 
@@ -223,6 +226,18 @@ public class Telecommande extends Fragment{
 					// Perform action on click
 				}}
 		});
+		//change channel (next & preview)
+		plus.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				sendKeyPressed(UserInterfaceApi.CHANNEL_UP);
+			}
+		});
+		
+		moins.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				sendKeyPressed(UserInterfaceApi.CHANNEL_DOWN);
+			}
+		});
 
 		return root;
 	}
@@ -284,7 +299,7 @@ public class Telecommande extends Fragment{
 	}
 	void sendKeyPressed(String key) {
 		new SendKeyPressedTask().execute(
-				new String[] { URL_HTTP , key});;  
+				new String[] { URL_HTTP , key});
 
 	}
 
