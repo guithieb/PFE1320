@@ -19,7 +19,7 @@
 
 <resources>
 
-    <style name="Theme.Examplezapp" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+    <style name="Theme.Examplezapp" parent="@style/AppThemezapp">
         <item name="android:actionBarItemBackground">@drawable/selectable_background_examplezapp</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Examplezapp</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Examplezapp</item>

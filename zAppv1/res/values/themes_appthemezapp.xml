@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="AppThemezapp" parent="@style/_AppThemezapp"/>
+
+  <style name="_AppThemezapp" parent="android:Theme.Holo.Light.DarkActionBar">
+
+    <item name="android:editTextBackground">@drawable/appthemezapp_edit_text_holo_light</item>
+
+    <item name="android:listChoiceIndicatorMultiple">@drawable/appthemezapp_btn_check_holo_light</item>
+
+    <item name="android:buttonStyle">@style/ButtonAppThemezapp</item>
+
+    <item name="android:imageButtonStyle">@style/ImageButtonAppThemezapp</item>
+
+    <item name="android:dropDownSpinnerStyle">@style/SpinnerAppThemezapp</item>
+
+    <item name="android:progressBarStyleHorizontal">@style/ProgressBarAppThemezapp</item>
+
+    <item name="android:seekBarStyle">@style/SeekBarAppThemezapp</item>
+
+    <item name="android:buttonStyleToggle">@style/ToggleAppThemezapp</item>
+
+    <item name="android:listChoiceBackgroundIndicator">@drawable/appthemezapp_list_selector_holo_light</item>
+
+    <item name="android:activatedBackgroundIndicator">@drawable/appthemezapp_activated_background_holo_light</item>
+
+    <item name="android:fastScrollThumbDrawable">@drawable/appthemezapp_fastscroll_thumb_holo</item>
+
+  </style>
+
+</resources>
