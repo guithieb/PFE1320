@@ -13,19 +13,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="2dp"
             android:gravity="fill"
-            android:lines="3"
             android:text="Télécommande"
             android:textSize="30sp"
             android:textStyle="bold" />
-
+		
         <LinearLayout
             android:id="@+id/Layout1"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/Nom"
-            android:layout_centerHorizontal="true" >
+            android:layout_alignLeft="@+id/Nom"
+            android:layout_below="@+id/Nom"
+            android:layout_marginTop="15dp" >
 
             <SeekBar
                 android:id="@+id/seekBar1"
@@ -34,47 +33,14 @@
                 android:layout_gravity="center"
                 android:layout_weight="0.77" />
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/Layout2"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/Layout1"
-            android:layout_centerHorizontal="true" >
-
-            <Button
-                android:id="@+id/moins"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="-" />
-
-            <TextView
-                android:id="@+id/programme"
-                android:layout_width="30dp"
-                android:layout_height="20dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="2dp"
-                android:gravity="center"
-                android:lines="3"
-                android:text="P"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/plus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="+" />
-        </LinearLayout>
-
+        
         <RelativeLayout
-            android:id="@+id/Layout3"
+            android:id="@+id/Layout2"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/Layout2"
-            android:layout_centerHorizontal="true" >
+            android:layout_below="@+id/Layout1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp" >
 
             <EditText
                 android:id="@+id/EditText01"
@@ -83,9 +49,7 @@
                 android:cursorVisible="false"
                 android:editable="false"
                 android:gravity="center"
-                android:textSize="20sp"
-                >
-            </EditText>
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/buttonOk"
@@ -94,14 +58,12 @@
                 android:layout_toRightOf="@id/EditText01"
                 android:text="OK" />
         </RelativeLayout>
-
         <GridLayout
-            android:id="@+id/Layout4"
+            android:id="@+id/Layout3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/Layout3"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
+            android:layout_alignLeft="@+id/Layout1"
+            android:layout_below="@+id/Layout2"
             android:columnCount="3"
             android:orientation="horizontal" >
 
@@ -160,6 +122,44 @@
                 android:layout_gravity="fill"
                 android:src="@drawable/ic_return" />
         </GridLayout>
+
+        <LinearLayout
+            android:id="@+id/Layout4"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/Layout3"
+            android:layout_below="@+id/Layout3"
+            android:layout_marginTop="23dp" >
+
+            <Button
+                android:id="@+id/moins"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="-" />
+
+            <TextView
+                android:id="@+id/programme"
+                android:layout_width="64dp"
+                android:layout_height="20dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="2dp"
+                android:gravity="center"
+                android:lines="3"
+                android:text="P"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/plus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="+" />
+        </LinearLayout>
+
+        
+
     </RelativeLayout>
 
 </LinearLayout>
