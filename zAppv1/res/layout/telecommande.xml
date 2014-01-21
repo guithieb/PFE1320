@@ -17,7 +17,7 @@
             android:gravity="fill"
             android:lines="3"
             android:text="Télécommande"
-            android:textSize="40sp"
+            android:textSize="30sp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -71,18 +71,20 @@
 
         <RelativeLayout
             android:id="@+id/Layout3"
-            android:layout_width="250dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/Layout2" >
+            android:layout_below="@id/Layout2"
+            android:layout_centerHorizontal="true" >
 
             <EditText
                 android:id="@+id/EditText01"
-                android:layout_width="200dp"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:cursorVisible="false"
                 android:editable="false"
-                android:textSize="20sp" >
+                android:gravity="center"
+                android:textSize="20sp"
+                >
             </EditText>
 
             <Button
