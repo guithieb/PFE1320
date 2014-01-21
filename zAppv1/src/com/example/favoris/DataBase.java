@@ -17,7 +17,7 @@ public class DataBase {
 		return favorite;
 	}
 	public static void setFavorite(boolean favorite) {
-		favorite = favorite;
+		DataBase.favorite = favorite;
 	}
 	
 }

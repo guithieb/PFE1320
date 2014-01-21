@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
+import android.widget.Toast;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
@@ -37,6 +39,8 @@ public class Telecommande extends Fragment{
 	public static String URL_HTTP = "";
 	public static final String BOX_PREFERENCES = "boxPrefs";
 	ImageButton back;
+	Toast toast;  
+	
 	public static Fragment newInstance(Context context){
 		Telecommande f = new Telecommande();
 
@@ -61,6 +65,24 @@ public class Telecommande extends Fragment{
 		back = (ImageButton) root.findViewById(R.id.back);
 		ecran = (EditText) root.findViewById(R.id.EditText01);
 
+	   	 
+		seekBar1.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+             int progressChanged = 0;
+  
+             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+                 progressChanged = progress;
+             }
+  
+             public void onStartTrackingTouch(SeekBar seekBar) {
+                 // TODO Auto-generated method stub
+             }
+  
+             public void onStopTrackingTouch(SeekBar seekBar) {
+                 /*Toast.makeText(Reglages.this,"seek bar progress:"+progressChanged,
+                         Toast.LENGTH_SHORT,test).show();*/
+                 Log.d(TAG,"seek bar progress:"+progressChanged);
+             }
+         });
 
 		//récupérer l'IP de la box
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
