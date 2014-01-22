@@ -19,7 +19,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.cloud.EPGChaine;
+import com.example.cloud.EPGChaineSerialize;
 import com.example.cloud.EPGChaines;
+import com.example.recommandation.ObjectReco;
+import com.example.recommandation.ObjectRecoSerialize;
 import com.example.remote.BaseApi;
 import com.google.gson.Gson;
 
@@ -42,7 +45,8 @@ import java.net.*;
 
 public class Recommandation extends Fragment {
 
-
+  ObjectReco reco;
+  
   private static final String TAG = "debug";
 
   public static Fragment newInstance(Context context){
@@ -79,42 +83,32 @@ public class Recommandation extends Fragment {
     @Override
     protected String doInBackground(String... params){
 
-      //Connexion BDD
-      ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+      
 
       //http post
-      try{
-        HttpClient httpclient = new DefaultHttpClient();
-        String url = URLEncoder.encode("http://10.0.2.2/connection.php","UTF_8").replace("+","%20");
-        Log.d(TAG,"URLENCORE"+url);
-        //Why to use 10.0.2.2
-        HttpPost httppost = new HttpPost("http://192.168.0.2/connection.php");
-        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-        HttpResponse response = httpclient.execute(httppost);
+      String url = "http://zappwebapp.guinaudin.eu.cloudbees.net/REST/WebService";
+      try {
+        HttpResponse response = BaseApi.executeHttpGet(url);
         HttpEntity entity = response.getEntity();
-        is = entity.getContent();
-      }catch(Exception e){
-        Log.e("log_tag", "Error in http connection"+e.toString());
-      }
-      //convert response to string
-      try{
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        sb = new StringBuilder();
-        //sb.append(reader.readLine() + "\n");
-
-        String line;
-        while ((line = reader.readLine()) != null) {
-          sb.append(line);
+        if (entity !=null)
+        {
+          BufferedReader r = new BufferedReader(new InputStreamReader(entity.getContent()));
+          StringBuilder total = new StringBuilder();
+          String line;
+          while ((line = r.readLine()) != null) {
+            total.append(line);
+          }
+          //Log.d(LOG_TAG,"TOTAL "+total.toString());
+          return total.toString();
         }
-        // is.close();
-        return sb.toString();
-      }catch(Exception e){
-        Log.e("log_tag", "Error converting result "+e.toString());
+
+      } catch (ClientProtocolException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
       }
-
-
-     
-
       return null;
     }
 
@@ -123,24 +117,20 @@ public class Recommandation extends Fragment {
     @Override
     protected void onPostExecute(String result){
       super.onPostExecute(result);
+      Log.d(TAG,"RECOSULT"+result);
+      if(result!=null)
+      {
+        ObjectRecoSerialize recoSerialize = new Gson().fromJson(result,ObjectRecoSerialize.class);
+        reco = recoSerialize;
+        
+        Log.d(TAG,"RECO "+reco.getArtists().get(1).getFirstName());
+        
+        
+        
+      }
 
       
-      try{
-        Log.d(TAG,"RESULTMYSQL"+result.toString());
-        jArray = new JSONArray(result);
-        JSONObject json_data=null;
-        for(int i=0;i<jArray.length();i++){
-          json_data = jArray.getJSONObject(i);
-          String ct_name=json_data.getString("userId");//here "Name" is the column name in database
-          Log.d(TAG,"CTNAME"+ct_name);
-        }
-      }
-      catch(JSONException e1){
-        Toast.makeText(getActivity(), "No Data Found" ,Toast.LENGTH_LONG).show();
-      } catch (ParseException e1) {
-        e1.printStackTrace();
-      }
-
+      
     }
 
   }
