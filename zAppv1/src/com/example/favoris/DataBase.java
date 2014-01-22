@@ -1,7 +1,13 @@
 package com.example.favoris;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import com.example.favoris.FeedReaderContractFavoris.FeedEntry;
+
 public class DataBase {
-	
+	private static final String TAG = "MyActivity";
 	public static String id;
 	public static boolean favorite;
 	public DataBase(){
@@ -19,5 +25,7 @@ public class DataBase {
 	public static void setFavorite(boolean favorite) {
 		DataBase.favorite = favorite;
 	}
+	
+
 	
 }

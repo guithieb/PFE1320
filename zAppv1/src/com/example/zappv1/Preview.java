@@ -30,6 +30,7 @@ import com.example.cloud.EPGNext;
 import com.example.cloud.EPGNextSerialize;
 import com.example.favoris.DataBase;
 import com.example.favoris.FeedReaderDbHelperFavoris;
+import com.example.favoris.FeedReaderContractFavoris.FeedEntry;
 import com.example.remote.BaseApi;
 import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
@@ -38,9 +39,12 @@ import com.google.gson.Gson;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -208,16 +212,11 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		/*** OPEN DATABASE ***/
 		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
 		Log.d(TAG,"BDD OPEN");
-		if (mDbHelper.checkDataBase() == true){
-			Log.d(TAG,"BDD IS IN DB");
-			DataBase.setFavorite(mDbHelper.isInDB(channel));
-			if(DataBase.isFavorite()){
-				checkboxfavoris.setChecked(true);
-			}
-			else {checkboxfavoris.setChecked(false);}
-		}else {Log.d(TAG,"BDD IS NOT IN DB");
-		checkboxfavoris.setChecked(false);
+		if (isInDB(Integer.toString(id)))
+		{
+			checkboxfavoris.setChecked(true);
 		}
+		else checkboxfavoris.setChecked(false);
 		/*checkboxfavoris.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -381,6 +380,14 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		{
 			Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
 		}
+		
+		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
+		Log.d(TAG,"BDD OPEN");
+		if (isInDB(Integer.toString(id)))
+		{
+			checkboxfavoris.setChecked(true);
+		}
+		else checkboxfavoris.setChecked(false);
 
 	}
 
@@ -407,6 +414,24 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		{
 			Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
 		}
+		
+		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
+		Log.d(TAG,"BDD OPEN");
+		if (isInDB(Integer.toString(id)))
+		{
+			checkboxfavoris.setChecked(true);
+		}
+		else checkboxfavoris.setChecked(false);
+		/*if (mDbHelper.checkDataBase() == true){
+			Log.d(TAG,"BDD IS IN DB");
+			DataBase.setFavorite(isInDB(channel));
+			if(DataBase.isFavorite()){
+				checkboxfavoris.setChecked(true);
+			}
+			else {checkboxfavoris.setChecked(false);}
+		}else {
+			checkboxfavoris.setChecked(false);
+		}*/
 	}
 
 	@Override
@@ -532,14 +557,14 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		// Handle presses on the action bar items
 		switch (item.getItemId()) 
 		{
-			case R.id.action_alarm:
-				startActivity(intent);
-				break;
-			default: 
-				break;
+		case R.id.action_alarm:
+			startActivity(intent);
+			break;
+		default: 
+			break;
 		}
-	
-		
+
+
 		return true;
 	}
 
@@ -548,45 +573,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 	}
 	/*** END ACTION MENU ***/
-
-	/*** ALARM AVEC NOTIFICATION ***/
-	/*
-	public class TimeAlarm extends BroadcastReceiver {
-
-		 NotificationManager nm;
-
-		 @Override
-		 public void onReceive(Context context, Intent intent) {
-		  nm = (NotificationManager) context
-		    .getSystemService(Context.NOTIFICATION_SERVICE);
-		  CharSequence from = "Nithin";
-		  CharSequence message = "Crazy About Android...";
-		  PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
-		    new Intent(), 0);
-		  Notification notif = new Notification(R.drawable.ic_action_alarm,
-		    "Crazy About Android...", System.currentTimeMillis());
-		  notif.setLatestEventInfo(context, from, message, contentIntent);
-		  nm.notify(1, notif);
-		 }
-		}
-
-	 public void setOneTimeAlarm() {
-		  Intent intent = new Intent(this, TimeAlarm.class);
-		  PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
-		    intent, PendingIntent.FLAG_ONE_SHOT);
-		  am.set(AlarmManager.RTC_WAKEUP,
-		    System.currentTimeMillis() + (5 * 1000), pendingIntent);
-		 }
-
-		 public void setRepeatingAlarm() {
-		  Intent intent = new Intent(this, TimeAlarm.class);
-		  PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
-		    intent, PendingIntent.FLAG_CANCEL_CURRENT);
-		  am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),
-		    (5 * 1000), pendingIntent);
-		 }
-	 */
-	/*** END ALARM AVEC NOTIFICATION ***/
 
 	private class getBaseProgrammeTask extends AsyncTask <String,Void,String>
 	{
@@ -641,14 +627,9 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				bp = bpz;
 
 				Log.d(LOG_TAG,"TVSHOW"+result.toString());
-
-				if (result.toString().contains("[")){
-					Log.d(LOG_TAG,"TVSHOW ARRAY Artiste");
-					ProgrammeFilmSerialize pfs = new Gson().fromJson(result,ProgrammeFilmSerialize.class);
-					pgFilm = pfs;
-
-					textGenre.setText(pgFilm.getProgramme().getListeGenres().getGenre());
-					String[] parse2 = pgFilm.getProgramme().getDiffusion().getDuree().split("T");
+				if(result.toString().contains("\"firstName\": {}")){
+					textGenre.setText(bp.getProgramme().getListeGenres().getGenre());
+					String[] parse2 = bp.getProgramme().getDiffusion().getDuree().split("T");
 					String[] DureeProg = parse2[1].split("M");
 					textDuree.setText(DureeProg[0]);
 					//duree du programme en minutes
@@ -660,7 +641,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 					int heure = c.get(Calendar.HOUR_OF_DAY);
 					int minutes = c.get(Calendar.MINUTE);
 					//heure du debut en minutes
-					String[] parse3 = pgFilm.getProgramme().getDiffusion().getDebut().split("T");
+					String[] parse3 = bp.getProgramme().getDiffusion().getDebut().split("T");
 					String[] debutProg = parse3[1].split("Z");
 					String[] debut = debutProg[0].split(":");
 					int dd = (Integer.parseInt(debut[0])*60)+Integer.parseInt(debut[1]);
@@ -672,19 +653,21 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 					Log.d(LOG_TAG,"HEURERATIO"+ratio);
 					mProgressBar.setProgress((int) (ratio*100));
 
-					if (pgFilm.getProgramme().getImagette() != null){ 
+					if (bp.getProgramme().getImagette() != null){ 
 						BitmapWorkerTask task = new BitmapWorkerTask(imagette);
-						task.execute(pgFilm.getProgramme().getImagette());
+						task.execute(bp.getProgramme().getImagette());
 					}else{
 						imagette.setImageResource(R.drawable.noimage);
 					}
 				}
-
 				else {
-					Log.d(LOG_TAG,"TVSHOW OBJECT Artiste");
-					if(result.toString().contains("\"firstName\": {}")){
-						textGenre.setText(bp.getProgramme().getListeGenres().getGenre());
-						String[] parse2 = bp.getProgramme().getDiffusion().getDuree().split("T");
+					if (result.toString().contains("[")){
+						Log.d(LOG_TAG,"TVSHOW ARRAY Artiste");
+						ProgrammeFilmSerialize pfs = new Gson().fromJson(result,ProgrammeFilmSerialize.class);
+						pgFilm = pfs;
+
+						textGenre.setText(pgFilm.getProgramme().getListeGenres().getGenre());
+						String[] parse2 = pgFilm.getProgramme().getDiffusion().getDuree().split("T");
 						String[] DureeProg = parse2[1].split("M");
 						textDuree.setText(DureeProg[0]);
 						//duree du programme en minutes
@@ -696,7 +679,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 						int heure = c.get(Calendar.HOUR_OF_DAY);
 						int minutes = c.get(Calendar.MINUTE);
 						//heure du debut en minutes
-						String[] parse3 = bp.getProgramme().getDiffusion().getDebut().split("T");
+						String[] parse3 = pgFilm.getProgramme().getDiffusion().getDebut().split("T");
 						String[] debutProg = parse3[1].split("Z");
 						String[] debut = debutProg[0].split(":");
 						int dd = (Integer.parseInt(debut[0])*60)+Integer.parseInt(debut[1]);
@@ -708,13 +691,15 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 						Log.d(LOG_TAG,"HEURERATIO"+ratio);
 						mProgressBar.setProgress((int) (ratio*100));
 
-						if (bp.getProgramme().getImagette() != null){ 
+						if (pgFilm.getProgramme().getImagette() != null){ 
 							BitmapWorkerTask task = new BitmapWorkerTask(imagette);
-							task.execute(bp.getProgramme().getImagette());
+							task.execute(pgFilm.getProgramme().getImagette());
 						}else{
 							imagette.setImageResource(R.drawable.noimage);
 						}
-					}else {
+					}
+
+					else {
 						ProgrammeMagSerialize pms = new Gson().fromJson(result,ProgrammeMagSerialize.class);
 						pgMag = pms;
 
@@ -751,49 +736,45 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 						}
 					}
 				}
+			}
+		}
+		class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
 
+			private final WeakReference<ImageView> imageViewReference;
+			private String data;
+
+			public BitmapWorkerTask(ImageView imageView) {
+				// Use a WeakReference to ensure the ImageView can be garbage
+				// collected
+				imageViewReference = new WeakReference<ImageView>(imageView);
 			}
 
-
-		}
-
-	}
-	class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
-
-		private final WeakReference<ImageView> imageViewReference;
-		private String data;
-
-		public BitmapWorkerTask(ImageView imageView) {
-			// Use a WeakReference to ensure the ImageView can be garbage
-			// collected
-			imageViewReference = new WeakReference<ImageView>(imageView);
-		}
-
-		// Decode image in background.
-		protected Bitmap doInBackground(String... params) {
-			data = params[0];
-			try {
-				return BitmapFactory.decodeStream((InputStream) new URL(data)
-				.getContent());
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+			// Decode image in background.
+			protected Bitmap doInBackground(String... params) {
+				data = params[0];
+				try {
+					return BitmapFactory.decodeStream((InputStream) new URL(data)
+					.getContent());
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return null;
 			}
-			return null;
-		}
 
-		// Once complete, see if ImageView is still around and set bitmap
-		@Override
-		protected void onPostExecute(Bitmap bitmap) {
-			if (imageViewReference != null && bitmap != null) {
-				final ImageView imageView = imageViewReference.get();
-				if (imageView != null) {
-					imageView.setImageBitmap(bitmap);
+			// Once complete, see if ImageView is still around and set bitmap
+			@Override
+			protected void onPostExecute(Bitmap bitmap) {
+				if (imageViewReference != null && bitmap != null) {
+					final ImageView imageView = imageViewReference.get();
+					if (imageView != null) {
+						imageView.setImageBitmap(bitmap);
+					}
 				}
 			}
-		}
 
+		}
 	}
 	private class getNextProgramTask extends AsyncTask<String, Void, String> {
 
@@ -875,8 +856,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 			}
 		}
-
-
 	}
 
 	public void addFavoristoDB(View view) {
@@ -886,23 +865,54 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			//FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
 			//mDbHelper.deleteMovie(DataBase.id);
 			DataBase.setFavorite(false);
-			toast.cancel();
 			this.setDeletedToast();
 			toast.show();
 			checkboxfavoris.setChecked(false);
 		}else
 		{
 			// Do something in response to button
-			FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
-			Log.d(TAG,"BDD CHANNEL" +chaineId);
-			mDbHelper.saveFavoris(chaineId);    // A VOIR !!!!
+
+			saveFavoris(chaineId); // A VOIR !!!!
 			DataBase.setFavorite(true);
-			toast.cancel();
 			this.setAddedToast();
 			toast.show();
+			//toast.cancel();
 			checkboxfavoris.setChecked(true);
-			Log.d(TAG,"BDD OK");
 		}
+	}
+	
+	public Boolean isInDB(String imdbId){
+		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		String selectQuery = "SELECT "+ FeedEntry.COLUMN_NAME_ID + " FROM " + FeedEntry.TABLE_NAME + " WHERE " + FeedEntry.COLUMN_NAME_ID + " = "+ imdbId;
+		System.out.println("REQUEST DB:"+selectQuery);
+		Cursor cursor = db.rawQuery(selectQuery, null);
+		if(cursor.getCount() !=0){
+			db.close();
+			return true;
+		}else{
+			db.close();
+			return false;			
+		}
+	}
+	
+	public void saveFavoris(String channel){
+		// Gets the data repository in write mode
+		Log.d(TAG,"BDD TRANSFERT" + channel);
+		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
+		SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+		// Create a new map of values, where column names are the keys
+		ContentValues values = new ContentValues();
+		values.put(FeedEntry.COLUMN_NAME_ID , channel );
+
+		// Insert the new row, returning the primary key value of the new row
+		long newRowId;
+		newRowId = db.insert(
+				FeedEntry.TABLE_NAME,
+				null,
+				values);
+		db.close();
 	}
 
 	@SuppressLint("ShowToast")
@@ -918,3 +928,4 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		toast = Toast.makeText(context, text, toast_duration);
 	}
 }
+

@@ -14,5 +14,6 @@ public class FeedReaderContractFavoris {
         public static final String TABLE_NAME = "favoris";
         public static final String COLUMN_NAME_ID = "id";
     }
-
+    
+    
 }
