@@ -7,7 +7,7 @@
         android:title="@string/action_settings"/>
 
         <item android:id="@+id/action_alarm"
-          android:icon="@drawable/ic_action_alarm"
+          android:icon="@drawable/ic_remote"
           android:title="@string/action_alarm"
           android:showAsAction="ifRoom" />
 </menu>
