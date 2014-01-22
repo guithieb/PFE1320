@@ -133,15 +133,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preview);
-		/* PLAYER 
-		playerSurfaceView = (VideoView)findViewById(R.id.playersurface);
-
-		MediaController mediaController = new MediaController(this); 
-		mediaController.setAnchorView(playerSurfaceView);
-		playerSurfaceView.setMediaController(mediaController);
-		playerSurfaceView.setVideoURI(Uri.parse(videoSrc));
-		playerSurfaceView.start();
-		 */
 
 		/*** ACTION BAR ***/
 		ActionBar actionbar = getActionBar();
