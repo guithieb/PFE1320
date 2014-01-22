@@ -60,45 +60,6 @@ public class FeedReaderDbHelperFavoris extends SQLiteOpenHelper{
 	 * @return All favoris in the database
 	 */
 
-	public ArrayList<DataBase> getallDataBase(String sorting){
-
-		ArrayList<DataBase> epgchaines = new ArrayList<DataBase>();
-
-		// Define a projection that specifies which columns from the database
-		// you will actually use after this query.
-		String[] projection = {
-				BaseColumns._ID,
-				FeedEntry.COLUMN_NAME_ID,
-		};
-
-		// How you want the results sorted in the resulting Cursor
-		String sortOrder =
-				FeedEntry.COLUMN_NAME_ID + " DESC";
-
-		SQLiteDatabase db = this.getReadableDatabase();
-
-		Cursor cursor = db.query(
-				FeedEntry.TABLE_NAME,  // The table to query
-				projection,                               // The columns to return
-				null,                                // The columns for the WHERE clause
-				null,                            // The values for the WHERE clause
-				null,                                     // don't group the rows
-				null,                                     // don't filter by row groups
-				sortOrder                                 // The sort order
-				);
-
-		if(cursor.moveToFirst()){
-			do{
-				DataBase epgchaine = new DataBase();  //parametre a rentrer
-				DataBase.setId(cursor.getString(
-						cursor.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_ID)));
-				epgchaines.add(epgchaine);
-			}while(cursor.moveToNext());
-		}
-		db.close();
-		return epgchaines;
-	}
-
 
 public boolean checkDataBase() {
 	SQLiteDatabase checkDB = null;

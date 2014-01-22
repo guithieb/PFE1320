@@ -422,16 +422,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			checkboxfavoris.setChecked(true);
 		}
 		else checkboxfavoris.setChecked(false);
-		/*if (mDbHelper.checkDataBase() == true){
-			Log.d(TAG,"BDD IS IN DB");
-			DataBase.setFavorite(isInDB(channel));
-			if(DataBase.isFavorite()){
-				checkboxfavoris.setChecked(true);
-			}
-			else {checkboxfavoris.setChecked(false);}
-		}else {
-			checkboxfavoris.setChecked(false);
-		}*/
 	}
 
 	@Override
@@ -859,12 +849,10 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	}
 
 	public void addFavoristoDB(View view) {
-		if(DataBase.isFavorite())
+		//delete favori if click and true
+		if(isInDB(Integer.toString(id)))
 		{
-			// Do something in response to button
-			//FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
-			//mDbHelper.deleteMovie(DataBase.id);
-			DataBase.setFavorite(false);
+			deleteFavoris(Integer.toString(id));
 			this.setDeletedToast();
 			toast.show();
 			checkboxfavoris.setChecked(false);
@@ -872,8 +860,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		{
 			// Do something in response to button
 
-			saveFavoris(chaineId); // A VOIR !!!!
-			DataBase.setFavorite(true);
+			saveFavoris(Integer.toString(id)); // A VOIR !!!!
 			this.setAddedToast();
 			toast.show();
 			//toast.cancel();
@@ -896,6 +883,17 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		}
 	}
 	
+	public void deleteFavoris(String channel){
+		Log.d(TAG,"BDD TRANSFERT" + channel);
+		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
+		SQLiteDatabase db = mDbHelper.getWritableDatabase();
+		// Define 'where' part of query.
+		//String selection = FeedEntry.COLUMN_NAME_ID + " LIKE ?";
+		//db.delete(FeedEntry.TABLE_NAME, selection, null);
+		db.delete(FeedEntry.TABLE_NAME, FeedEntry.COLUMN_NAME_ID + " = " +channel, null);
+		db.close();
+	}
+	
 	public void saveFavoris(String channel){
 		// Gets the data repository in write mode
 		Log.d(TAG,"BDD TRANSFERT" + channel);
@@ -910,7 +908,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		long newRowId;
 		newRowId = db.insert(
 				FeedEntry.TABLE_NAME,
-				null,
+				FeedEntry.COLUMN_NAME_ID,
 				values);
 		db.close();
 	}

@@ -83,6 +83,9 @@
        <activity 
            android:name="com.example.zappv1.Telecommande"
            android:screenOrientation="portrait" />
+       <activity 
+           android:name="com.example.favoris.previewFavoris"
+           android:screenOrientation="portrait" />
       
     </application>
 
