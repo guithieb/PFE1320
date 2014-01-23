@@ -33,14 +33,14 @@ public class Telecommande extends Activity{
 	private SeekBar seekBar1;
 	EditText ecran;
 	Button button1, button2, button3, button4, button5, button6, button7;
-	Button button8, button9, button0, buttonOk;
+	Button button8, button9, button0, buttonOk,buttonMute;
 	private static final String TAG = "MyActivity";
 	private String ip;
 	public static final String SUFFIXE_URL = "/api.bbox.lan/V0";
 	public static String URL_HTTP = "";
 	public static final String BOX_PREFERENCES = "boxPrefs";
 	Button moins, plus;
-	ImageButton back;
+	ImageButton back,mute;
 	Toast toast;  
 	
 
@@ -65,6 +65,7 @@ public class Telecommande extends Activity{
 		plus = (Button) findViewById(R.id.plus);
 		moins = (Button) findViewById(R.id.moins);
 		back = (ImageButton) findViewById(R.id.back);
+		mute = (ImageButton) findViewById(R.id.buttonMute);
 		ecran = (EditText) findViewById(R.id.EditText01);
 
 	   	 
@@ -217,6 +218,7 @@ public class Telecommande extends Activity{
 					case 19:  sendKeyPressed(UserInterfaceApi.CHANNEL_1);
 					sendKeyPressed(UserInterfaceApi.CHANNEL_9);
 					break;
+					
 
 
 					default : break;
@@ -235,6 +237,15 @@ public class Telecommande extends Activity{
 		moins.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				sendKeyPressed(UserInterfaceApi.CHANNEL_DOWN);
+			}
+		});
+		
+		mute.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				sendKeyPressed(UserInterfaceApi.CHANNEL_MUTE);
+				
 			}
 		});
 
@@ -295,6 +306,7 @@ public class Telecommande extends Activity{
 		}
 
 	}
+
 	void sendKeyPressed(String key) {
 		new SendKeyPressedTask().execute(
 				new String[] { URL_HTTP , key});

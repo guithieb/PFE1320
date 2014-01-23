@@ -17,7 +17,7 @@
             android:text="Télécommande"
             android:textSize="30sp"
             android:textStyle="bold" />
-		
+
         <LinearLayout
             android:id="@+id/Layout1"
             android:layout_width="200dp"
@@ -26,14 +26,21 @@
             android:layout_below="@+id/Nom"
             android:layout_marginTop="15dp" >
 
+            <ImageButton
+                android:id="@+id/buttonMute"
+                android:layout_width="51dp"
+                android:layout_height="45dp"
+                android:src="@drawable/ic_mute" />
+
             <SeekBar
                 android:id="@+id/seekBar1"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="0.77" />
+                android:layout_weight="0.77"
+                android:progress="50" />
         </LinearLayout>
-        
+
         <RelativeLayout
             android:id="@+id/Layout2"
             android:layout_width="150dp"
@@ -49,7 +56,10 @@
                 android:cursorVisible="false"
                 android:editable="false"
                 android:gravity="center"
-                android:textSize="20sp" />
+                android:textSize="20sp" >
+
+                <requestFocus />
+            </EditText>
 
             <Button
                 android:id="@+id/buttonOk"
@@ -58,6 +68,7 @@
                 android:layout_toRightOf="@id/EditText01"
                 android:text="OK" />
         </RelativeLayout>
+
         <GridLayout
             android:id="@+id/Layout3"
             android:layout_width="wrap_content"
@@ -159,7 +170,6 @@
         </LinearLayout>
 
         
-
     </RelativeLayout>
 
 </LinearLayout>
