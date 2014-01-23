@@ -359,11 +359,12 @@ public class MainActivity extends FragmentActivity {
 		dialog.show();
 	}
 */
+	/*** Double tap pour quitter l'application (sur 2sec) ***/
 	@Override
 	public void onBackPressed()
 	{
 	        if (back_pressed + 2000 > System.currentTimeMillis()) super.onBackPressed();
-	        else Toast.makeText(getBaseContext(), "Press once again to exit!", Toast.LENGTH_SHORT).show();
+	        else Toast.makeText(getBaseContext(), "Appuyer encore pour quitter!", Toast.LENGTH_SHORT).show();
 	        back_pressed = System.currentTimeMillis();
 	}
 

@@ -39,6 +39,7 @@ import com.google.gson.Gson;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -916,5 +917,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		CharSequence text = "Film supprimé avec succès!";
 		toast = Toast.makeText(context, text, toast_duration);
 	}
+	
+
 }
 

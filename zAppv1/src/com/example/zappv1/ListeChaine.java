@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cloud.ChaineAdapter;
 import com.example.cloud.EPGChaine;
@@ -68,8 +69,6 @@ public class ListeChaine extends Fragment{
     adapter = new ChaineAdapter(getActivity(), epgChaines, this);  
     listeChaine.setAdapter(adapter);
     refreshChaine();
-    
-   
     
     
     //évenement lorsque que l'on clique sur une chaîne dans la lsite
