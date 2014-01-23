@@ -88,6 +88,8 @@ public class MainActivity extends FragmentActivity {
 	private String ip;
 	private Toast toast;
 	private int toast_duration;
+	private static long back_pressed;
+
 
 	public static Handler mHandler = new Handler(Looper.getMainLooper()) {
 		@Override
@@ -204,8 +206,11 @@ public class MainActivity extends FragmentActivity {
 				{
 					device = devices.get(i);
 					// TODO: Ajouter un Toast qui indique que la box est connectée 
+					// problème car la fonction tourne en boucle
 					if(device != null)
+
 					{
+
 						deviceList += device.id+" ("+device.ip+"): "+device.friendlyName+"\n";//devices.get(i).id+" ";
 
 						//Identification de la box par le nom de son attribut DeviceType
@@ -213,10 +218,12 @@ public class MainActivity extends FragmentActivity {
 							if(device.deviceType.contains("urn:schemas-upnp-org:device:MediaRenderer:1")) 
 							{
 								Log.d(TAG,"TEST REUSSI"+device.friendlyName);
+								/*
+								Toast.makeText(MainActivity.this, "Open STB correctement détectée",
+				                Toast.LENGTH_SHORT).show();    BUG
+								 */
 								ip=device.ip;
-								this.setAddedToast();
-								toast.show();
-								//deviceWatcher.stop();
+								//deviceWatcher.stop();   BUG -----> FAIRE MAJ BOX
 							}
 							//On met dans les préférences du téléphone l'adresse ip pour que l'on puisse la retrouver dans 
 							//n'importe quelle vue
@@ -233,16 +240,18 @@ public class MainActivity extends FragmentActivity {
 					}
 				}
 				setText("1",deviceList);
+				//setAddedToast();
+				//toast.show();
 			}
 
-			/*** Toast pour la détection Open STB ***/
+			/*			*//*** Toast pour la détection Open STB ***//*
 			@SuppressLint("ShowToast")
 			private void setAddedToast(){
 				Context context = getApplicationContext();
-				CharSequence text = "Open STB détectée";
+				CharSequence text = "Open STB OK";
 				toast = Toast.makeText(context, text, toast_duration);
 			}
-
+			 */
 
 		};
 		deviceWatcher.search(deviceManager);
@@ -326,7 +335,7 @@ public class MainActivity extends FragmentActivity {
 	/*** Dialog box lorsque l'on quitte l'application ***/
 	// TODO: A MODIFIER ----> double tap pour quitter l'appli; simple tap pour display un Toast
 	// TODO: faire en sorte d'éviter de quitter l'appli depuis un autre Fragment !!
-	public void onBackPressed() {
+	/*public void onBackPressed() {
 
 		final Builder builder = new Builder(this);
 		builder.setTitle(R.string.app_name);
@@ -349,7 +358,14 @@ public class MainActivity extends FragmentActivity {
 		final AlertDialog dialog = builder.create();
 		dialog.show();
 	}
-
+*/
+	@Override
+	public void onBackPressed()
+	{
+	        if (back_pressed + 2000 > System.currentTimeMillis()) super.onBackPressed();
+	        else Toast.makeText(getBaseContext(), "Press once again to exit!", Toast.LENGTH_SHORT).show();
+	        back_pressed = System.currentTimeMillis();
+	}
 
 	/*class HashMapAdapter extends BaseAdapter {
 		    private HashMap<String,String > mData = new HashMap<String, String>();
