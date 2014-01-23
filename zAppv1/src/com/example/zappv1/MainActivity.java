@@ -11,12 +11,14 @@ import com.invities.deviceWatcher.DeviceManager;
 import com.invities.deviceWatcher.DeviceWatcher;
 import com.invities.deviceWatcher.SocialWatcher.Room;
 import com.invities.upnp.Device;
+import com.testflightapp.lib.TestFlight;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -75,15 +77,17 @@ public class MainActivity extends FragmentActivity {
 	private ActionBarDrawerToggle actionBarDrawerToggle;
 	private int selection = 0;
 	private int oldSelection = -1;
-	final String[] data ={"Liste des chaînes","Favoris","Recommandation"};
+	final String[] data ={"Liste des chaînes","Favoris","Recommandations"};
 	//Liste des différentes vues liées au drawer
 	final static String[] fragments ={
-			"com.example.zappv1.ListeChaine",
-			"com.example.zappv1.Favoris",
-			"com.example.zappv1.Recommandation"};
+		"com.example.zappv1.ListeChaine",
+		"com.example.zappv1.Favoris",
+	"com.example.zappv1.Recommandation"};
 	private static final String TAG = "MyActivity";
 	public static final String BOX_PREFERENCES = "boxPrefs";
 	private String ip;
+	private Toast toast;
+	private int toast_duration;
 
 	public static Handler mHandler = new Handler(Looper.getMainLooper()) {
 		@Override
@@ -126,6 +130,9 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		//Initialize TestFlight with your app token.
+		TestFlight.takeOff(this.getApplication(), "75caa7f3-4e56-473e-aa7c-d3cdc85847ca");
+
 		/*** ACTION BAR ***/
 		ActionBar actionbar = getActionBar();
 		actionbar.show();
@@ -134,7 +141,7 @@ public class MainActivity extends FragmentActivity {
 
 		//Initialisation du drawer
 		final DrawerLayout drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
-		
+
 		// DrawerToggle (bouton home pour activer/désactiver le navigation drawer ; avec l'icone du drawer)
 		drawerToggle = new ActionBarDrawerToggle(this, drawer, R.drawable.ic_list, R.string.drawer_open, R.string.drawer_close);
 		drawer.setDrawerListener(drawerToggle);
@@ -158,11 +165,11 @@ public class MainActivity extends FragmentActivity {
 				drawer.closeDrawer(navList);
 			}
 		});
-		
+
 		/*FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
 		tx.replace(R.id.main,Fragment.instantiate(MainActivity.this, fragments[0]));
 		tx.commit();
-		*/
+		 */
 
 
 
@@ -196,6 +203,7 @@ public class MainActivity extends FragmentActivity {
 				for(i=1;i<=j;++i)
 				{
 					device = devices.get(i);
+					// TODO: Ajouter un Toast qui indique que la box est connectée 
 					if(device != null)
 					{
 						deviceList += device.id+" ("+device.ip+"): "+device.friendlyName+"\n";//devices.get(i).id+" ";
@@ -205,8 +213,10 @@ public class MainActivity extends FragmentActivity {
 							if(device.deviceType.contains("urn:schemas-upnp-org:device:MediaRenderer:1")) 
 							{
 								Log.d(TAG,"TEST REUSSI"+device.friendlyName);
-							ip=device.ip;
-							//deviceWatcher.stop();
+								ip=device.ip;
+								this.setAddedToast();
+								toast.show();
+								//deviceWatcher.stop();
 							}
 							//On met dans les préférences du téléphone l'adresse ip pour que l'on puisse la retrouver dans 
 							//n'importe quelle vue
@@ -224,6 +234,16 @@ public class MainActivity extends FragmentActivity {
 				}
 				setText("1",deviceList);
 			}
+
+			/*** Toast pour la détection Open STB ***/
+			@SuppressLint("ShowToast")
+			private void setAddedToast(){
+				Context context = getApplicationContext();
+				CharSequence text = "Open STB détectée";
+				toast = Toast.makeText(context, text, toast_duration);
+			}
+
+
 		};
 		deviceWatcher.search(deviceManager);
 
@@ -231,8 +251,8 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState)
 	{
-	    super.onPostCreate(savedInstanceState);
-	    drawerToggle.syncState();
+		super.onPostCreate(savedInstanceState);
+		drawerToggle.syncState();
 	}
 
 	private void updateContent() {
@@ -246,28 +266,28 @@ public class MainActivity extends FragmentActivity {
 			tx.commit();
 			oldSelection = selection;
 		}
-		
+
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		Intent intent = new Intent(this, Telecommande.class);
-	    if(drawerToggle.onOptionsItemSelected(item))
-	    {
-	        return true;
-	    }
+		if(drawerToggle.onOptionsItemSelected(item))
+		{
+			return true;
+		}
 		switch (item.getItemId()) 
 		{
-			case R.id.action_alarm:
-				startActivity(intent);
-				break;
-			default: 
-				break;
+		case R.id.action_alarm:
+			startActivity(intent);
+			break;
+		default: 
+			break;
 		}
-	    return super.onOptionsItemSelected(item);
+		return super.onOptionsItemSelected(item);
 	}
-	
+
 	/*** ACTION MENU ***/
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -290,11 +310,11 @@ public class MainActivity extends FragmentActivity {
 			default: 
 				break;
 		}
-	
-		
+
+
 		return true;
 	}
-*/
+	 */
 	public static void setText(String Which,String newText) {
 		Map<String,String> v_params = new HashMap<String,String>();
 		v_params.put("functionName", "setText");
@@ -304,6 +324,7 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	/*** Dialog box lorsque l'on quitte l'application ***/
+	// TODO: A MODIFIER ----> double tap pour quitter l'appli; simple tap pour display un Toast
 	// TODO: faire en sorte d'éviter de quitter l'appli depuis un autre Fragment !!
 	public void onBackPressed() {
 
@@ -371,5 +392,9 @@ public class MainActivity extends FragmentActivity {
 	            detail.setText("Click to enter this room");
 	            return (row);
 		    }*/
+
+	// Toast pour la détection de la Open STB
+
+
 }
 

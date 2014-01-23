@@ -18,11 +18,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.example.cloud.ChaineAdapter;
 import com.example.cloud.EPGChaine;
 import com.example.cloud.EPGChaineSerialize;
 import com.example.cloud.EPGChaines;
+import com.example.cloud.GetProgramTask;
 import com.example.recommandation.ObjectReco;
 import com.example.recommandation.ObjectRecoSerialize;
+import com.example.recommandation.ObjectReco.Artist;
 import com.example.remote.BaseApi;
 import com.google.gson.Gson;
 
@@ -48,6 +51,9 @@ public class Recommandation extends Fragment {
   ObjectReco reco;
   
   private static final String TAG = "debug";
+  
+  ArrayList <Artist> artists;
+  ChaineAdapter adapter;
 
   public static Fragment newInstance(Context context){
     Recommandation f = new Recommandation();
@@ -124,15 +130,18 @@ public class Recommandation extends Fragment {
         reco = recoSerialize;
         
         Log.d(TAG,"RECO "+reco.getArtists().get(1).getFirstName());
-        
-        
-        
+       
       }
 
-      
-      
     }
 
   }
+  /*
+  private void refreshChaine() {
+		// TODO Auto-generated method stub
+		new GetProgramTask(artists, adapter, getActivity()).execute();
+		
+		}
+  */
 
 }
