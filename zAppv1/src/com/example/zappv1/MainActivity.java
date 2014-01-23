@@ -80,7 +80,7 @@ public class MainActivity extends FragmentActivity {
 	final static String[] fragments ={
 			"com.example.zappv1.ListeChaine",
 			"com.example.zappv1.Favoris",
-			"com.example.zappv1.Recommandation"};
+			"com.example.zappv1.Recommandations"};
 	private static final String TAG = "MyActivity";
 	public static final String BOX_PREFERENCES = "boxPrefs";
 	private String ip;
