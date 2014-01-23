@@ -96,7 +96,7 @@ public class RecommandationAdapter extends BaseAdapter {
 			if (application.getNom().equals("Canal+")) {
 				ch.photo.setImageResource(R.drawable.canal);
 			}
-			else if (application.getNom().equals("i Télé")){
+			else if (application.getNom().equals("i Tï¿½lï¿½")){
 				ch.photo.setImageResource(R.drawable.itele);
 			} else {
 				BitmapWorkerTask task = new BitmapWorkerTask(ch.photo);

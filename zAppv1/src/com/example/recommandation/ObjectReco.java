@@ -57,6 +57,12 @@ public class ObjectReco {
       
     }
   
+    // recup la chaine JSON format depuis la reco
+    // recup tous les acteurs reco
+    // matchs de ces noms avec le détail prog de l'EPG live
+    // si oui, afficher le programme dans la vue recommendations
   
+ 
+    
   
 }
