@@ -32,6 +32,7 @@ public class UserInterfaceApi extends BaseApi {
   public static final  String CHANNEL_7 = "7";
   public static final  String CHANNEL_8 = "8";
   public static final  String CHANNEL_9 = "9";
+  public static final  String CHANNEL_MUTE = "MUTE";
   
   public static void sendKey(String baseUrl, String key, String keyType) throws ServerException {
     Log.d(LOG_TAG, "sendKey() url=" + (baseUrl + URL_SUFFIX_SEND_KEY) + ", key=" + key + ", keyType=" + keyType);
