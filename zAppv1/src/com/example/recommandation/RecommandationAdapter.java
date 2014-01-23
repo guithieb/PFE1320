@@ -21,9 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.cloud.EPGChaine;
-import com.example.zappv1.Favoris;
 import com.example.zappv1.R;
-import com.example.zappv1.Recommandation;
 import com.example.zappv1.Recommandation.getBaseProgrammeTask;
 
 public class RecommandationAdapter extends BaseAdapter {

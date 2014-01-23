@@ -11,25 +11,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.example.cloud.EPGChaine;
 import com.example.cloud.EPGChaineSerialize;
-import com.example.cloud.EPGChaines;
-import com.example.favoris.favorisadapter;
-import com.example.favoris.getFavoriTask;
 import com.example.recommandation.GetRecoTasks;
 import com.example.recommandation.ObjectReco;
 import com.example.recommandation.ObjectRecoSerialize;
@@ -39,10 +28,8 @@ import com.example.remote.BaseApi;
 import com.google.gson.Gson;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.ParseException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -52,16 +39,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.net.*;
 
 public class Recommandation extends Fragment {
 
 	ObjectReco reco;
-	ObjectReco reco2;
 	private EPGChaine epgChaine;
 	private BaseProgramme basePg;
 	private ProgrammeFilm pgFilm;
@@ -70,7 +53,7 @@ public class Recommandation extends Fragment {
 	ArrayList<EPGChaine> epgrecommendes = new ArrayList<EPGChaine>();
 	RecommandationAdapter adapter;
 	private ListView listeRecommandation;
-
+	String[] test = {"Yves", "Ben"};
 	ArrayList <String> chainereco = new ArrayList<String>();
 	private static final String TAG = "debug";
 	private static final String LOG_TAG = "activity";
@@ -87,51 +70,14 @@ public class Recommandation extends Fragment {
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.recommandation, null);
 		listeRecommandation = (ListView) root.findViewById(R.id.chaines);
 
-		//GetDatabaseTask gdbt = new GetDatabaseTask();
-		//gdbt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		/*
-		 * "firstName": "J Miller",
-          "lastName": "Tobin",
-		 */
-		/*reco2 = new ObjectReco();
-		reco2.setUserId((long)1);
-		reco.setArtists(reco2.getArtists().);*/
+		GetDatabaseTask gdbt = new GetDatabaseTask();
+		gdbt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
 		for (int i = 1; i < 20; i++){
 			getChannelTask gtc = new getChannelTask(epgChaine, getActivity(),Integer.toString(i));
 			gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
 		}
-
-		//chaineId = parsing();
-		/*if (chaineId.isEmpty()){
-			AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
-			builder1.setMessage("Aucun favoris enregistrés.");
-			builder1.setCancelable(true);
-			builder1.setPositiveButton("Ok",
-					new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					dialog.cancel();
-				}
-			});
-
-
-			AlertDialog alert11 = builder1.create();
-			alert11.show();
-		}else
-		{
-			if ((chaineId.length() == 1)||(chaineId.length() == 2)){
-				adapter = new RecommandationAdapter(getActivity(), epgrecommendes, this);  
-				listeRecommandation.setAdapter(adapter);
-				refreshReco();
-			}
-			else{
-				adapter = new RecommandationAdapter(getActivity(), epgrecommendes, this);  
-				listeRecommandation.setAdapter(adapter);
-				refreshrecos();
-			}
-		}
-		 */
 
 		return root;
 	}
@@ -339,21 +285,22 @@ public class Recommandation extends Fragment {
 					if (result.toString().contains("[")){
 						ProgrammeFilmSerialize pfs = new Gson().fromJson(result,ProgrammeFilmSerialize.class);
 						pgFilm = pfs;
-						/*for (int i = 0; i < reco.getArtists().size(); i++){
+						for (int i = 0; i < reco.getArtists().size(); i++){
 							for (int j = 0; j < pfs.getProgramme().getListeArtistes().getArtiste().size(); j++){
-								if (pfs.getProgramme().getListeArtistes().getArtiste().get(j).equals(reco2.getArtists().get(i))){
+								if (pfs.getProgramme().getListeArtistes().getArtiste().get(j).getLastName().equals(reco.getArtists().get(i).getLastName())){
+									chainereco.add(channel);
+								}
+							}
+
+						}
+						/*for (int i = 0; i < test.length; i++){
+							for (int j = 0; j < pfs.getProgramme().getListeArtistes().getArtiste().size(); j++){
+								if (pfs.getProgramme().getListeArtistes().getArtiste().get(j).getFirstName().equals(test[i])){
 									chainereco.add(channel);
 								}
 							}
 
 						}*/
-						for (int j = 0; j < pfs.getProgramme().getListeArtistes().getArtiste().size(); j++){
-							if (pgFilm.getProgramme().getListeArtistes().getArtiste().get(j).getFirstName().equals("Cristina")){
-								if(!chainereco.contains(channel)){
-									chainereco.add(channel);
-								}
-							}
-						}
 
 
 					}
@@ -361,15 +308,15 @@ public class Recommandation extends Fragment {
 					else {
 						ProgrammeMagSerialize pms = new Gson().fromJson(result,ProgrammeMagSerialize.class);
 						pgMag = pms;
-						/*for (int i = 0; i < reco.getArtists().size(); i++){
-							if (pms.getProgramme().getListeArtistes().getArtiste().equals(reco2.getArtists().get(i))){
+						for (int i = 0; i <reco.getArtists().size(); i++){
+							if (pgMag.getProgramme().getListeArtistes().getArtiste().getLastName().equals(reco.getArtists().get(i).getLastName())){
 								chainereco.add(channel);
-							}*/
+							}
 						if (pgMag == null){Log.d(TAG,"PGMAG null");}
 						else {Log.d(TAG,"CHaine" + channel);}
-						if (pgMag.getProgramme().getListeArtistes().getArtiste().getFirstName().equals("Cristina")){
+						/*if (pgMag.getProgramme().getListeArtistes().getArtiste().getFirstName().equals("Cristina")){
 
-							chainereco.add(channel);
+							chainereco.add(channel);*/
 
 							//Log.d(TAG,"PROGRAMMEID"+chainereco.toString());
 						}
