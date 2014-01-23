@@ -1,22 +1,16 @@
 package com.example.zappv1;
 
-import android.inputmethodservice.Keyboard;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.Toast;
@@ -24,7 +18,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
-import com.example.zappv1.R;
 
 
 
@@ -154,7 +147,7 @@ public class Telecommande extends Activity{
 		buttonOk.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if(ecran.getText().toString().isEmpty()){
-					AlertDialog.Builder builder1 = new AlertDialog.Builder(getApplicationContext());
+					AlertDialog.Builder builder1 = new AlertDialog.Builder(v.getContext());
 					builder1.setMessage("Renseigner une chaîne");
 					builder1.setCancelable(true);
 					builder1.setPositiveButton("Ok",
@@ -260,7 +253,7 @@ public class Telecommande extends Activity{
 			ecran.setText(str);
 		}
 		else if (ecran.getText().toString().length()==2){
-			AlertDialog.Builder builder1 = new AlertDialog.Builder(getApplicationContext());
+			AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
 			builder1.setMessage("seulement les chaînes entre 1 et 19");
 			builder1.setCancelable(true);
 			builder1.setPositiveButton("Ok",
@@ -279,7 +272,7 @@ public class Telecommande extends Activity{
 				ecran.setText(str);
 			}
 			else {
-				AlertDialog.Builder builder1 = new AlertDialog.Builder(getApplicationContext());
+				AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
 				builder1.setMessage("seulement les chaînes entre 1 et 19");
 				builder1.setCancelable(true);
 				builder1.setPositiveButton("Ok",

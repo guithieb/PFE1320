@@ -1,175 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/Nom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="fill"
+        android:text="Télécommande"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/Layout1"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/Nom"
+        android:layout_below="@+id/Nom"
+        android:layout_marginTop="15dp" >
+
+        <ImageButton
+            android:id="@+id/buttonMute"
+            android:layout_width="51dp"
+            android:layout_height="45dp"
+            android:src="@drawable/ic_mute" />
+
+        <SeekBar
+            android:id="@+id/seekBar1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.77"
+            android:progress="50" />
+    </LinearLayout>
+
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent" >
+        android:id="@+id/Layout2"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Layout1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" >
 
-        <TextView
-            android:id="@+id/Nom"
+        <EditText
+            android:id="@+id/EditText01"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:cursorVisible="false"
+            android:editable="false"
+            android:gravity="center"
+            android:textSize="20sp" >
+
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/buttonOk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:gravity="fill"
-            android:text="Télécommande"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:id="@+id/Layout1"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/Nom"
-            android:layout_below="@+id/Nom"
-            android:layout_marginTop="15dp" >
-
-            <ImageButton
-                android:id="@+id/buttonMute"
-                android:layout_width="51dp"
-                android:layout_height="45dp"
-                android:src="@drawable/ic_mute" />
-
-            <SeekBar
-                android:id="@+id/seekBar1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.77"
-                android:progress="50" />
-        </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/Layout2"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/Layout1"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp" >
-
-            <EditText
-                android:id="@+id/EditText01"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:cursorVisible="false"
-                android:editable="false"
-                android:gravity="center"
-                android:textSize="20sp" >
-
-                <requestFocus />
-            </EditText>
-
-            <Button
-                android:id="@+id/buttonOk"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/EditText01"
-                android:text="OK" />
-        </RelativeLayout>
-
-        <GridLayout
-            android:id="@+id/Layout3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/Layout1"
-            android:layout_below="@+id/Layout2"
-            android:columnCount="3"
-            android:orientation="horizontal" >
-
-            <Button
-                android:id="@+id/button1"
-                android:layout_weight="2"
-                android:text="1" />
-
-            <Button
-                android:id="@+id/button2"
-                android:text="2" />
-
-            <Button
-                android:id="@+id/button3"
-                android:text="3" />
-
-            <Button
-                android:id="@+id/button4"
-                android:text="4" />
-
-            <Button
-                android:id="@+id/button5"
-                android:text="5" />
-
-            <Button
-                android:id="@+id/button6"
-                android:text="6" />
-
-            <Button
-                android:id="@+id/button7"
-                android:text="7" />
-
-            <Button
-                android:id="@+id/button8"
-                android:text="8" />
-
-            <Button
-                android:id="@+id/button9"
-                android:text="9" />
-
-            <Button
-                android:layout_gravity="fill"
-                android:layout_rowSpan="3"
-                android:enabled="false" />
-
-            <Button
-                android:id="@+id/button0"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill"
-                android:text="0" />
-
-            <ImageButton
-                android:id="@+id/back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill"
-                android:src="@drawable/ic_return" />
-        </GridLayout>
-
-        <LinearLayout
-            android:id="@+id/Layout4"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/Layout3"
-            android:layout_below="@+id/Layout3"
-            android:layout_marginTop="23dp" >
-
-            <Button
-                android:id="@+id/moins"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="-" />
-
-            <TextView
-                android:id="@+id/programme"
-                android:layout_width="64dp"
-                android:layout_height="20dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="2dp"
-                android:gravity="center"
-                android:lines="3"
-                android:text="P"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/plus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="+" />
-        </LinearLayout>
-
-        
+            android:layout_toRightOf="@id/EditText01"
+            android:text="OK" />
     </RelativeLayout>
 
-</LinearLayout>
+    <GridLayout
+        android:id="@+id/Layout3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/Layout1"
+        android:layout_below="@+id/Layout2"
+        android:columnCount="3"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_weight="2"
+            android:text="1" />
+
+        <Button
+            android:id="@+id/button2"
+            android:text="2" />
+
+        <Button
+            android:id="@+id/button3"
+            android:text="3" />
+
+        <Button
+            android:id="@+id/button4"
+            android:text="4" />
+
+        <Button
+            android:id="@+id/button5"
+            android:text="5" />
+
+        <Button
+            android:id="@+id/button6"
+            android:text="6" />
+
+        <Button
+            android:id="@+id/button7"
+            android:text="7" />
+
+        <Button
+            android:id="@+id/button8"
+            android:text="8" />
+
+        <Button
+            android:id="@+id/button9"
+            android:text="9" />
+
+        <Button
+            android:layout_gravity="fill"
+            android:layout_rowSpan="3"
+            android:enabled="false" />
+
+        <Button
+            android:id="@+id/button0"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill"
+            android:text="0" />
+
+        <ImageButton
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill"
+            android:src="@drawable/ic_return" />
+    </GridLayout>
+
+    <LinearLayout
+        android:id="@+id/Layout4"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/Layout3"
+        android:layout_below="@+id/Layout3"
+        android:layout_marginTop="23dp" >
+
+        <Button
+            android:id="@+id/moins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="-" />
+
+        <TextView
+            android:id="@+id/programme"
+            android:layout_width="64dp"
+            android:layout_height="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="2dp"
+            android:gravity="center"
+            android:lines="3"
+            android:text="P"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="+" />
+    </LinearLayout>
+
+</RelativeLayout>
