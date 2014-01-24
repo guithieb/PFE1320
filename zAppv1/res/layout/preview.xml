@@ -90,7 +90,7 @@
             android:button="@android:drawable/btn_star"
             android:gravity="left"
             android:onClick="addFavoristoDB"
-            android:textColor="@color/white" />
+             />
     </RelativeLayout>
 
     <LinearLayout

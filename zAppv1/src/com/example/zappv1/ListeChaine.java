@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +40,10 @@ import com.example.zappv1.R;
  */
 
 public class ListeChaine extends Fragment{
+	
+	public ListeChaine(){
+		
+	}
 
   public static final String LOG_TAG = "debug";
   private GridView listeChaine;
@@ -55,11 +59,11 @@ public class ListeChaine extends Fragment{
   ChaineAdapter adapter;
 
 
-  public static Fragment newInstance(Context context){
+/*  public static Fragment newInstance(Context context){
     ListeChaine f = new ListeChaine();
 
     return f;
-  }
+  }*/
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 

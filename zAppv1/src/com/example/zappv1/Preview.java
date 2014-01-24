@@ -23,23 +23,9 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 
-import com.example.cloud.ChaineAdapter;
-import com.example.cloud.EPGChaine;
-import com.example.cloud.EPGChaineSerialize;
-import com.example.cloud.EPGNext;
-import com.example.cloud.EPGNextSerialize;
-import com.example.favoris.DataBase;
-import com.example.favoris.FeedReaderDbHelperFavoris;
-import com.example.favoris.FeedReaderContractFavoris.FeedEntry;
-import com.example.remote.BaseApi;
-import com.example.remote.ServerException;
-import com.example.remote.UserInterfaceApi;
-import com.google.gson.Gson;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -51,8 +37,6 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GestureDetectorCompat;
 import android.text.Html;
 import android.util.Log;
@@ -69,6 +53,18 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.cloud.ChaineAdapter;
+import com.example.cloud.EPGChaine;
+import com.example.cloud.EPGChaineSerialize;
+import com.example.cloud.EPGNext;
+import com.example.cloud.EPGNextSerialize;
+import com.example.favoris.FeedReaderContractFavoris.FeedEntry;
+import com.example.favoris.FeedReaderDbHelperFavoris;
+import com.example.remote.BaseApi;
+import com.example.remote.ServerException;
+import com.example.remote.UserInterfaceApi;
+import com.google.gson.Gson;
 
 /**
  * 

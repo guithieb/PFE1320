@@ -8,7 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +33,10 @@ import com.example.zappv1.R;
 
 public class Favoris extends Fragment{
 	
+	public Favoris(){
+		
+	}
+	
 	private ListView listeFavori;
 	private String channels;
 	TextView NonFavori;
@@ -41,11 +45,11 @@ public class Favoris extends Fragment{
 	favorisadapter adapter;
 	EPGChaine item; 
 	private static final String TAG = "MyActivity";
-	public static Fragment newInstance(Context context){
+/*	public static Fragment newInstance(Context context){
 		Favoris f = new Favoris();
     	 
         return f;
-	}
+	}*/
 	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
