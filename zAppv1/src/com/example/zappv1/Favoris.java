@@ -56,7 +56,7 @@ public class Favoris extends Fragment{
         channels = getallDataBase();
         Log.d(TAG,"TASK RIGHT OK"+ channels);
         
-        //affichage de la liste des favoris en fonction de la base de données
+        //affichage d'une pop-up s'il n'y a pas de favoris
         if (channels.equals("")){
         	AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
             builder1.setMessage("Aucun favoris enregistrés.");
@@ -72,6 +72,7 @@ public class Favoris extends Fragment{
             AlertDialog alert11 = builder1.create();
             alert11.show();
         }
+        //affichage si une seule chaîne est en favori
         else if (channels.equals("1")||channels.equals("2")||channels.equals("3")||channels.equals("4")||
         		channels.equals("5")||channels.equals("6")||channels.equals("7")||channels.equals("8")||
         		channels.equals("9")||channels.equals("10")||channels.equals("11")||channels.equals("12")||
@@ -81,12 +82,13 @@ public class Favoris extends Fragment{
         	listeFavori.setAdapter(adapter);
         	refreshFavori();
         }else{
+        	//affichage de toutes les chaînes favorites
         	adapter = new favorisadapter(getActivity(), epgfavoris, this);  
         	listeFavori.setAdapter(adapter);
         	refreshChaine();
         }
         
-      //évenement lorsque que l'on clique sur une chaîne dans la lsite
+      //évenement lorsque qu'on clique sur une chaîne dans la lsite
         listeFavori.setOnItemClickListener(new OnItemClickListener()
         {
           @Override
@@ -101,11 +103,8 @@ public class Favoris extends Fragment{
             intent.putExtra("chaineId", item.getId());
             //envoi de l'id du programme
             intent.putExtra("progid", item.getListeProgrammes().getProgrammes().getId());
-            intent.putExtra("progFin", item.getListeProgrammes().getProgrammes().getFin());
-
-            
-            // Log.d(LOG_TAG,"PROG "+prog.toString());
-             startActivity(intent);
+            intent.putExtra("progFin", item.getListeProgrammes().getProgrammes().getFin());             
+            startActivity(intent);
           }
              
         });
@@ -116,15 +115,18 @@ public class Favoris extends Fragment{
     
     private void refreshChaine() {
     	// TODO Auto-generated method stub
+    	//thread si plusieurs favoris
     	new GetFavorisTask(epgfavoris, adapter, getActivity(), channels).execute();
     	
     	}
     
     private void refreshFavori() {
     	// TODO Auto-generated method stub
+    	//thread si un seul favori
     	new getFavoriTask(epgfavoris, adapter, getActivity(), channels).execute();
     	}
     
+    //récupération de la base de données
 	public String getallDataBase(){
 		String epg = "";
 		ArrayList<DataBase> datas = new ArrayList<DataBase>();
@@ -160,7 +162,7 @@ public class Favoris extends Fragment{
 						cursor.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_ID)));
 				datas.add(chaine);
 			}while(cursor.moveToNext());
-			Log.d(TAG,"FAVORISFA"+ datas.toString());
+			//copie de la base de données dans un String à envoyer au thread
 			for (int i = 0 ; i < datas.size(); i++)
 			{
 				if (epg.equals("")){

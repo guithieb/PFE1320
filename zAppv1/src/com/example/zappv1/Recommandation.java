@@ -71,13 +71,9 @@ public class Recommandation extends Fragment {
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.recommandation, null);
 		listeRecommandation = (ListView) root.findViewById(R.id.chaines);
 
-
+		//on récupère la liste des artistes auprès de la webapp
 		GetDatabaseTask gdbt = new GetDatabaseTask();
 		gdbt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-		//GetDatabaseTask gdbt = new GetDatabaseTask();
-		//gdbt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		
 		return root;
 	}
 
@@ -89,7 +85,7 @@ public class Recommandation extends Fragment {
 		new GetRecoTasks(epgrecommendes, adapter, getActivity(), chaineId).execute();
 	}
 
-
+	//on récupère la liste des artistes auprès de la webapp
 	public class GetDatabaseTask extends AsyncTask<String, Void, String>{
 
 		//Variable connexion BDD
@@ -148,7 +144,7 @@ public class Recommandation extends Fragment {
 				reco = recoSerialize;
 
 			}
-
+			//on récupère les informations en cours des 19 chaînes
 			for (int i = 1; i < 20; i++){
 				getChannelTask gtc = new getChannelTask(epgChaine, getActivity(),Integer.toString(i));
 				gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -157,7 +153,7 @@ public class Recommandation extends Fragment {
 		}
 
 	}
-
+	//récupération des informations en cours d'une chaîne
 	private class getChannelTask extends AsyncTask<String, Void, String> {
 
 		EPGChaine chaine;
@@ -226,7 +222,7 @@ public class Recommandation extends Fragment {
 		}
 
 	}
-
+	//récupération des information d'un programme
 	public class getBaseProgrammeTask extends AsyncTask <String,Void,String>
 	{
 		BaseProgramme bp;
@@ -280,6 +276,7 @@ public class Recommandation extends Fragment {
 				bp = bpz;
 
 				Log.d(TAG,"TVSHOW"+result.toString());
+				//on compare la liste des artistes de la webapp et ceux du programme 
 				if((result.toString().contains("\"firstName\": {}"))||(result.toString().contains("\"ListeArtistes\": {}"))){
 
 
@@ -290,34 +287,14 @@ public class Recommandation extends Fragment {
 						pgFilm = pfs;
 						for (int i = 0; i < reco.getArtists().size(); i++){
 							for (int j = 0; j < pgFilm.getProgramme().getListeArtistes().getArtiste().size(); j++){
-								if (pgFilm.getProgramme().getListeArtistes().getArtiste().get(j).getLastName().equals(reco.getArtists().get(i).getLastName())){
+								if ((pgFilm.getProgramme().getListeArtistes().getArtiste().get(j).getLastName().equals(reco.getArtists().get(i).getLastName()))
+										&& (pgFilm.getProgramme().getListeArtistes().getArtiste().get(j).getFirstName().equals(reco.getArtists().get(i).getFirstName()))){
+									//si ça correspond, on ajoute la chaîne au tableau
 									chainereco.add(channel);
 								}
 							}
 
 						}
-						/*for (int i = 0; i < test.length; i++){
-							for (int j = 0; j < pfs.getProgramme().getListeArtistes().getArtiste().size(); j++){
-								if (pfs.getProgramme().getListeArtistes().getArtiste().get(j).getFirstName().equals(test[i])){
-									chainereco.add(channel);
-								}
-							}
-
-                                }
-                                else {
-                                        if (result.toString().contains("[")){
-                                                ProgrammeFilmSerialize pfs = new Gson().fromJson(result,ProgrammeFilmSerialize.class);
-                                                pgFilm = pfs;
-                                                /*for (int i = 0; i < reco.getArtists().size(); i++){
-                                                        for (int j = 0; j < pfs.getProgramme().getListeArtistes().getArtiste().size(); j++){
-                                                                if (pfs.getProgramme().getListeArtistes().getArtiste().get(j).equals(reco2.getArtists().get(i))){
-                                                                        chainereco.add(channel);
-                                                                }
-                                                        }
-
-
-
-						}*/
 					}
 
 
@@ -325,7 +302,8 @@ public class Recommandation extends Fragment {
 						ProgrammeMagSerialize pms = new Gson().fromJson(result,ProgrammeMagSerialize.class);
 						pgMag = pms;
 						for (int i = 0; i <reco.getArtists().size(); i++){
-							if (pgMag.getProgramme().getListeArtistes().getArtiste().getLastName().equals(reco.getArtists().get(i).getLastName())){
+							if ((pgMag.getProgramme().getListeArtistes().getArtiste().getLastName().equals(reco.getArtists().get(i).getLastName()))
+									&& (pgMag.getProgramme().getListeArtistes().getArtiste().getFirstName().equals(reco.getArtists().get(i).getFirstName()))){
 								chainereco.add(channel);
 							}
 							if (pgMag == null){Log.d(TAG,"PGMAG null");}
@@ -339,28 +317,20 @@ public class Recommandation extends Fragment {
                                                         if (pms.getProgramme().getListeArtistes().getArtiste().equals(reco2.getArtists().get(i))){
                                                                 chainereco.add(channel);
                                                         }*/
-							if (pgMag == null){Log.d(TAG,"PGMAG null");}
-							else {Log.d(TAG,"CHaine" + channel);}
-							if (pgMag.getProgramme().getListeArtistes().getArtiste().getFirstName().equals("Cristina")){
-
-								chainereco.add(channel);
-
-								//Log.d(TAG,"PROGRAMMEID"+chainereco.toString());
-							}
-
-
 						}
 					}
 
-					
-					}
+
 				}
+			}
+			//on récupére le String comprenant les chaînes à afficher
 			chaineId = parsing();
 			counter++;
 			Log.d(TAG,"COUNTER"+counter);
+			//on lance cette partie que quand toutes les chaînes ont été analysées
 			if (counter == 19){
 
-
+				//même algorithme que pour les favoris
 				if (chaineId.isEmpty()){
 					AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
 					builder1.setMessage("Aucunes recommandations enregistrées.");

@@ -78,31 +78,22 @@ import android.widget.Toast;
  */
 
 public class Preview extends Activity implements GestureDetector.OnGestureListener {
-
-	/*** IMAGE Melvin ***/
+	
+	//initialisation des variables
 	private EPGChaine epgChaine;
 	private EPGNext nextprog;
 	private BaseProgramme basePg;
 	private ProgrammeFilm pgFilm;
-	private ProgrammeSerie pgSerie;
 	private ProgrammeMag pgMag;
 
-	/*** PLAYER ZAPP ***/
-	//VideoView playerSurfaceView;
-	// besoin du format 3gp != stream
-	//String videoSrc = "rtsp://v6.cache1.c.youtube.com/CjYLENy73wIaLQkDsLHya4-Z9hMYDSANFEIJbXYtZ29vZ2xlSARSBXdhdGNoYKX4k4uBjbOiUQw=/0/0/0/video.3gp";
 
-
-	// *** Melvin Gesture *** //
 	private static final int SWIPE_MIN_DISTANCE = 120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	private static final String TAG = "MyActivity";
 	public static final String BOX_PREFERENCES = "boxPrefs";
-	//*** Melvin Gesture *** //
 	private String ip;
 	private static final String LOG_TAG = "activity";
-	//private static final String DEFAULT_BOX_URL = "http://192.168.0.24:8080/api.bbox.lan/V0";
 	public static final String SUFFIXE_URL = "/api.bbox.lan/V0";
 	public static String URL_HTTP = "";
 	private Toast toast;
@@ -123,7 +114,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	Bundle extra;
 	ArrayList<EPGChaine> epg = new ArrayList<EPGChaine>();
 	private static final String DEBUG_TAG = "Gestures";
-	private ChaineAdapter adapter;
 	private GestureDetectorCompat mDetector; 
 	int id;
 	String progId;
@@ -132,6 +122,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		//création de la vue et connexion des variables avec leur "clones" xml
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preview);
 
@@ -165,11 +156,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		// GestureDetector.OnGestureListener
 		//mDetector = new GestureDetectorCompat(this,this);
 
-		//URL url = new URL("http://213.139.122.233/res/chaines/1.png");
-		//Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-		//ImageView imageView = (ImageView) findViewById(R.id.Picture);
-		//imageView.setImageBitmap(bmp);
-
 		//Récuperation du nom de la chaine envoyé dans la vue ListeChaine
 		Bundle extra = getIntent().getExtras();
 		extra = getIntent().getExtras();
@@ -201,22 +187,14 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		Log.d(TAG,"IP"+ip);
 
 
-		/*** OPEN DATABASE ***/
-		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
+		new FeedReaderDbHelperFavoris(getApplicationContext());
 		Log.d(TAG,"BDD OPEN");
 		if (isInDB(Integer.toString(id)))
 		{
 			checkboxfavoris.setChecked(true);
 		}
 		else checkboxfavoris.setChecked(false);
-		/*checkboxfavoris.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
-			}
-		});*/
+		
 		play.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
@@ -242,7 +220,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				case 9: sendKeyPressed(UserInterfaceApi.CHANNEL_9);
 				break;
 				case 11 : 
-					//final CountDownLatch countdownlatch = new CountDownLatch(2);
 					sendKeyPressed(UserInterfaceApi.CHANNEL_1);
 					sendKeyPressed(UserInterfaceApi.CHANNEL_1);
 					break;
@@ -275,7 +252,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				default : break;
 
 				}
-				// Perform action on click
 			}
 		});
 	}
@@ -288,9 +264,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 	//Appel de la fonction SendKey de la classe UserIntefaceApi pour pouvoir envoyer les commande de remote
 	private class SendKeyPressedTask extends AsyncTask<String, Void, String> {
-		private Exception mException = null;
-
-
 		//Fonction obligatoire dans un AsynTask, réalise le traitement de manière asynchrone dans un thread séparé
 		@Override
 		protected String doInBackground(String... params) {
@@ -298,7 +271,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				UserInterfaceApi.sendKey(params[0], params[1], UserInterfaceApi.TYPE_KEY_PRESSED);
 				return params[1];
 			} catch (ServerException e) {
-				mException = e;
 				return params[1];
 			}
 		}     
@@ -373,7 +345,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
 		}
 		
-		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
+		new FeedReaderDbHelperFavoris(getApplicationContext());
 		Log.d(TAG,"BDD OPEN");
 		if (isInDB(Integer.toString(id)))
 		{
@@ -407,7 +379,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
 		}
 		
-		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
+		new FeedReaderDbHelperFavoris(getApplicationContext());
 		Log.d(TAG,"BDD OPEN");
 		if (isInDB(Integer.toString(id)))
 		{
@@ -435,18 +407,17 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
+	//classe permettant de récupérer les informations en cours d'une chaîne précise
+	//et envoyer les valeurs reçues aux views xml de preview.xml
 	private class getChannelTask extends AsyncTask<String, Void, String> {
 
 		EPGChaine chaine;
 
-		BaseAdapter adapter;
-		Context context;
 		String id;
 		public static final String LOG_TAG = "debug";
 		public getChannelTask(EPGChaine chaine, Context c,String id) {
 			this.chaine = chaine;
-			this.context = c;
 			this.id=id;
 		}
 
@@ -555,17 +526,17 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 	}
 	/*** END ACTION MENU ***/
-
+	
+	//classe permettant de récupérer les informations d'un programme précis
+	//et envoyer les valeurs reçues aux views xml de preview.xml
 	private class getBaseProgrammeTask extends AsyncTask <String,Void,String>
 	{
 		BaseProgramme bp;
-		Context context;
 		String id;
 
 		public getBaseProgrammeTask(BaseProgramme b, Context context, String id)
 		{
 			this.bp = b;
-			this.context = context;
 			this.id = id;
 		}
 
@@ -762,14 +733,11 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 		EPGNext prog;
 
-		BaseAdapter adapter;
-		Context context;
 		String id;
 		String fin;
 		public static final String LOG_TAG = "debug";
 		public getNextProgramTask(EPGNext nextprog, Context c,String id, String fin) {
 			this.prog = nextprog;
-			this.context = c;
 			this.id=id;
 			this.fin = fin;
 		}
@@ -839,9 +807,10 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			}
 		}
 	}
-
+	//clickListener des favoris
 	public void addFavoristoDB(View view) {
-		//delete favori if click and true
+		//si on clique sur l'étoile et que la chaîne est un favori
+		//on l'enlève des favoris
 		if(isInDB(Integer.toString(id)))
 		{
 			deleteFavoris(Integer.toString(id));
@@ -849,6 +818,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			toast.show();
 			checkboxfavoris.setChecked(false);
 		}else
+			//si on clique sur l'étoile et que la chaîne n'est pas un favori
+			//on l'ajoute aux favoris
 		{
 			// Do something in response to button
 
@@ -860,6 +831,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		}
 	}
 	
+	//fonction qui vérifie si la chaîne fait partie des favoris
 	public Boolean isInDB(String imdbId){
 		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
 		SQLiteDatabase db = mDbHelper.getReadableDatabase();
@@ -875,6 +847,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		}
 	}
 	
+	//fonction qui enlève la chaîne des favoris
 	public void deleteFavoris(String channel){
 		Log.d(TAG,"BDD TRANSFERT" + channel);
 		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
@@ -886,6 +859,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		db.close();
 	}
 	
+	//fonction qui ajoute la chaîne aux favoris
 	public void saveFavoris(String channel){
 		// Gets the data repository in write mode
 		Log.d(TAG,"BDD TRANSFERT" + channel);
@@ -896,9 +870,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		ContentValues values = new ContentValues();
 		values.put(FeedEntry.COLUMN_NAME_ID , channel );
 
-		// Insert the new row, returning the primary key value of the new row
-		long newRowId;
-		newRowId = db.insert(
+		db.insert(
 				FeedEntry.TABLE_NAME,
 				FeedEntry.COLUMN_NAME_ID,
 				values);

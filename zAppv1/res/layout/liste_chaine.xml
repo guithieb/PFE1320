@@ -2,18 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="#01435B" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="46dip"  
-        android:layout_gravity="top|center"  
-        android:gravity="center"                                     
-        android:textStyle="bold"
-        android:text="Liste des chaines" />
-
+ 
      	<GridView
      	    android:id="@+id/chaines"
     		android:layout_width="fill_parent" 
@@ -23,7 +15,8 @@
 		    android:verticalSpacing="10dp"
 		    android:horizontalSpacing="10dp"
 		    android:stretchMode="columnWidth"
-		    android:gravity="center" >
+		    android:gravity="center"
+		    android:layout_marginTop="10dp" >
 
         </GridView>
      

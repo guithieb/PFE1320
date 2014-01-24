@@ -41,7 +41,6 @@ import com.example.zappv1.R;
 
 public class ListeChaine extends Fragment{
 
-  public static final String LOG_TAG = "debug";
   private GridView listeChaine;
   ArrayList<EPGChaine> epgChaines = new ArrayList<EPGChaine>();
   final String ID_CHAINE = "id_chaine";
@@ -49,9 +48,6 @@ public class ListeChaine extends Fragment{
   final String baseurlEPG = "http://openbbox.flex.bouyguesbox.fr:81/V0";
   EPGChaine id;
   ArrayList<EPGChaines> epgs = new ArrayList<EPGChaines>();
- 
-  //CloudApi epg;
-  //final String baseurlEPG = "http://openbbox.flex.bouyguesbox.fr:81/V0";
   ChaineAdapter adapter;
 
 
@@ -87,10 +83,7 @@ public class ListeChaine extends Fragment{
         //envoi de l'id du programme
         intent.putExtra("progid", item.getListeProgrammes().getProgrammes().getId());
         intent.putExtra("progFin", item.getListeProgrammes().getProgrammes().getFin());
-
-        
-        // Log.d(LOG_TAG,"PROG "+prog.toString());
-         startActivity(intent);
+        startActivity(intent);
       }
          
     });
