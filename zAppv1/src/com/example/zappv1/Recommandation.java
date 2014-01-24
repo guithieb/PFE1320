@@ -77,13 +77,7 @@ public class Recommandation extends Fragment {
 
 		//GetDatabaseTask gdbt = new GetDatabaseTask();
 		//gdbt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-
-		for (int i = 1; i < 20; i++){
-			getChannelTask gtc = new getChannelTask(epgChaine, getActivity(),Integer.toString(i));
-			gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		}
-
+		
 		return root;
 	}
 
@@ -155,7 +149,10 @@ public class Recommandation extends Fragment {
 
 			}
 
-
+			for (int i = 1; i < 20; i++){
+				getChannelTask gtc = new getChannelTask(epgChaine, getActivity(),Integer.toString(i));
+				gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			}
 
 		}
 
@@ -355,38 +352,40 @@ public class Recommandation extends Fragment {
 						}
 					}
 
-					chaineId = parsing();
-					counter++;
-					if (counter == 19){
+					
+					}
+				}
+			chaineId = parsing();
+			counter++;
+			Log.d(TAG,"COUNTER"+counter);
+			if (counter == 19){
 
 
-						if (chaineId.isEmpty()){
-							AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
-							builder1.setMessage("Aucun favoris enregistrés.");
-							builder1.setCancelable(true);
-							builder1.setPositiveButton("Ok",
-									new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int id) {
-									dialog.cancel();
-								}
-							});
-
-
-							AlertDialog alert11 = builder1.create();
-							alert11.show();
-						}else
-						{
-							if ((chaineId.length() == 1)||(chaineId.length() == 2)){
-								adapter = new RecommandationAdapter(getActivity(), epgrecommendes, this);  
-								listeRecommandation.setAdapter(adapter);
-								refreshReco();
-							}
-							else{
-								adapter = new RecommandationAdapter(getActivity(), epgrecommendes, this);  
-								listeRecommandation.setAdapter(adapter);
-								refreshrecos();
-							}
+				if (chaineId.isEmpty()){
+					AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+					builder1.setMessage("Aucunes recommandations enregistrées.");
+					builder1.setCancelable(true);
+					builder1.setPositiveButton("Ok",
+							new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.cancel();
 						}
+					});
+
+
+					AlertDialog alert11 = builder1.create();
+					alert11.show();
+				}else
+				{
+					if ((chaineId.length() == 1)||(chaineId.length() == 2)){
+						adapter = new RecommandationAdapter(getActivity(), epgrecommendes, this);  
+						listeRecommandation.setAdapter(adapter);
+						refreshReco();
+					}
+					else{
+						adapter = new RecommandationAdapter(getActivity(), epgrecommendes, this);  
+						listeRecommandation.setAdapter(adapter);
+						refreshrecos();
 					}
 				}
 			}
