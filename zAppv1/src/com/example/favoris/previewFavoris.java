@@ -349,7 +349,14 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 
 	protected void onSwipeLeft() { 
 		// do your stuff here
-		id++;
+		if (checkboxfavoris.isChecked()){
+			id++;
+		}else{
+			id++;
+			for (int i =id-1; i < parse.length-1 ; i++) {
+				parse[i] = parse[i+1];
+			}
+		}
 		if(id>=parse.length) id=id-parse.length;
 		getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),parse[id]);
 		gtc.execute();
