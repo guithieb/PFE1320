@@ -28,7 +28,6 @@ import android.widget.TextView;
 
 public class ChaineAdapter extends BaseAdapter {
 	private class ChView{
-		//TextView chaineName;
 		TextView progName;
 		ImageView photo;
 

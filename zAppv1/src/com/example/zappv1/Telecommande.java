@@ -35,14 +35,15 @@ public class Telecommande extends Activity{
 	Button moins, plus;
 	ImageButton back,mute;
 	Toast toast;  
-	
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) { 
+		//initialisation de la vue Télécommande
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.telecommande);
-		
-		
+
+
 		seekBar1 = (SeekBar) findViewById(R.id.seekBar1);
 		button0 = (Button) findViewById(R.id.button0);
 		button1 = (Button) findViewById(R.id.button1);
@@ -61,24 +62,24 @@ public class Telecommande extends Activity{
 		mute = (ImageButton) findViewById(R.id.buttonMute);
 		ecran = (EditText) findViewById(R.id.EditText01);
 
-	   	 
+
 		seekBar1.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-             int progressChanged = 0;
-  
-             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
-                 progressChanged = progress;
-             }
-  
-             public void onStartTrackingTouch(SeekBar seekBar) {
-                 // TODO Auto-generated method stub
-             }
-  
-             public void onStopTrackingTouch(SeekBar seekBar) {
-                 /*Toast.makeText(Reglages.this,"seek bar progress:"+progressChanged,
+			int progressChanged = 0;
+
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+				progressChanged = progress;
+			}
+
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				// TODO Auto-generated method stub
+			}
+
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				/*Toast.makeText(Reglages.this,"seek bar progress:"+progressChanged,
                          Toast.LENGTH_SHORT,test).show();*/
-                 Log.d(TAG,"seek bar progress:"+progressChanged);
-             }
-         });
+				Log.d(TAG,"seek bar progress:"+progressChanged);
+			}
+		});
 
 		//récupérer l'IP de la box
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -147,6 +148,7 @@ public class Telecommande extends Activity{
 		buttonOk.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if(ecran.getText().toString().isEmpty()){
+					//message d'erreur si aucune chaîne est envoyée
 					AlertDialog.Builder builder1 = new AlertDialog.Builder(v.getContext());
 					builder1.setMessage("Renseigner une chaîne");
 					builder1.setCancelable(true);
@@ -160,7 +162,7 @@ public class Telecommande extends Activity{
 					alert.show();
 				}else{
 
-
+					//envoi du numéro de la chaîne à la télé
 					switch(Integer.parseInt(ecran.getText().toString()))
 					{
 
@@ -183,7 +185,6 @@ public class Telecommande extends Activity{
 					case 9: sendKeyPressed(UserInterfaceApi.CHANNEL_9);
 					break;
 					case 11 : 
-						//final CountDownLatch countdownlatch = new CountDownLatch(2);
 						sendKeyPressed(UserInterfaceApi.CHANNEL_1);
 						sendKeyPressed(UserInterfaceApi.CHANNEL_1);
 						break;
@@ -211,14 +212,16 @@ public class Telecommande extends Activity{
 					case 19:  sendKeyPressed(UserInterfaceApi.CHANNEL_1);
 					sendKeyPressed(UserInterfaceApi.CHANNEL_9);
 					break;
-					
+
 
 
 					default : break;
 
 					}
 					// Perform action on click
-				}}
+				}
+				ecran.setText("");
+			}
 		});
 		//change channel (next & preview)
 		plus.setOnClickListener(new View.OnClickListener() {
@@ -226,19 +229,19 @@ public class Telecommande extends Activity{
 				sendKeyPressed(UserInterfaceApi.CHANNEL_UP);
 			}
 		});
-		
+
 		moins.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				sendKeyPressed(UserInterfaceApi.CHANNEL_DOWN);
 			}
 		});
-		
+		//met le volume à nul
 		mute.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				sendKeyPressed(UserInterfaceApi.CHANNEL_MUTE);
-				
+
 			}
 		});
 
@@ -290,6 +293,7 @@ public class Telecommande extends Activity{
 		}
 	}
 	public void DeleteClick(){
+		//suppresion d'un chiffre du numéro dans l'EditText
 		String delete = ecran.getText().toString();
 		if (ecran.getText().toString().length()==2){
 			String[] nouveau = delete.split("");
@@ -310,8 +314,6 @@ public class Telecommande extends Activity{
 	private class SendKeyPressedTask extends AsyncTask<String, Void, String> {
 		private Exception mException = null;
 
-
-		//Fonction obligatoire dans un AsynTask, réalise le traitement de manière asynchrone dans un thread séparé
 		@Override
 		protected String doInBackground(String... params) {
 			try {

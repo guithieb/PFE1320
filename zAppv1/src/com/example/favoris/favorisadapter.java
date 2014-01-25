@@ -27,7 +27,6 @@ import android.widget.TextView;
 
 public class favorisadapter extends BaseAdapter {
 	private class ChView{
-		//TextView chaineName;
 		TextView progName;
 		ImageView photo;
 	}

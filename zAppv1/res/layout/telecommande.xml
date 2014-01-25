@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="#222222" >
 
     <TextView
         android:id="@+id/Nom"
@@ -12,7 +13,8 @@
         android:gravity="fill"
         android:text="Télécommande"
         android:textSize="30sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="@color/white" />
 
     <LinearLayout
         android:id="@+id/Layout1"
@@ -26,7 +28,7 @@
             android:id="@+id/buttonMute"
             android:layout_width="51dp"
             android:layout_height="45dp"
-            android:src="@drawable/ic_mute" />
+            android:src="@drawable/mutedark" />
 
         <SeekBar
             android:id="@+id/seekBar1"
@@ -43,7 +45,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/Layout1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" >
+        android:layout_marginTop="16dp" 
+        >
 
         <EditText
             android:id="@+id/EditText01"
@@ -52,7 +55,9 @@
             android:cursorVisible="false"
             android:editable="false"
             android:gravity="center"
-            android:textSize="20sp" >
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textStyle="bold" >
 
             <requestFocus />
         </EditText>
@@ -62,7 +67,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/EditText01"
-            android:text="OK" />
+            android:text="OK"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <GridLayout
@@ -77,39 +84,57 @@
         <Button
             android:id="@+id/button1"
             android:layout_weight="2"
-            android:text="1" />
+            android:text="1"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/button2"
-            android:text="2" />
+            android:text="2"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/button3"
-            android:text="3" />
+            android:text="3"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/button4"
-            android:text="4" />
+            android:text="4"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/button5"
-            android:text="5" />
+            android:text="5"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/button6"
-            android:text="6" />
+            android:text="6"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/button7"
-            android:text="7" />
+            android:text="7"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/button8"
-            android:text="8" />
+            android:text="8"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/button9"
-            android:text="9" />
+            android:text="9"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
         <Button
             android:layout_gravity="fill"
@@ -120,14 +145,16 @@
             android:id="@+id/button0"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
-            android:text="0" />
+            android:text="0"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
-            android:src="@drawable/ic_return" />
+            android:src="@drawable/backdark" />
     </GridLayout>
 
     <LinearLayout
@@ -143,7 +170,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="-" />
+            android:text="-"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/programme"
@@ -155,14 +184,17 @@
             android:lines="3"
             android:text="P"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/plus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="+" />
+            android:text="+"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </RelativeLayout>
