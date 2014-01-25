@@ -32,7 +32,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +43,10 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 public class Recommandation extends Fragment {
+	
+	public Recommandation(){
+		
+	}
 
 	ObjectReco reco;
 	private EPGChaine epgChaine;
@@ -59,13 +63,13 @@ public class Recommandation extends Fragment {
 	private static final String LOG_TAG = "activity";
 	int counter = 1;
 
-
+/*
 	public static Fragment newInstance(Context context){
 		Recommandation f = new Recommandation();
 
 		return f;
 	}
-
+*/
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.recommandation, null);
