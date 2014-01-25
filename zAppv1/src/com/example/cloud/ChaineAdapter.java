@@ -2,11 +2,11 @@ package com.example.cloud;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import com.example.zappv1.ListeChaine;
 import com.example.zappv1.Preview;
@@ -24,53 +24,55 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class ChaineAdapter extends BaseAdapter {
 	private class ChView{
 		TextView progName;
 		ImageView photo;
+		TextView debut;
+		ProgressBar duree;
 
-		
 	}
-	
+
 	// constructeur pour ChView ?
 	private ArrayList<EPGChaine> datas;
 	Context context;
 	ListeChaine listeChaine;
 	public static final String LOG_TAG = "debug";
 	private LayoutInflater inflater;
-	
+
 	public ChaineAdapter (Context context, ArrayList<EPGChaine> datas,ListeChaine listeChaine){
 		inflater = LayoutInflater.from(context);
 		this.context = context;
 		this.datas = datas;
 		this.listeChaine = listeChaine;
 	}	
-	
+
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
 		return datas.size();
-		
+
 	}
-	
-	
-public boolean isEmpty()
-{
-	if(datas.size()==0) return true;
-	return false;
-}
+
+
+	public boolean isEmpty()
+	{
+		if(datas.size()==0) return true;
+		return false;
+	}
 
 	@Override
 	public Object getItem(int position) {
 
-	return datas.get(position);
+		return datas.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		
+
 		return position;
 	}
 
@@ -78,7 +80,7 @@ public boolean isEmpty()
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		ChView ch;
-		
+
 		if(convertView == null)
 		{ 
 			ch = new ChView();
@@ -86,74 +88,104 @@ public boolean isEmpty()
 			//ch.chaineName = (TextView) convertView.findViewById(R.id.chaineName);
 			ch.progName = (TextView) convertView.findViewById(R.id.progName);
 			ch.photo = (ImageView) convertView.findViewById(R.id.Picture);
+			ch.debut = (TextView) convertView.findViewById(R.id.debut);
+			ch.duree = (ProgressBar) convertView.findViewById(R.id.duree);
 			convertView.setTag(ch);
-			
-	
+
+
 		} else {
 			ch = (ChView) convertView.getTag();
 		}
-		
+
 		final EPGChaine application = datas.get(position);
 
 		//ch.chaineName.setText(application.getNom());
 		Log.d(LOG_TAG, "id" +application.getId());
-		
-		 if (application.getNom().equals("Canal+")) {
-		 	ch.photo.setImageResource(R.drawable.canal);
+
+		if (application.getNom().equals("Canal+")) {
+			ch.photo.setImageResource(R.drawable.canal);
 		}
-		 else if (application.getNom().equals("i Télé")){
-		 	ch.photo.setImageResource(R.drawable.itele);
-		 } else {
-				BitmapWorkerTask task = new BitmapWorkerTask(ch.photo);
-				task.execute(application.getLogo());
-		 }
-		 
-		
+		else if (application.getNom().equals("i Télé")){
+			ch.photo.setImageResource(R.drawable.itele);
+		} else {
+			BitmapWorkerTask task = new BitmapWorkerTask(ch.photo);
+			task.execute(application.getLogo());
+		}
+
+
 		if(application.getListeProgrammes().getProgrammes().getNom().contains("&#4")){
 			String[] parseNom = application.getListeProgrammes().getProgrammes().getNom().split("&");
 			ch.progName.setText(Html.fromHtml(parseNom[0]));
 		}
 		else {ch.progName.setText(Html.fromHtml(application.getListeProgrammes().getProgrammes().getNom()));}
+		String[] parse = application.getListeProgrammes().getProgrammes().getDebut().split("T");
+		String[] debutProg = parse[1].split("Z");
+		ch.debut.setText(debutProg[0]);
+		
+		//analyse pour la progress bar
+		//heure de la fin
+		String[] parsefin = application.getListeProgrammes().getProgrammes().getFin().split("T");
+		String[] finProg = parsefin[1].split("Z");
+		
+		//heure de début et fin en minute et heure
+		String[] progdebut = debutProg[0].split(":");
+		String[] progfin = finProg[0].split(":");
+		
+		int horairedebut = (Integer.parseInt(progdebut[0])*60)+Integer.parseInt(progdebut[1]);
+		Log.d(LOG_TAG,"TOTALdebut "+Integer.toString(horairedebut));
+		int horairefin = (Integer.parseInt(progfin[0])*60)+Integer.parseInt(progfin[1]);
+		Log.d(LOG_TAG,"TOTALfin "+Integer.toString(horairefin));
+		int dureetotale = horairefin - horairedebut;
+		Log.d(LOG_TAG,"TOTAL "+Integer.toString(dureetotale));
+		//heure actuelle en minutes
+		Calendar c = Calendar.getInstance(); 
+		int heure = c.get(Calendar.HOUR_OF_DAY);
+		int minutes = c.get(Calendar.MINUTE);
+		//difference entre heure actuelle et debut programme
+		int difference = (minutes+heure*60) - horairedebut;
+		//ratio pour progress bar
+		double ratio = (double) difference/ (double) (dureetotale);
+		ch.duree.setProgress((int) (ratio*100));
 		return convertView;
 	}
 
 
 
-class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
-  
-  private final WeakReference<ImageView> imageViewReference;
-  private String data;
+	class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
 
-  public BitmapWorkerTask(ImageView imageView) {
-      // Use a WeakReference to ensure the ImageView can be garbage
-      // collected
-      imageViewReference = new WeakReference<ImageView>(imageView);
-  }
+		private final WeakReference<ImageView> imageViewReference;
+		private String data;
 
-  // Decode image in background.
-  protected Bitmap doInBackground(String... params) {
-      data = params[0];
-      try {
-         return BitmapFactory.decodeStream((InputStream) new URL(data)
-                  .getContent());
-      } catch (MalformedURLException e) {
-          e.printStackTrace();
-      } catch (IOException e) {
-          e.printStackTrace();
-      }
-      return null;
-  }
+		public BitmapWorkerTask(ImageView imageView) {
+			// Use a WeakReference to ensure the ImageView can be garbage
+			// collected
+			imageViewReference = new WeakReference<ImageView>(imageView);
+		}
 
-  // Once complete, see if ImageView is still around and set bitmap
-  @Override
-  protected void onPostExecute(Bitmap bitmap) {
-      if (imageViewReference != null && bitmap != null) {
-          final ImageView imageView = imageViewReference.get();
-          if (imageView != null) {
-              imageView.setImageBitmap(bitmap);
-          }
-      }
-  }
+		// Decode image in background.
+		protected Bitmap doInBackground(String... params) {
+			data = params[0];
+			try {
+				return BitmapFactory.decodeStream((InputStream) new URL(data)
+				.getContent());
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
 
-}
+		// Once complete, see if ImageView is still around and set bitmap
+		@Override
+		protected void onPostExecute(Bitmap bitmap) {
+			if (imageViewReference != null && bitmap != null) {
+				final ImageView imageView = imageViewReference.get();
+				if (imageView != null) {
+					imageView.setImageBitmap(bitmap);
+				}
+			}
+		}
+
+	}
 }
