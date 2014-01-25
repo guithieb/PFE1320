@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -43,7 +44,13 @@ public class Telecommande extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.telecommande);
 
-
+		// Retour sur la vue précédente
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
+		getActionBar().setDisplayShowTitleEnabled(false);
+		getActionBar().setTitle("Retour");
+		getActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
+		
 		seekBar1 = (SeekBar) findViewById(R.id.seekBar1);
 		button0 = (Button) findViewById(R.id.button0);
 		button1 = (Button) findViewById(R.id.button1);

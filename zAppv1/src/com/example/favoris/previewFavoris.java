@@ -33,6 +33,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -128,6 +129,8 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 		/*** ACTION BAR ***/
 		ActionBar actionbar = getActionBar();
 		actionbar.show();
+		getActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
+		
 		textChaine = (TextView)findViewById(R.id.chaineName);
 		textNom = (TextView)findViewById(R.id.progNom);
 		textDescription = (TextView)findViewById(R.id.progDescription);
