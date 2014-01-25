@@ -34,6 +34,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -124,7 +125,11 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 		/*** ACTION BAR ***/
 		ActionBar actionbar = getActionBar();
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
 		actionbar.show();
+		// Code en dur avec la couleur #303030
+		getActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
 
 		textChaine = (TextView)findViewById(R.id.chaineName);
 		textNom = (TextView)findViewById(R.id.progNom);
@@ -587,8 +592,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			break;
 		}
 
-
-		return true;
+		return super.onOptionsItemSelected(item);
+		//return true;    // erreur ...
 	}
 
 	public void makeToast(String message) {

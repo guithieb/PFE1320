@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.ColorDrawable;
 import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,6 +56,10 @@ public class Favoris extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.favoris, null);
         listeFavori = (ListView) root.findViewById(R.id.chaines);
+        
+		/// Code en dur avec la couleur #303030
+		getActivity().getActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
+		
         //récupération du contenu de la base de données
         
         channels = getallDataBase();

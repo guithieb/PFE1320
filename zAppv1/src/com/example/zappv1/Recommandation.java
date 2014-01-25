@@ -30,6 +30,7 @@ import com.google.gson.Gson;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -43,9 +44,9 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 public class Recommandation extends Fragment {
-	
+
 	public Recommandation(){
-		
+
 	}
 
 	ObjectReco reco;
@@ -63,23 +64,28 @@ public class Recommandation extends Fragment {
 	private static final String LOG_TAG = "activity";
 	int counter = 1;
 
-/*
+	/*
 	public static Fragment newInstance(Context context){
 		Recommandation f = new Recommandation();
 
 		return f;
 	}
-*/
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.recommandation, null);
 		listeRecommandation = (ListView) root.findViewById(R.id.chaines);
 
+		/// Code en dur avec la couleur #303030
+		getActivity().getActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
+		
 		//on récupère la liste des artistes auprès de la webapp
 		GetDatabaseTask gdbt = new GetDatabaseTask();
 		gdbt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		return root;
 	}
+
+
 
 	private void refreshReco(){
 		new getRecoTask(epgrecommendes, adapter, getActivity(), chaineId).execute();
