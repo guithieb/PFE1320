@@ -349,7 +349,14 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 
 	protected void onSwipeLeft() { 
 		// do your stuff here
-		id++;
+		if (checkboxfavoris.isChecked()){
+			id++;
+		}else{
+			id++;
+			for (int i =id-1; i < parse.length-1 ; i++) {
+				parse[i] = parse[i+1];
+			}
+		}
 		if(id>=parse.length) id=id-parse.length;
 		getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),parse[id]);
 		gtc.execute();
@@ -371,7 +378,7 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 		
 		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
 		Log.d(TAG,"BDD OPEN");
-		if (isInDB(Integer.toString(id)))
+		if (isInDB(parse[id]))
 		{
 			checkboxfavoris.setChecked(true);
 		}
@@ -382,9 +389,16 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 	protected void onSwipeRight() {   
 		// do your stuff here
 		//sendKeyPressed(UserInterfaceApi.CHANNEL_UP); 
-
-		id--;
-		if(id<=0) id=id+parse.length;
+		if (checkboxfavoris.isChecked()){
+			id--;
+		}else{
+			id--;
+			for (int i =id+1; i < parse.length-1 ; i++) {
+				parse[i] = parse[i+1];
+			}
+		}
+		
+		if(id<0) id=id+parse.length;
 		getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),parse[id]);
 		gtc.execute();
 		Log.d(TAG,"TASK OK");
@@ -405,7 +419,7 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 		
 		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
 		Log.d(TAG,"BDD OPEN");
-		if (isInDB(Integer.toString(id)))
+		if (isInDB(parse[id]))
 		{
 			checkboxfavoris.setChecked(true);
 		}
