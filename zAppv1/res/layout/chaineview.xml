@@ -5,29 +5,86 @@
     android:background="@drawable/list_selector"
     android:orientation="horizontal" >
 
-    
-    
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-         >
-        
-        <ImageView
-        android:id="@+id/Picture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="fitCenter"
-         />
+        android:layout_height="72dp" >
 
-		 <TextView 
-            android:id="@+id/progName"
-            android:textStyle="bold"
+        <RelativeLayout
+            android:id="@+id/logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/Picture"
-            />	 
-		
-	</RelativeLayout>
- </LinearLayout>
+            android:layout_centerVertical="true" >
 
+            <ImageView
+                android:id="@+id/Picture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:scaleType="fitCenter" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/logo" >
+
+            <RelativeLayout
+                android:id="@+id/nomprog"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="5" >
+
+                <TextView
+                    android:id="@+id/progName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/temps"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/nomprog"
+                android:layout_weight="5" >
+
+                <TextView
+                    android:id="@+id/debut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold" />
+
+                <ProgressBar
+                    android:id="@+id/duree"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/debut"
+                    android:max="100" />
+            </RelativeLayout>     
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ancre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" >
+
+                <ImageView
+                    android:id="@+id/ancre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ancre" />
+            </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

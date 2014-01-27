@@ -45,7 +45,7 @@ public class ListeChaine extends Fragment{
 		
 	}
 
-  private GridView listeChaine;
+  private ListView listeChaine;
   ArrayList<EPGChaine> epgChaines = new ArrayList<EPGChaine>();
   final String ID_CHAINE = "id_chaine";
   EPGChaine item;  
@@ -65,7 +65,7 @@ public class ListeChaine extends Fragment{
   public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
     ViewGroup root = (ViewGroup) inflater.inflate(R.layout.liste_chaine, container,false);
     //Initialisation de la List qui regroupe tout les noms des chaines
-    listeChaine = (GridView) root.findViewById(R.id.chaines);
+    listeChaine = (ListView) root.findViewById(R.id.chaines);
     adapter = new ChaineAdapter(getActivity(), epgChaines, this);  
     listeChaine.setAdapter(adapter);
     refreshChaine();
@@ -87,7 +87,9 @@ public class ListeChaine extends Fragment{
         //envoi de l'id du programme
         intent.putExtra("progid", item.getListeProgrammes().getProgrammes().getId());
         intent.putExtra("progFin", item.getListeProgrammes().getProgrammes().getFin());
+        intent.setClass(getActivity(), Preview.class);
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
       }
          
     });
