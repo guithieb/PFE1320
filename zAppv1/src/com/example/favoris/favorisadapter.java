@@ -112,7 +112,11 @@ public class favorisadapter extends BaseAdapter {
 
 		if(application.getListeProgrammes().getProgrammes().getNom().contains("&#4")){
 			String[] parseNom = application.getListeProgrammes().getProgrammes().getNom().split("&");
-			ch.progName.setText(Html.fromHtml(parseNom[0]));
+			if (application.getListeProgrammes().getProgrammes().getNom().contains("&apos;")){
+				ch.progName.setText(Html.fromHtml(parseNom[0] + "&" + parseNom[1]));
+			}else{
+				ch.progName.setText(Html.fromHtml(parseNom[0]));
+			}
 		}
 		else {ch.progName.setText(Html.fromHtml(application.getListeProgrammes().getProgrammes().getNom()));}
 		String[] parse = application.getListeProgrammes().getProgrammes().getDebut().split("T");
