@@ -1,5 +1,6 @@
 package com.example.zappv1;
 
+import com.example.type.Type;
 import com.example.zappv1.NavDrawerListAdapter;
 import com.example.zappv1.NavDrawerItem;
 
@@ -103,12 +104,13 @@ public class MainActivity extends Activity {
 	private ActionBarDrawerToggle actionBarDrawerToggle;
 	private int selection = 0;
 	private int oldSelection = -1;
-	final String[] data ={"Liste des chaînes","Favoris","Recommandations"};
+	final String[] data ={"Liste des chaînes","Favoris","Recommandations", "Type"};
 	//Liste des différentes vues liées au drawer
 	final static String[] fragments ={
 		"com.example.zappv1.ListeChaine",
 		"com.example.zappv1.Favoris",
-	"com.example.zappv1.Recommandation"};
+		"com.example.zappv1.Recommandation",
+	"com.example.type.Type"};
 	private static final String TAG = "MyActivity";
 	public static final String BOX_PREFERENCES = "boxPrefs";
 	private String ip;
@@ -183,6 +185,8 @@ public class MainActivity extends Activity {
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
 		// Recommandations
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
+		// Types
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
 
 		// Recycle the typed array
 		navMenuIcons.recycle();
@@ -224,48 +228,9 @@ public class MainActivity extends Activity {
 			// on first time display view for first nav item
 			displayView(0);
 		}
-		/*		
-		 *//*** ACTION BAR ***//*
-		//ActionBar actionbar = getActionBar();
-		//actionbar.show();
-
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActionBar().getThemedContext(), android.R.layout.simple_list_item_1, data);
-
-		//Initialisation du drawer
-		final DrawerLayout drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
-
-		// DrawerToggle (bouton home pour activer/désactiver le navigation drawer ; avec l'icone du drawer)
-		mDrawerToggle = new ActionBarDrawerToggle(this, drawer, R.drawable.ic_list, R.string.drawer_open, R.string.drawer_close);
-		drawer.setDrawerListener(mDrawerToggle);
-		//getActionBar().setDisplayHomeAsUpEnabled(true);
-		//getActionBar().setHomeButtonEnabled(true);
-		updateContent();
-		final ListView navList = (ListView) findViewById(R.id.drawer);
-		navList.setAdapter(adapter);
-		navList.setOnItemClickListener(new OnItemClickListener(){
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, final int pos,long id){
-				drawer.setDrawerListener( new DrawerLayout.SimpleDrawerListener(){
-					@Override
-					public void onDrawerClosed(View drawerView){
-						super.onDrawerClosed(drawerView);
-						FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-						tx.replace(R.id.main, Fragment.instantiate(MainActivity.this, fragments[pos]));
-						tx.commit();
-					}
-				});
-				drawer.closeDrawer(navList);
-			}
-		});
-
-		FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-		tx.replace(R.id.main,Fragment.instantiate(MainActivity.this, fragments[0]));
-		tx.commit();
 
 
-
-
-		  *//*** Module ID IP téléphone ***/
+		  //*** Module ID IP téléphone ***/
 		// On lance la librairie qui gère les devices, avec la callback pour les notifications natives
 		final DeviceWatcher deviceWatcher = DeviceWatcher.getInstance(getApplicationContext());
 		// On crée pour cela un DeviceManager
@@ -379,8 +344,8 @@ public class MainActivity extends Activity {
 		switch (item.getItemId()) {
 		case R.id.action_alarm:
 			intent.setClass(MainActivity.this, Telecommande.class);
-		    startActivity(intent);
-		    overridePendingTransition(R.anim.bottom_in, R.anim.top_out);
+			startActivity(intent);
+			overridePendingTransition(R.anim.bottom_in, R.anim.top_out);
 			break;
 
 		default:
@@ -419,6 +384,9 @@ public class MainActivity extends Activity {
 			fragment = new Recommandation();
 			break;
 
+		case 3:
+			fragment = new Type();
+			break;
 		default:
 			break;
 		}
@@ -458,66 +426,7 @@ public class MainActivity extends Activity {
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
-	/*	private void updateContent() {
-		//getActionBar().setTitle(data[selection]); TODO afficher le MenuItem dans l'ActionBar
-		if(selection != oldSelection)
-		{
-			FragmentTransaction tx = getSupportFragmentManager()
-					.beginTransaction();
-			tx.replace(R.id.main,Fragment.instantiate(MainActivity.this,
-					fragments[selection]));
-			tx.commit();
-			oldSelection = selection;
-		}
 
-	}*/
-	/*
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		Intent intent = new Intent(this, Telecommande.class);
-		if(mDrawerToggle.onOptionsItemSelected(item))
-		{
-			return true;
-		}
-		switch (item.getItemId()) 
-		{
-		case R.id.action_alarm:
-			startActivity(intent);
-			break;
-		default: 
-			break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	 *//*** ACTION MENU ***//*
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu items for use in the action bar
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main, menu);
-		return super.onCreateOptionsMenu(menu);
-		//return true;
-	}
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		Intent intent = new Intent(this, Telecommande.class);
-
-		// Handle presses on the action bar items
-		switch (item.getItemId()) 
-		{
-			case R.id.action_alarm:
-				startActivity(intent);
-				break;
-			default: 
-				break;
-		}
-
-
-		return true;
-	}
-	  */
 	public static void setText(String Which,String newText) {
 		Map<String,String> v_params = new HashMap<String,String>();
 		v_params.put("functionName", "setText");
@@ -526,33 +435,6 @@ public class MainActivity extends Activity {
 		mHandler.sendMessage(mHandler.obtainMessage(1,v_params));		
 	}
 
-	/*** Dialog box lorsque l'on quitte l'application ***/
-	// TODO: A MODIFIER ----> double tap pour quitter l'appli; simple tap pour display un Toast
-	// TODO: faire en sorte d'éviter de quitter l'appli depuis un autre Fragment !!
-	/*public void onBackPressed() {
-
-		final Builder builder = new Builder(this);
-		builder.setTitle(R.string.app_name);
-		builder.setMessage("Voulez-vous vraiment quitter l'application ?");
-		builder.setPositiveButton(android.R.string.ok, new OnClickListener() {
-			@Override
-			public void onClick(final DialogInterface dialog, final int which) {
-				MainActivity.this.finish();
-				dialog.dismiss();    
-			}
-		});
-		builder.setNegativeButton(android.R.string.cancel,
-				new OnClickListener() {
-			@Override
-			public void onClick(final DialogInterface dialog,
-					final int which) {
-				dialog.dismiss();
-			}
-		});
-		final AlertDialog dialog = builder.create();
-		dialog.show();
-	}
-	 */
 	/*** Double tap pour quitter l'application (sur 2sec) ***/
 	@Override
 	public void onBackPressed()
@@ -562,49 +444,6 @@ public class MainActivity extends Activity {
 		back_pressed = System.currentTimeMillis();
 	}
 
-	/*class HashMapAdapter extends BaseAdapter {
-		    private HashMap<String,String > mData = new HashMap<String, String>();
-		    private String[] mKeys;
-		    public HashMapAdapter(LinkedHashMap<String, String> data){
-		        mData  = data;
-		        mKeys = mData.keySet().toArray(new String[data.size()]);
-		    }
-
-		    @Override
-		    public int getCount() {
-		        return mData.size();
-		    }
-
-		    @Override
-		    public String getItem(int position) {
-		        return mData.get(mKeys[position]);
-		    }
-
-		    @Override
-		    public long getItemId(int arg0) {
-		        return arg0;
-		    }
-
-		    @Override
-		    public View getView(int pos, View convertView, ViewGroup parent) {
-		        //String key = mKeys[pos];
-		        //String value = getItem(pos).getName();
-
-		        //do your view stuff here
-
-	            LayoutInflater inflater = getLayoutInflater();
-	            View row = inflater.inflate(R.layout.custom, parent, false);
-	            TextView title, detail;
-	            //ImageView i1;
-	            title = (TextView) row.findViewById(R.id.title);
-	            detail = (TextView) row.findViewById(R.id.detail);
-	            //i1=(ImageView)row.findViewById(R.id.img);
-	           // title.setText(value);
-	            detail.setText("Click to enter this room");
-	            return (row);
-		    }*/
-
-	// Toast pour la détection de la Open STB
 
 
 }

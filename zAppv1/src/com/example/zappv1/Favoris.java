@@ -113,7 +113,7 @@ public class Favoris extends Fragment{
             //envoi de l'id du programme
             intent.putExtra("progid", item.getListeProgrammes().getProgrammes().getId());
             intent.putExtra("progFin", item.getListeProgrammes().getProgrammes().getFin());             
-            intent.setClass(getActivity(), Preview.class);
+            intent.setClass(getActivity(), previewFavoris.class);
             startActivity(intent);
             getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
           }
