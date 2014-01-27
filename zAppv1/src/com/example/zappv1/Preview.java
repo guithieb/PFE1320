@@ -124,10 +124,13 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		setContentView(R.layout.preview);
 
 		/*** ACTION BAR ***/
+		// Retour sur la vue précédente
 		ActionBar actionbar = getActionBar();
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
 		actionbar.show();
+		getActionBar().setDisplayShowTitleEnabled(true);
+		getActionBar().setTitle("Prévisualisation");
 		// Code en dur avec la couleur #303030
 		getActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
 

@@ -47,8 +47,8 @@ public class Telecommande extends Activity{
 		// Retour sur la vue précédente
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
-		getActionBar().setDisplayShowTitleEnabled(false);
-		getActionBar().setTitle("Retour");
+		getActionBar().setDisplayShowTitleEnabled(true);
+		getActionBar().setTitle("Télécommande");
 		getActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
 		
 		seekBar1 = (SeekBar) findViewById(R.id.seekBar1);
