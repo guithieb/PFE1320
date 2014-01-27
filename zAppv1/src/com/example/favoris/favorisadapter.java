@@ -6,6 +6,7 @@ import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import com.example.cloud.EPGChaine;
 import com.example.zappv1.Favoris;
@@ -23,12 +24,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class favorisadapter extends BaseAdapter {
 	private class ChView{
 		TextView progName;
 		ImageView photo;
+		TextView debut;
+		ProgressBar duree;
 	}
 
 	private ArrayList<EPGChaine> datas;
@@ -81,6 +85,8 @@ public class favorisadapter extends BaseAdapter {
 			convertView = inflater.inflate(R.layout.chaineview, null);
 			ch.progName = (TextView) convertView.findViewById(R.id.progName);
 			ch.photo = (ImageView) convertView.findViewById(R.id.Picture);
+			ch.debut = (TextView) convertView.findViewById(R.id.debut);
+			ch.duree = (ProgressBar) convertView.findViewById(R.id.duree);
 			convertView.setTag(ch);
 
 
@@ -109,6 +115,34 @@ public class favorisadapter extends BaseAdapter {
 			ch.progName.setText(Html.fromHtml(parseNom[0]));
 		}
 		else {ch.progName.setText(Html.fromHtml(application.getListeProgrammes().getProgrammes().getNom()));}
+		String[] parse = application.getListeProgrammes().getProgrammes().getDebut().split("T");
+		String[] debutProg = parse[1].split("Z");
+		ch.debut.setText(debutProg[0]);
+		
+		//analyse pour la progress bar
+		//heure de la fin
+		String[] parsefin = application.getListeProgrammes().getProgrammes().getFin().split("T");
+		String[] finProg = parsefin[1].split("Z");
+		
+		//heure de début et fin en minute et heure
+		String[] progdebut = debutProg[0].split(":");
+		String[] progfin = finProg[0].split(":");
+		
+		int horairedebut = (Integer.parseInt(progdebut[0])*60)+Integer.parseInt(progdebut[1]);
+		Log.d(LOG_TAG,"TOTALdebut "+Integer.toString(horairedebut));
+		int horairefin = (Integer.parseInt(progfin[0])*60)+Integer.parseInt(progfin[1]);
+		Log.d(LOG_TAG,"TOTALfin "+Integer.toString(horairefin));
+		int dureetotale = horairefin - horairedebut;
+		Log.d(LOG_TAG,"TOTAL "+Integer.toString(dureetotale));
+		//heure actuelle en minutes
+		Calendar c = Calendar.getInstance(); 
+		int heure = c.get(Calendar.HOUR_OF_DAY);
+		int minutes = c.get(Calendar.MINUTE);
+		//difference entre heure actuelle et debut programme
+		int difference = (minutes+heure*60) - horairedebut;
+		//ratio pour progress bar
+		double ratio = (double) difference/ (double) (dureetotale);
+		ch.duree.setProgress((int) (ratio*100));
 		return convertView;
 	}
 

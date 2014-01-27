@@ -378,7 +378,9 @@ public class MainActivity extends Activity {
 		// Handle action bar actions click
 		switch (item.getItemId()) {
 		case R.id.action_alarm:
-			startActivity(intent);
+			intent.setClass(MainActivity.this, Telecommande.class);
+		    startActivity(intent);
+		    overridePendingTransition(R.anim.bottom_in, R.anim.top_out);
 			break;
 
 		default:

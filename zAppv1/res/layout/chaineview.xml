@@ -33,8 +33,8 @@
                 android:id="@+id/nomprog"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:layout_marginTop="20dp" >
+                android:layout_marginTop="20dp"
+                android:layout_weight="5" >
 
                 <TextView
                     android:id="@+id/progName"
@@ -49,8 +49,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/nomprog"
-                android:layout_weight="5"
-                 >
+                android:layout_weight="5" >
 
                 <TextView
                     android:id="@+id/debut"
@@ -63,12 +62,29 @@
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@id/debut"
                     android:max="100" />
-            </RelativeLayout>
+            </RelativeLayout>     
         </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ancre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" >
+
+                <ImageView
+                    android:id="@+id/ancre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ancre" />
+            </RelativeLayout>
     </RelativeLayout>
 
 </LinearLayout>

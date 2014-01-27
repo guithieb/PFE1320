@@ -586,7 +586,9 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		switch (item.getItemId()) 
 		{
 		case R.id.action_alarm:
-			startActivity(intent);
+			intent.setClass(this, Telecommande.class);
+		    startActivity(intent);
+		    overridePendingTransition(R.anim.bottom_in, R.anim.top_out);
 			break;
 		default: 
 			break;
