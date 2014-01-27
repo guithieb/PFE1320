@@ -34,6 +34,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -74,7 +75,7 @@ import com.google.gson.Gson;
  */
 
 public class Preview extends Activity implements GestureDetector.OnGestureListener {
-	
+
 	//initialisation des variables
 	private EPGChaine epgChaine;
 	private EPGNext nextprog;
@@ -104,7 +105,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	TextView textDescription;
 	TextView textDebut,textFin, textNextDebut, textNextFin;
 	TextView textDuree, textGenre, textNext;
-	ImageView imagette;
+	ImageView imagette, left, right;
 	CheckBox checkboxfavoris;
 	Button play;
 	Bundle extra;
@@ -124,7 +125,11 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 		/*** ACTION BAR ***/
 		ActionBar actionbar = getActionBar();
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
 		actionbar.show();
+		// Code en dur avec la couleur #303030
+		getActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
 
 		textChaine = (TextView)findViewById(R.id.chaineName);
 		textNom = (TextView)findViewById(R.id.progNom);
@@ -135,6 +140,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		textDuree = (TextView) findViewById(R.id.duree);
 		mProgressBar = (ProgressBar) findViewById(R.id.progressTest);
 		imagette = (ImageView) findViewById(R.id.imagette);
+		left = (ImageView) findViewById(R.id.left);
+		right = (ImageView) findViewById(R.id.right);
 		textNext = (TextView) findViewById(R.id.next);
 		textNextDebut = (TextView) findViewById(R.id.progNextDebut);
 		textNextFin = (TextView) findViewById(R.id.progNextFin);
@@ -190,7 +197,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			checkboxfavoris.setChecked(true);
 		}
 		else checkboxfavoris.setChecked(false);
-		
+
 		play.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
@@ -250,7 +257,79 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				}
 			}
 		});
+		left.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				// do your stuff here
+				id--;
+				if(id<=0) id=id+19;
+				getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),Integer.toString(id));
+				gtc.execute();
+				Log.d(TAG,"TASK OK");
+				if(gtc.getStatus() == AsyncTask.Status.RUNNING)
+				{
+					Log.d(TAG,"TASK RIGHT OK");
+				}
+
+				if(gtc.getStatus() == AsyncTask.Status.FINISHED)
+				{
+					Log.d(TAG,"TASK RIGHT FIN");
+				}
+
+				if(epgChaine != null)
+				{
+					Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
+				}
+
+				new FeedReaderDbHelperFavoris(getApplicationContext());
+				Log.d(TAG,"BDD OPEN");
+				if (isInDB(Integer.toString(id)))
+				{
+					checkboxfavoris.setChecked(true);
+				}
+				else checkboxfavoris.setChecked(false);
+
+			}
+		});
+		right.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				id++;
+				if(id>=20) id=id-19;
+				getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),Integer.toString(id));
+				gtc.execute();
+				Log.d(TAG,"TASK OK");
+				if(gtc.getStatus() == AsyncTask.Status.RUNNING)
+				{
+					Log.d(TAG,"TASK RIGHT OK");
+				}
+
+				if(gtc.getStatus() == AsyncTask.Status.FINISHED)
+				{
+					Log.d(TAG,"TASK RIGHT FIN");
+				}
+
+				if(epgChaine != null)
+				{
+					Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
+				}
+
+				new FeedReaderDbHelperFavoris(getApplicationContext());
+				Log.d(TAG,"BDD OPEN");
+				if (isInDB(Integer.toString(id)))
+				{
+					checkboxfavoris.setChecked(true);
+				}
+				else checkboxfavoris.setChecked(false);
+
+			}
+		});
 	}
+
 
 	void sendKeyPressed(String key) {
 		new SendKeyPressedTask().execute(
@@ -340,7 +419,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		{
 			Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
 		}
-		
+
 		new FeedReaderDbHelperFavoris(getApplicationContext());
 		Log.d(TAG,"BDD OPEN");
 		if (isInDB(Integer.toString(id)))
@@ -374,7 +453,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		{
 			Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
 		}
-		
+
 		new FeedReaderDbHelperFavoris(getApplicationContext());
 		Log.d(TAG,"BDD OPEN");
 		if (isInDB(Integer.toString(id)))
@@ -403,7 +482,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	//classe permettant de récupérer les informations en cours d'une chaîne précise
 	//et envoyer les valeurs reçues aux views xml de preview.xml
 	private class getChannelTask extends AsyncTask<String, Void, String> {
@@ -513,8 +592,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			break;
 		}
 
-
-		return true;
+		return super.onOptionsItemSelected(item);
+		//return true;    // erreur ...
 	}
 
 	public void makeToast(String message) {
@@ -522,7 +601,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 	}
 	/*** END ACTION MENU ***/
-	
+
 	//classe permettant de récupérer les informations d'un programme précis
 	//et envoyer les valeurs reçues aux views xml de preview.xml
 	private class getBaseProgrammeTask extends AsyncTask <String,Void,String>
@@ -826,7 +905,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			checkboxfavoris.setChecked(true);
 		}
 	}
-	
+
 	//fonction qui vérifie si la chaîne fait partie des favoris
 	public Boolean isInDB(String imdbId){
 		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
@@ -842,7 +921,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			return false;			
 		}
 	}
-	
+
 	//fonction qui enlève la chaîne des favoris
 	public void deleteFavoris(String channel){
 		Log.d(TAG,"BDD TRANSFERT" + channel);
@@ -854,7 +933,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		db.delete(FeedEntry.TABLE_NAME, FeedEntry.COLUMN_NAME_ID + " = " +channel, null);
 		db.close();
 	}
-	
+
 	//fonction qui ajoute la chaîne aux favoris
 	public void saveFavoris(String channel){
 		// Gets the data repository in write mode
@@ -885,7 +964,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		CharSequence text = "Film supprimÃ© avec succÃ¨s!";
 		toast = Toast.makeText(context, text, toast_duration);
 	}
-	
+
 
 }
 
