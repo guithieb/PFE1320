@@ -115,12 +115,16 @@ public class ChaineAdapter extends BaseAdapter {
 
 		if(application.getListeProgrammes().getProgrammes().getNom().contains("&#4")){
 			String[] parseNom = application.getListeProgrammes().getProgrammes().getNom().split("&");
-			ch.progName.setText(Html.fromHtml(parseNom[0]));
+			if (application.getListeProgrammes().getProgrammes().getNom().contains("&apos;")){
+				ch.progName.setText(Html.fromHtml(parseNom[0] + "&" + parseNom[1]));
+			}else{
+				ch.progName.setText(Html.fromHtml(parseNom[0]));
+			}
 		}
 		else {ch.progName.setText(Html.fromHtml(application.getListeProgrammes().getProgrammes().getNom()));}
 		String[] parse = application.getListeProgrammes().getProgrammes().getDebut().split("T");
 		String[] debutProg = parse[1].split("Z");
-		ch.debut.setText(debutProg[0]);
+		
 		
 		//analyse pour la progress bar
 		//heure de la fin
@@ -130,6 +134,8 @@ public class ChaineAdapter extends BaseAdapter {
 		//heure de début et fin en minute et heure
 		String[] progdebut = debutProg[0].split(":");
 		String[] progfin = finProg[0].split(":");
+		//affichage de l'heure de début sans les secondes
+		ch.debut.setText(progdebut[0]+":"+progdebut[1]);
 		
 		int horairedebut = (Integer.parseInt(progdebut[0])*60)+Integer.parseInt(progdebut[1]);
 		Log.d(LOG_TAG,"TOTALdebut "+Integer.toString(horairedebut));
