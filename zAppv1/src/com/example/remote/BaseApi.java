@@ -10,6 +10,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
@@ -55,6 +56,16 @@ public class BaseApi {
 
     return executeHttpMethod(request, method);
   }
+  
+  
+  protected static HttpResponse executeHttpPost(String url, Object request) 
+      throws UnsupportedEncodingException, IOException, ClientProtocolException {
+
+    HttpPost method = new HttpPost(url);
+
+    return executeHttpMethod(request, method);
+  }
+  
   
   private static HttpResponse executeHttpMethod(Object request, HttpEntityEnclosingRequestBase method) 
       throws UnsupportedEncodingException, IOException, ClientProtocolException {
@@ -119,5 +130,7 @@ public class BaseApi {
 		HttpResponse response = client.execute(method);
 		return response;
 	}
+	
+	
 
 }

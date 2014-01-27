@@ -19,6 +19,7 @@ import org.json.JSONArray;
 
 import com.example.cloud.EPGChaine;
 import com.example.cloud.EPGChaineSerialize;
+import com.example.recommandation.AppRegister;
 import com.example.recommandation.GetRecoTasks;
 import com.example.recommandation.ObjectReco;
 import com.example.recommandation.ObjectRecoSerialize;
@@ -30,8 +31,10 @@ import com.google.gson.Gson;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -57,11 +60,15 @@ public class Recommandation extends Fragment {
 	ArrayList<EPGChaine> epgrecommendes = new ArrayList<EPGChaine>();
 	RecommandationAdapter adapter;
 	private ListView listeRecommandation;
-	String[] test = {"Yves", "Ben"};
+	public static final String SUFFIXE_URL = "/api.bbox.lan/V0";
+  public static String URL_HTTP = "";
+  public static final String BOX_PREFERENCES = "boxPrefs";
 	ArrayList <String> chainereco = new ArrayList<String>();
 	private static final String TAG = "debug";
 	private static final String LOG_TAG = "activity";
 	int counter = 1;
+	String ip;
+	String appId;
 
 /*
 	public static Fragment newInstance(Context context){
@@ -78,6 +85,14 @@ public class Recommandation extends Fragment {
 		//on récupère la liste des artistes auprès de la webapp
 		GetDatabaseTask gdbt = new GetDatabaseTask();
 		gdbt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		
+	//Récuperation de l'adresse ip de la box grâce aux préférences 
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+    ip = prefs.getString(BOX_PREFERENCES,"null");
+    URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
+    
+    RegisterTask rTask = new RegisterTask();
+     rTask.execute(new String[] {URL_HTTP,"zapp"});
 		return root;
 	}
 
@@ -388,6 +403,33 @@ public class Recommandation extends Fragment {
 		}
 	}
 
+
+//Appel de la fonction SendKey de la classe UserIntefaceApi pour pouvoir envoyer les commande de remote
+public class RegisterTask extends AsyncTask<String, Void, String> {
+  //Fonction obligatoire dans un AsynTask, réalise le traitement de manière asynchrone dans un thread séparé
+  @Override
+  protected String doInBackground(String... params) {
+  
+    
+   return AppRegister.register(params[0],params[1]);
+   
+     
+  }     
+  
+  protected void onPostExecute(String result){
+  super.onPostExecute(result);
+  if(result != null)
+  {
+    appId = result;
+    Log.d(TAG,"APPID"+appId);
+  }
 }
+
+}
+
+}
+
+
+
 
 
