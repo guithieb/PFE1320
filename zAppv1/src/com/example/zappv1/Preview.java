@@ -184,7 +184,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		//Récuperation de l'adresse ip de la box grâce aux préférences 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		ip = prefs.getString(BOX_PREFERENCES,"null");
-		Log.d(TAG,"IP22"+ip);
+		
 
 		URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
 		Log.d(TAG,"IP"+ip);
