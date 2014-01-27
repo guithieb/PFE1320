@@ -382,7 +382,14 @@ public class MainActivity extends Activity {
 		    startActivity(intent);
 		    overridePendingTransition(R.anim.bottom_in, R.anim.top_out);
 			break;
-
+		case R.id.action_refresh:
+			Log.d(TAG,"REFRESH OK");
+		//	super.onOptionsItemSelected(item);
+			
+			//super.onCreate(ListeChaine.refreshChaine());
+			//ListeChaine.refreshChaine();
+			//onResume();
+			break;
 		default:
 			break;
 		}
@@ -558,7 +565,7 @@ public class MainActivity extends Activity {
 	public void onBackPressed()
 	{
 		if (back_pressed + 2000 > System.currentTimeMillis()) super.onBackPressed();
-		else Toast.makeText(getBaseContext(), "Appuyer encore pour quitter!", Toast.LENGTH_SHORT).show();
+		else Toast.makeText(getBaseContext(), "Appuyez de nouveau pour quitter!", Toast.LENGTH_SHORT).show();
 		back_pressed = System.currentTimeMillis();
 	}
 

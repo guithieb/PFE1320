@@ -46,9 +46,9 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 public class Recommandation extends Fragment {
-	
+
 	public Recommandation(){
-		
+
 	}
 
 	ObjectReco reco;
@@ -61,8 +61,8 @@ public class Recommandation extends Fragment {
 	RecommandationAdapter adapter;
 	private ListView listeRecommandation;
 	public static final String SUFFIXE_URL = "/api.bbox.lan/V0";
-  public static String URL_HTTP = "";
-  public static final String BOX_PREFERENCES = "boxPrefs";
+	public static String URL_HTTP = "";
+	public static final String BOX_PREFERENCES = "boxPrefs";
 	ArrayList <String> chainereco = new ArrayList<String>();
 	private static final String TAG = "debug";
 	private static final String LOG_TAG = "activity";
@@ -70,13 +70,13 @@ public class Recommandation extends Fragment {
 	String ip;
 	String appId;
 
-/*
+	/*
 	public static Fragment newInstance(Context context){
 		Recommandation f = new Recommandation();
 
 		return f;
 	}
-*/
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.recommandation, null);
@@ -85,14 +85,14 @@ public class Recommandation extends Fragment {
 		//on récupère la liste des artistes auprès de la webapp
 		GetDatabaseTask gdbt = new GetDatabaseTask();
 		gdbt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		
-	//Récuperation de l'adresse ip de la box grâce aux préférences 
-    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-    ip = prefs.getString(BOX_PREFERENCES,"null");
-    URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
-    
-    RegisterTask rTask = new RegisterTask();
-     rTask.execute(new String[] {URL_HTTP,"zapp"});
+
+		//Récuperation de l'adresse ip de la box grâce aux préférences 
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		ip = prefs.getString(BOX_PREFERENCES,"null");
+		URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
+
+		RegisterTask rTask = new RegisterTask();
+		rTask.execute(new String[] {URL_HTTP,"zapp"});
 		return root;
 	}
 
@@ -404,28 +404,28 @@ public class Recommandation extends Fragment {
 	}
 
 
-//Appel de la fonction SendKey de la classe UserIntefaceApi pour pouvoir envoyer les commande de remote
-public class RegisterTask extends AsyncTask<String, Void, String> {
-  //Fonction obligatoire dans un AsynTask, réalise le traitement de manière asynchrone dans un thread séparé
-  @Override
-  protected String doInBackground(String... params) {
-  
-    
-   return AppRegister.register(params[0],params[1]);
-   
-     
-  }     
-  
-  protected void onPostExecute(String result){
-  super.onPostExecute(result);
-  if(result != null)
-  {
-    appId = result;
-    Log.d(TAG,"APPID"+appId);
-  }
-}
+	//Appel de la fonction SendKey de la classe UserIntefaceApi pour pouvoir envoyer les commande de remote
+	public class RegisterTask extends AsyncTask<String, Void, String> {
+		//Fonction obligatoire dans un AsynTask, réalise le traitement de manière asynchrone dans un thread séparé
+		@Override
+		protected String doInBackground(String... params) {
 
-}
+
+			return AppRegister.register(params[0],params[1]);
+
+
+		}     
+
+		protected void onPostExecute(String result){
+			super.onPostExecute(result);
+			if(result != null)
+			{
+				appId = result;
+				Log.d(TAG,"APPID"+appId);
+			}
+		}
+
+	}
 
 }
 
