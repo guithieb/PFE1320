@@ -42,7 +42,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="#000000" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -56,7 +57,8 @@
                     android:id="@+id/debut"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="#000000" />
 
                 <ProgressBar
                     android:id="@+id/duree"

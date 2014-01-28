@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -22,12 +23,12 @@ public class Type extends Fragment{
 	}
 
 	String[] type = {"Film","Série","Téléfilm", "Magazine","Emission jeunesse", "Jeu", "Divertissement", "Documentaire","Information",
-			"Musique", "Feuilleton"};
-	private ListView listeType;
+			"Musique", "Feuilleton", "Adulte"};
+	private GridView listeType;
 
 	public View onCreateView(LayoutInflater inflater,  ViewGroup container,Bundle savedInstanceState) { 
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.type, null);
-		listeType = (ListView) root.findViewById(R.id.list);
+		listeType = (GridView) root.findViewById(R.id.list);
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(root.getContext(), android.R.layout.simple_list_item_1, type);
 		listeType.setAdapter(adapter);

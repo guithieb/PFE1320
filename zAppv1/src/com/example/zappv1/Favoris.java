@@ -97,7 +97,7 @@ public class Favoris extends Fragment{
         	refreshChaine();
         }
         
-      //évenement lorsque qu'on clique sur une chaîne dans la lsite
+      //évenement lorsque qu'on clique sur une chaîne dans la liste
         listeFavori.setOnItemClickListener(new OnItemClickListener()
         {
           @Override

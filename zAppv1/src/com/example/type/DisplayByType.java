@@ -2,6 +2,7 @@ package com.example.type;
 
 import infoprog.BaseProgramme;
 import infoprog.BaseProgrammeSerialize;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,8 +14,7 @@ import org.apache.http.client.ClientProtocolException;
 
 import com.example.cloud.EPGChaine;
 import com.example.cloud.EPGChaineSerialize;
-import com.example.recommandation.GetRecoTasks;
-import com.example.recommandation.getRecoTask;
+import com.example.favoris.previewFavoris;
 import com.example.remote.BaseApi;
 import com.example.zappv1.R;
 import com.google.gson.Gson;
@@ -23,17 +23,22 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class DisplayByType extends Activity {
 
 	String type;
 	private BaseProgramme basePg;
 	String chaineId = "";
+	EPGChaine item;
 	ArrayList<EPGChaine> epgType = new ArrayList<EPGChaine>();
 	private static final String LOG_TAG = "activity";
 	ArrayList <String> tri = new ArrayList<String>();
@@ -61,6 +66,29 @@ public class DisplayByType extends Activity {
 				gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			}
 		}
+		
+		 //évenement lorsque qu'on clique sur une chaîne dans la liste
+        listeType.setOnItemClickListener(new OnItemClickListener()
+        {
+          @Override
+          public void onItemClick(AdapterView<?> arg0, View v, int position, long id)
+          {
+            Intent intent = new Intent(getApplicationContext(), PreviewType.class);
+            item = (EPGChaine) arg0.getItemAtPosition(position);
+            intent.putExtra("listetype", chaineId);
+            //Envoi du nom de la chaine à la vue prévisualisation
+            intent.putExtra("chaineNom",item.getNom());
+            //Envoi de l'id de la chaîne
+            intent.putExtra("chaineId", item.getId());
+            //envoi de l'id du programme
+            intent.putExtra("progid", item.getListeProgrammes().getProgrammes().getId());
+            intent.putExtra("progFin", item.getListeProgrammes().getProgrammes().getFin());             
+            intent.setClass(getApplicationContext(), PreviewType.class);
+            startActivity(intent);
+            DisplayByType.this.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+          }
+             
+        });
 	}
 	private void refreshType(){
 		new gettypeTask(epgType, adapter, getApplicationContext(), chaineId).execute();

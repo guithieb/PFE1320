@@ -94,6 +94,10 @@
         <activity
             android:name="com.example.type.DisplayByType"
             android:screenOrientation="portrait" />
+        
+         <activity
+            android:name="com.example.type.PreviewType"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

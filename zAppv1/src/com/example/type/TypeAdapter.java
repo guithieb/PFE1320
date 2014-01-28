@@ -24,7 +24,6 @@ import android.widget.TextView;
 
 import com.example.cloud.EPGChaine;
 import com.example.type.DisplayByType.getBaseProgrammeTask;
-import com.example.zappv1.Favoris;
 import com.example.zappv1.R;
 
 public class TypeAdapter extends BaseAdapter {
