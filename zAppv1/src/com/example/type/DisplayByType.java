@@ -14,11 +14,9 @@ import org.apache.http.client.ClientProtocolException;
 
 import com.example.cloud.EPGChaine;
 import com.example.cloud.EPGChaineSerialize;
-import com.example.favoris.previewFavoris;
 import com.example.remote.BaseApi;
 import com.example.zappv1.R;
 import com.google.gson.Gson;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -90,6 +88,14 @@ public class DisplayByType extends Activity {
              
         });
 	}
+	
+	 public void onResume(){
+			super.onResume();
+			for (int i = 1; i < 20; i++){
+				getChannelTask gtc = new getChannelTask(epgChaine, getApplicationContext(),Integer.toString(i));
+				gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			}
+	  }
 	private void refreshType(){
 		new gettypeTask(epgType, adapter, getApplicationContext(), chaineId).execute();
 	}
