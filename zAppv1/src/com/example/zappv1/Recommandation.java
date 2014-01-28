@@ -46,12 +46,13 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 public class Recommandation extends Fragment {
-	
+
 	public Recommandation(){
-		
+
 	}
 
 	ObjectReco reco;
+	boolean database = true; //vérifie qu'il y a des artistes recommandés
 	private EPGChaine epgChaine;
 	private BaseProgramme basePg;
 	private ProgrammeFilm pgFilm;
@@ -61,22 +62,26 @@ public class Recommandation extends Fragment {
 	RecommandationAdapter adapter;
 	private ListView listeRecommandation;
 	public static final String SUFFIXE_URL = "/api.bbox.lan/V0";
-  public static String URL_HTTP = "";
-  public static final String BOX_PREFERENCES = "boxPrefs";
+	public static String URL_HTTP = "";
+	public static final String BOX_PREFERENCES = "boxPrefs";
 	ArrayList <String> chainereco = new ArrayList<String>();
 	private static final String TAG = "debug";
 	private static final String LOG_TAG = "activity";
 	int counter = 1;
 	String ip;
 	String appId;
+	String typepref = "Film";
+	String typeProg = "Série";
+	ArrayList <String> chainetype = new ArrayList<String>();
+	ArrayList <String> chainepref = new ArrayList<String>();
 
-/*
+	/*
 	public static Fragment newInstance(Context context){
 		Recommandation f = new Recommandation();
 
 		return f;
 	}
-*/
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.recommandation, null);
@@ -85,14 +90,14 @@ public class Recommandation extends Fragment {
 		//on récupère la liste des artistes auprès de la webapp
 		GetDatabaseTask gdbt = new GetDatabaseTask();
 		gdbt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		
-	//Récuperation de l'adresse ip de la box grâce aux préférences 
-    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-    ip = prefs.getString(BOX_PREFERENCES,"null");
-    URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
-    
-    RegisterTask rTask = new RegisterTask();
-     rTask.execute(new String[] {URL_HTTP,"zapp"});
+
+		//Récuperation de l'adresse ip de la box grâce aux préférences 
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		ip = prefs.getString(BOX_PREFERENCES,"null");
+		URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
+
+		RegisterTask rTask = new RegisterTask();
+		rTask.execute(new String[] {URL_HTTP,"zapp"});
 		return root;
 	}
 
@@ -161,13 +166,17 @@ public class Recommandation extends Fragment {
 			{
 				ObjectRecoSerialize recoSerialize = new Gson().fromJson(result,ObjectRecoSerialize.class);
 				reco = recoSerialize;
+				database = true;
 
 			}
+			else {database = false;}
 			//on récupère les informations en cours des 19 chaînes
+
 			for (int i = 1; i < 20; i++){
 				getChannelTask gtc = new getChannelTask(epgChaine, getActivity(),Integer.toString(i));
 				gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			}
+
 
 		}
 
@@ -294,79 +303,78 @@ public class Recommandation extends Fragment {
 				BaseProgrammeSerialize bpz = new Gson().fromJson(result,BaseProgrammeSerialize.class);
 				bp = bpz;
 
-				Log.d(TAG,"TVSHOW"+result.toString());
-				//on compare la liste des artistes de la webapp et ceux du programme 
-				if((result.toString().contains("\"firstName\": {}"))||(result.toString().contains("\"ListeArtistes\": {}"))){
-
-
+				if (bp.getProgramme().getListeGenres().getGenre().equals(typepref)){
+					chainepref.add(channel);
 				}
-				else {
-					if (result.toString().contains("[")){
-						ProgrammeFilmSerialize pfs = new Gson().fromJson(result,ProgrammeFilmSerialize.class);
-						pgFilm = pfs;
-						for (int i = 0; i < reco.getArtists().size(); i++){
-							for (int j = 0; j < pgFilm.getProgramme().getListeArtistes().getArtiste().size(); j++){
-								if ((pgFilm.getProgramme().getListeArtistes().getArtiste().get(j).getLastName().equals(reco.getArtists().get(i).getLastName()))
-										&& (pgFilm.getProgramme().getListeArtistes().getArtiste().get(j).getFirstName().equals(reco.getArtists().get(i).getFirstName()))){
-									//si ça correspond, on ajoute la chaîne au tableau
+
+				if (bp.getProgramme().getListeGenres().getGenre().equals(typeProg)){
+					chainetype.add(channel);
+				}
+
+				Log.d(TAG,"TVSHOW"+result.toString());
+				//on compare la liste des artistes de la webapp et ceux du programme
+				if (database){
+					if((result.toString().contains("\"firstName\": {}"))||(result.toString().contains("\"ListeArtistes\": {}"))){
+
+
+					}
+					else {
+						if (result.toString().contains("[")){
+							ProgrammeFilmSerialize pfs = new Gson().fromJson(result,ProgrammeFilmSerialize.class);
+							pgFilm = pfs;
+							for (int i = 0; i < reco.getArtists().size(); i++){
+								for (int j = 0; j < pgFilm.getProgramme().getListeArtistes().getArtiste().size(); j++){
+									if ((pgFilm.getProgramme().getListeArtistes().getArtiste().get(j).getLastName().equals(reco.getArtists().get(i).getLastName()))
+											&& (pgFilm.getProgramme().getListeArtistes().getArtiste().get(j).getFirstName().equals(reco.getArtists().get(i).getFirstName()))){
+										//si ça correspond, on ajoute la chaîne au tableau
+										chainereco.add(channel);
+									}
+								}
+
+							}
+						}
+
+
+						else {
+							ProgrammeMagSerialize pms = new Gson().fromJson(result,ProgrammeMagSerialize.class);
+							pgMag = pms;
+							for (int i = 0; i <reco.getArtists().size(); i++){
+								if ((pgMag.getProgramme().getListeArtistes().getArtiste().getLastName().equals(reco.getArtists().get(i).getLastName()))
+										&& (pgMag.getProgramme().getListeArtistes().getArtiste().getFirstName().equals(reco.getArtists().get(i).getFirstName()))){
 									chainereco.add(channel);
 								}
+								if (pgMag == null){Log.d(TAG,"PGMAG null");}
+								else {Log.d(TAG,"CHaine" + channel);}
 							}
-
 						}
+
+
 					}
-
-
-					else {
-						ProgrammeMagSerialize pms = new Gson().fromJson(result,ProgrammeMagSerialize.class);
-						pgMag = pms;
-						for (int i = 0; i <reco.getArtists().size(); i++){
-							if ((pgMag.getProgramme().getListeArtistes().getArtiste().getLastName().equals(reco.getArtists().get(i).getLastName()))
-									&& (pgMag.getProgramme().getListeArtistes().getArtiste().getFirstName().equals(reco.getArtists().get(i).getFirstName()))){
-								chainereco.add(channel);
-							}
-							if (pgMag == null){Log.d(TAG,"PGMAG null");}
-							else {Log.d(TAG,"CHaine" + channel);}
-							/*if (pgMag.getProgramme().getListeArtistes().getArtiste().getFirstName().equals("Cristina")){
-
-                                        else {
-                                                ProgrammeMagSerialize pms = new Gson().fromJson(result,ProgrammeMagSerialize.class);
-                                                pgMag = pms;
-                                                /*for (int i = 0; i < reco.getArtists().size(); i++){
-                                                        if (pms.getProgramme().getListeArtistes().getArtiste().equals(reco2.getArtists().get(i))){
-                                                                chainereco.add(channel);
-                                                        }*/
-						}
-					}
-
-
 				}
 			}
-			//on récupére le String comprenant les chaînes à afficher
-			chaineId = parsing();
+			
 			counter++;
 			Log.d(TAG,"COUNTER"+counter);
 			//on lance cette partie que quand toutes les chaînes ont été analysées
 			if (counter == 19){
-
-				//même algorithme que pour les favoris
+				//on récupére le String comprenant les chaînes à afficher
+				chaineId = parsing(chainereco, 0);
+				//si vide, on propose les programmes de la catégorie préférée par l'utilisateur
 				if (chaineId.isEmpty()){
-					AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
-					builder1.setMessage("Aucunes recommandations enregistrées.");
-					builder1.setCancelable(true);
-					builder1.setPositiveButton("Ok",
-							new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int id) {
-							dialog.cancel();
-						}
-					});
-
-
-					AlertDialog alert11 = builder1.create();
-					alert11.show();
+					chaineId = parsing(chainepref, 0);
+					if (chainepref.size() < 4){
+						chaineId = chaineId + parsing(chainetype, chainepref.size());
+					}
+					adapter = new RecommandationAdapter(getActivity(), epgrecommendes, this);  
+					listeRecommandation.setAdapter(adapter);
+					refreshrecos();
 				}else
 				{
 					if ((chaineId.length() == 1)||(chaineId.length() == 2)){
+						chaineId = chaineId + parsing(chainepref, 1);
+						if (chainepref.size() + chainereco.size() < 4){
+							chaineId = chaineId + parsing(chainetype, chainepref.size() + chainereco.size());
+						}
 						adapter = new RecommandationAdapter(getActivity(), epgrecommendes, this);  
 						listeRecommandation.setAdapter(adapter);
 						refreshReco();
@@ -380,21 +388,30 @@ public class Recommandation extends Fragment {
 			}
 
 		}
-		public String parsing(){
+		public String parsing(ArrayList<String> string, int number){
 			String parse ="";
-			if (chainereco.isEmpty()){
+			int i = 0;
+			if (string.isEmpty()){
 				Log.d(TAG,"PROGRAMMEID"+parse);
 				return "";
 			}else{
-				for (int k = 0; k < chainereco.size(); k++){
+				if(number !=0){
+					i = 4-number;
+				}
+				else if (string.size()>=4){
+					i = 4;
+				}
+				else i = string.size();
+
+				for (int k = 0; k < i; k++){
 					if (parse.isEmpty()){
-						parse = parse + chainereco.get(k);
+						parse = parse + string.get(k);
 					}
 					else {
-						if (parse.contains(chainereco.get(k))){
+						if (parse.contains(string.get(k))){
 
 						}
-						else{ parse = parse + "," + chainereco.get(k);}
+						else{ parse = parse + "," + string.get(k);}
 					}
 				}Log.d(TAG,"PROGRAMMEID"+parse);
 				return parse;
@@ -404,28 +421,28 @@ public class Recommandation extends Fragment {
 	}
 
 
-//Appel de la fonction SendKey de la classe UserIntefaceApi pour pouvoir envoyer les commande de remote
-public class RegisterTask extends AsyncTask<String, Void, String> {
-  //Fonction obligatoire dans un AsynTask, réalise le traitement de manière asynchrone dans un thread séparé
-  @Override
-  protected String doInBackground(String... params) {
-  
-    
-   return AppRegister.register(params[0],params[1]);
-   
-     
-  }     
-  
-  protected void onPostExecute(String result){
-  super.onPostExecute(result);
-  if(result != null)
-  {
-    appId = result;
-    Log.d(TAG,"APPID"+appId);
-  }
-}
+	//Appel de la fonction SendKey de la classe UserIntefaceApi pour pouvoir envoyer les commande de remote
+	public class RegisterTask extends AsyncTask<String, Void, String> {
+		//Fonction obligatoire dans un AsynTask, réalise le traitement de manière asynchrone dans un thread séparé
+		@Override
+		protected String doInBackground(String... params) {
 
-}
+
+			return AppRegister.register(params[0],params[1]);
+
+
+		}     
+
+		protected void onPostExecute(String result){
+			super.onPostExecute(result);
+			if(result != null)
+			{
+				appId = result;
+				Log.d(TAG,"APPID"+appId);
+			}
+		}
+
+	}
 
 }
 
