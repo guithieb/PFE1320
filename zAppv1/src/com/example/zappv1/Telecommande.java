@@ -31,10 +31,10 @@ import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 
+
 import com.example.remote.NetworkUtils;
 import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
-
 import com.google.gson.Gson;
 
 
@@ -97,37 +97,21 @@ public class Telecommande extends Activity{
 		
 		Log.d(TAG,"actualVol" + actualVol);
 		seekBar1.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-			
-			int progressChanged;  // TODO : il faut qu'on set le volume courant depuis la seekbar
-			
-			//int progress = getvol;
-			
+			int progressChanged; 
 			
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
-				
 				Log.d(TAG,"onProgressChanged" + progressChanged);
 
 				// POST new volume
 				newVol = seekBar.getProgress();
 				volumeText.setText(Integer.toString(newVol));     // update de l'edit text
-				
-				
+				sendVolumePressed(Integer.toString(newVol));
 			}
 
-			// si la valeur de onStartTrackingTouch < onStopTrackingTouch
-			// on augmente le son
-			// et inversement
 			public void onStartTrackingTouch(SeekBar seekBar) {
-				// TODO Auto-generated method stub
-				Log.d(TAG,"onStartTrackingTouch" + progressChanged);
-				// récuperer cette valeur et POST via Remote/set volume
-
 			}
 
 			public void onStopTrackingTouch(SeekBar seekBar) {
-				/*Toast.makeText(Reglages.this,"seek bar progress:"+progressChanged,
-                         Toast.LENGTH_SHORT,test).show();*/
-				Log.d(TAG,"onStopTrackingTouch:"+progressChanged);
 			}
 		});
 
@@ -358,8 +342,12 @@ public class Telecommande extends Activity{
 
 	void sendKeyPressed(String key) {
 		new SendKeyPressedTask().execute(
-				new String[] { URL_HTTP , key});
-
+			new String[] { URL_HTTP , key});
+	}
+	
+	void sendVolumePressed(String volumeToSend) {
+		new SendVolumeTask().execute(
+			new String[] { URL_HTTP , volumeToSend});
 	}
 
 	//Appel de la fonction SendKey de la classe UserIntefaceApi pour pouvoir envoyer les commande de remote
@@ -377,9 +365,22 @@ public class Telecommande extends Activity{
 			}
 		}     
 	}
+	
+	// Appel fonction SendVolume de la classe UserIntefaceApi pour pouvoir gérer le volume de remote
+	private class SendVolumeTask extends AsyncTask<String, Void, String> {
+		private Exception mException = null;
 
-
-
+		@Override
+		protected String doInBackground(String... params) {
+			try {
+				UserInterfaceApi.sendVolume(params[0], params[1]);
+				return params[1];
+			} catch (ServerException e) {
+				mException = e;
+				return params[1];
+			}
+		}
+	}
 
 	public class GetVolumeTask extends AsyncTask<String, Void, String> {
 		public static final String LOG_TAG = "debug netWorkUtils";

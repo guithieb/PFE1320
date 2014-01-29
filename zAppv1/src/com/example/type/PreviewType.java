@@ -277,13 +277,11 @@ public class PreviewType extends Activity implements GestureDetector.OnGestureLi
 	void sendKeyPressed(String key) {
 		new SendKeyPressedTask().execute(
 				new String[] { URL_HTTP , key});
-
 	}
 
 	//Appel de la fonction SendKey de la classe UserIntefaceApi pour pouvoir envoyer les commande de remote
 	private class SendKeyPressedTask extends AsyncTask<String, Void, String> {
 		private Exception mException = null;
-
 
 		//Fonction obligatoire dans un AsynTask, réalise le traitement de manière asynchrone dans un thread séparé
 		@Override
@@ -297,8 +295,7 @@ public class PreviewType extends Activity implements GestureDetector.OnGestureLi
 			}
 		}     
 	}
-
-
+	
 	//Fonction permettant de detecter différents gestes sur le smartphone (ici le slide pour changer de programme)
 	@Override 
 	public boolean onTouchEvent(MotionEvent event){ 

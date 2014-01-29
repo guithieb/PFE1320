@@ -10,7 +10,6 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class SendKeyRequestData {
-  
   @SerializedName("key")	
   public Key key;
 
@@ -26,7 +25,5 @@ public class SendKeyRequestData {
 
     @SerializedName ("keyType")
     public String keyType;
-
   }
-
 }
