@@ -1,7 +1,5 @@
 package com.example.type;
 
-import com.example.cloud.EPGChaine;
-import com.example.favoris.previewFavoris;
 import com.example.zappv1.R;
 
 import android.app.Fragment;
@@ -13,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class Type extends Fragment{
@@ -21,15 +18,15 @@ public class Type extends Fragment{
 	public Type(){
 
 	}
-
-	String[] type = {"Film","Série","Téléfilm", "Magazine","Emission jeunesse", "Jeu", "Divertissement", "Documentaire","Information",
-			"Musique", "Feuilleton", "Adulte"};
+	//liste des différents types de programmes
+	String[] type = {"Adulte", "Divertissement", "Documentaire", "Emission jeunesse", "Feuilleton", "Film",
+			"Information", "Jeu", "Magazine", "Musique", "Série","Téléfilm"};
 	private GridView listeType;
 
 	public View onCreateView(LayoutInflater inflater,  ViewGroup container,Bundle savedInstanceState) { 
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.type, null);
 		listeType = (GridView) root.findViewById(R.id.list);
-
+		//ajout des types au gridview
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(root.getContext(), android.R.layout.simple_list_item_1, type);
 		listeType.setAdapter(adapter);
 		
