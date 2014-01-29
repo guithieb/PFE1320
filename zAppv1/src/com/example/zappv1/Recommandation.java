@@ -52,7 +52,7 @@ public class Recommandation extends Fragment {
 	}
 
 	ObjectReco reco;
-	boolean database = true; //vérifie qu'il y a des artistes recommandés
+	boolean database = false; //vérifie qu'il y a des artistes recommandés
 	private EPGChaine epgChaine;
 	private BaseProgramme basePg;
 	private ProgrammeFilm pgFilm;
@@ -169,7 +169,6 @@ public class Recommandation extends Fragment {
 				database = true;
 
 			}
-			else {database = false;}
 			//on récupère les informations en cours des 19 chaînes
 
 			for (int i = 1; i < 20; i++){
@@ -392,7 +391,6 @@ public class Recommandation extends Fragment {
 			String parse ="";
 			int i = 0;
 			if (string.isEmpty()){
-				Log.d(TAG,"PROGRAMMEID"+parse);
 				return "";
 			}else{
 				if(number !=0){
@@ -413,7 +411,7 @@ public class Recommandation extends Fragment {
 						}
 						else{ parse = parse + "," + string.get(k);}
 					}
-				}Log.d(TAG,"PROGRAMMEID"+parse);
+				}
 				return parse;
 			}
 

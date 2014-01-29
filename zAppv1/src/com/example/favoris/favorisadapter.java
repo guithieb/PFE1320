@@ -10,7 +10,6 @@ import java.util.Calendar;
 
 import com.example.cloud.EPGChaine;
 import com.example.zappv1.Favoris;
-import com.example.zappv1.ListeChaine;
 import com.example.zappv1.R;
 
 import android.content.Context;
@@ -18,7 +17,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,9 +94,6 @@ public class favorisadapter extends BaseAdapter {
 
 		final EPGChaine application = datas.get(position);
 
-		//ch.chaineName.setText(application.getNom());
-		Log.d(LOG_TAG, "id" +application.getId());
-
 		if (application.getNom().equals("Canal+")) {
 			ch.photo.setImageResource(R.drawable.canal);
 		}
@@ -135,11 +130,8 @@ public class favorisadapter extends BaseAdapter {
 		ch.debut.setText(progdebut[0]+":"+progdebut[1]);
 		
 		int horairedebut = (Integer.parseInt(progdebut[0])*60)+Integer.parseInt(progdebut[1]);
-		Log.d(LOG_TAG,"TOTALdebut "+Integer.toString(horairedebut));
 		int horairefin = (Integer.parseInt(progfin[0])*60)+Integer.parseInt(progfin[1]);
-		Log.d(LOG_TAG,"TOTALfin "+Integer.toString(horairefin));
 		int dureetotale = horairefin - horairedebut;
-		Log.d(LOG_TAG,"TOTAL "+Integer.toString(dureetotale));
 		//heure actuelle en minutes
 		Calendar c = Calendar.getInstance(); 
 		int heure = c.get(Calendar.HOUR_OF_DAY);
