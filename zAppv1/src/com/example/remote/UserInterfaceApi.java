@@ -2,6 +2,7 @@ package com.example.remote;
 
 import org.apache.http.HttpResponse;
 
+import com.example.remote.ServerException;
 import android.util.Log;
 
 /**
@@ -15,11 +16,14 @@ public class UserInterfaceApi extends BaseApi {
 
   private static final String LOG_TAG = UserInterfaceApi.class.getSimpleName();
   private static final String URL_SUFFIX_SEND_KEY = "/UserInterface/RemoteController/Key";
+  private static final String URL_SUFFIX_SEND_VOLUME = "/UserInterface/Volume";
   
   public static final String TYPE_KEY_PRESSED = "keypressed";
   public static final String TYPE_KEYP_UP = "keyup";
   public static final String TYPE_KEY_DOWN = "keydown";
   
+  public static final  String VOLUME_DOWN = "V-";
+  public static final  String VOLUME_UP = "V+";
   public static final  String CHANNEL_DOWN = "P-";
   public static final  String CHANNEL_UP = "P+";
   public static final  String CHANNEL_0 = "0";
@@ -49,5 +53,7 @@ public class UserInterfaceApi extends BaseApi {
       throw new ServerException(ex.getMessage(), ex.getMessage());
     }
   }
+  
+
   
 }

@@ -302,7 +302,7 @@ public class MainActivity extends Activity {
 					{
 
 						deviceList += device.id+" ("+device.ip+"): "+device.friendlyName+"\n";//devices.get(i).id+" ";
-
+						Log.d(TAG,"NUM BOX" + device.ip + device.friendlyName);
 						//Identification de la box par le nom de son attribut DeviceType
 						if(device.deviceType != null){
 							if(device.deviceType.contains("urn:schemas-upnp-org:device:MediaRenderer:1")) 
