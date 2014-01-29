@@ -45,6 +45,7 @@ public class Telecommande extends Activity{
 
 	private SeekBar seekBar1;
 	EditText ecran;
+	EditText volumeText;
 	Button button1, button2, button3, button4, button5, button6, button7;
 	Button button8, button9, button0, buttonOk,buttonMute;
 	private static final String TAG = "MyActivity";
@@ -89,6 +90,7 @@ public class Telecommande extends Activity{
 		back = (ImageButton) findViewById(R.id.back);
 		mute = (ImageButton) findViewById(R.id.buttonMute);
 		ecran = (EditText) findViewById(R.id.EditText01);
+		volumeText = (EditText) findViewById(R.id.EditTextVolume);
 
 		/*** VOLUME BAR ***/
 		new GetVolumeTask(this).execute();
@@ -102,15 +104,13 @@ public class Telecommande extends Activity{
 			
 			
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
-				//progressChanged = progress;
-				//seekBar.setIndeterminate(false);
 				
 				Log.d(TAG,"onProgressChanged" + progressChanged);
-				//getvol = progress;
-				//Log.d(TAG,"GETVOL" + getvol);
+
 				// POST new volume
 				newVol = seekBar.getProgress();
-				Log.d(TAG,"NEWVOL" + newVol);
+				volumeText.setText(Integer.toString(newVol));     // update de l'edit text
+				
 				
 			}
 
@@ -442,6 +442,7 @@ public class Telecommande extends Activity{
 				Volume vol = vs;
 				actualVol = Integer.parseInt(vol.getVolume());
 				seekBar1.setProgress(actualVol);  //set position seekbar en fct du volume courant
+				volumeText.setText(Integer.toString(actualVol));    // affichage sur l'edit text
 			}
 
 
