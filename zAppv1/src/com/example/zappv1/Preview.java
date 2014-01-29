@@ -163,7 +163,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		// GestureDetector.OnGestureListener
 		//mDetector = new GestureDetectorCompat(this,this);
 
-		//Récuperation du nom de la chaine envoyé dans la vue ListeChaine
+		//Récupération du nom de la chaine envoyé dans la vue ListeChaine
 		Bundle extra = getIntent().getExtras();
 		extra = getIntent().getExtras();
 		if(extra != null)
@@ -185,7 +185,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			id = Integer.parseInt(chaineId);
 		}
 
-		//Récuperation de l'adresse ip de la box grâce aux préférences 
+		////Récupération de l'adresse ip de la box grace aux préférences 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		ip = prefs.getString(BOX_PREFERENCES,"null");
 
@@ -343,7 +343,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 	//Appel de la fonction SendKey de la classe UserIntefaceApi pour pouvoir envoyer les commande de remote
 	private class SendKeyPressedTask extends AsyncTask<String, Void, String> {
-		//Fonction obligatoire dans un AsynTask, réalise le traitement de manière asynchrone dans un thread séparé
+		//Fonction obligatoire dans un AsynTask,
 		@Override
 		protected String doInBackground(String... params) {
 			try {
@@ -487,8 +487,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		return false;
 	}
 
-	//classe permettant de récupérer les informations en cours d'une chaîne précise
-	//et envoyer les valeurs reçues aux views xml de preview.xml
+	//classe permettant de récupérer les informations en cours d'une chaine précise
+	//et envoyer les valeurs recues aux views xml de preview.xml
 	private class getChannelTask extends AsyncTask<String, Void, String> {
 
 		EPGChaine chaine;
@@ -500,12 +500,12 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			this.id=id;
 		}
 
-		//Fonction qui se lance à l'appel de cette classe
+		//Fonction qui se lance a l'appel de cette classe
 		@Override
 		protected String doInBackground(String... params){
-			//Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+			//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaines en temps réel
 			//String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
-			//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+			//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaines en temps réel
 			String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/?TVChannelsId="+id;
 			try {
 				HttpResponse response = BaseApi.executeHttpGet(url);
@@ -532,7 +532,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			return null;
 		}
 
-		//Fonction qui se lance après l'éxécution de la fonction doInBackground
+		//Fonction qui se lance aprés l'execution du doinbackground
 
 		protected void onPostExecute(String result){
 			super.onPostExecute(result);
@@ -618,8 +618,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	}
 	/*** END ACTION MENU ***/
 
-	//classe permettant de récupérer les informations d'un programme précis
-	//et envoyer les valeurs reçues aux views xml de preview.xml
+	//classe permettant de récupérer les informations d'un programme precis
+	//et envoyer les valeurs recues aux views xml de preview.xml
 	private class getBaseProgrammeTask extends AsyncTask <String,Void,String>
 	{
 		BaseProgramme bp;
@@ -633,9 +633,9 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 		@Override
 		protected String doInBackground(String... params){
-			//Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+			//Url de la requete permettant d'acceder au Cloud pour récupérer toutes les chaines en temps réel
 			//String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
-			//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+			//Url de la requete permettant d'acceder au Cloud pour récupérer toutes les chaines en temps réel
 			String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?programId="+id;
 			try {
 				HttpResponse response = BaseApi.executeHttpGet(url);
@@ -841,12 +841,12 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			this.fin = fin;
 		}
 
-		//Fonction qui se lance à l'appel de cette classe
+		//Fonction qui se lance a l'appel de cette classe
 		@Override
 		protected String doInBackground(String... params){
-			//Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+			//Url de la requete permettant d'acceder au Cloud pour récupérer toutes les chaines en temps reel
 			//String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
-			//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+			//Url de la requete permettant d'acceder au Cloud pour récupérer toutes les chaines en temps reel
 			String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/?TVChannelsId="+id+"&period=1";
 			try {
 				HttpResponse response = BaseApi.executeHttpGet(url);
@@ -873,7 +873,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			return null;
 		}
 
-		//Fonction qui se lance après l'éxécution de la fonction doInBackground
+		//
 
 		protected void onPostExecute(String result){
 			super.onPostExecute(result);
@@ -920,8 +920,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 	//clickListener des favoris
 	public void addFavoristoDB(View view) {
-		//si on clique sur l'étoile et que la chaîne est un favori
-		//on l'enlève des favoris
+		//si on clique sur l'
+		//on l'enleve des favoris
 		if(isInDB(Integer.toString(id)))
 		{
 			deleteFavoris(Integer.toString(id));
@@ -929,7 +929,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			toast.show();
 			checkboxfavoris.setChecked(false);
 		}else
-			//si on clique sur l'étoile et que la chaîne n'est pas un favori
+			//si on clique sur etoile qui nest pas favoris
 			//on l'ajoute aux favoris
 		{
 			// Do something in response to button
@@ -942,7 +942,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		}
 	}
 
-	//fonction qui vérifie si la chaîne fait partie des favoris
+	//fonction qui verifie si la chaine fait partie des favoris
 	public Boolean isInDB(String imdbId){
 		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
 		SQLiteDatabase db = mDbHelper.getReadableDatabase();
@@ -958,7 +958,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		}
 	}
 
-	//fonction qui enlève la chaîne des favoris
+	//fonction qui enleve la chaine des favoris
 	public void deleteFavoris(String channel){
 		Log.d(TAG,"BDD TRANSFERT" + channel);
 		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
@@ -970,7 +970,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		db.close();
 	}
 
-	//fonction qui ajoute la chaîne aux favoris
+	//fonction qui ajoute la chaine aux favoris
 	public void saveFavoris(String channel){
 		// Gets the data repository in write mode
 		Log.d(TAG,"BDD TRANSFERT" + channel);
@@ -1003,4 +1003,3 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 
 }
-

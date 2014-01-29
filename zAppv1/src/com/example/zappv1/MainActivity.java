@@ -265,7 +265,7 @@ public class MainActivity extends Activity {
 					{
 
 						deviceList += device.id+" ("+device.ip+"): "+device.friendlyName+"\n";//devices.get(i).id+" ";
-
+						Log.d(TAG,"NUM BOX" + device.ip + device.friendlyName);
 						//Identification de la box par le nom de son attribut DeviceType
 						if(device.deviceType != null){
 							if(device.deviceType.contains("urn:schemas-upnp-org:device:MediaRenderer:1")) 
@@ -345,7 +345,14 @@ public class MainActivity extends Activity {
 			startActivity(intent);
 			overridePendingTransition(R.anim.bottom_in, R.anim.top_out);
 			break;
-
+		case R.id.action_refresh:
+			Log.d(TAG,"REFRESH OK");
+		//	super.onOptionsItemSelected(item);
+			
+			//super.onCreate(ListeChaine.refreshChaine());
+			//ListeChaine.refreshChaine();
+			//onResume();
+			break;
 		default:
 			break;
 		}
@@ -438,7 +445,7 @@ public class MainActivity extends Activity {
 	public void onBackPressed()
 	{
 		if (back_pressed + 2000 > System.currentTimeMillis()) super.onBackPressed();
-		else Toast.makeText(getBaseContext(), "Appuyer encore pour quitter!", Toast.LENGTH_SHORT).show();
+		else Toast.makeText(getBaseContext(), "Appuyez de nouveau pour quitter!", Toast.LENGTH_SHORT).show();
 		back_pressed = System.currentTimeMillis();
 	}
 

@@ -1,15 +1,28 @@
 package com.example.zappv1;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -17,8 +30,14 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
+
+
+import com.example.remote.NetworkUtils;
 import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
+import com.google.gson.Gson;
+
+
 
 
 
@@ -26,6 +45,7 @@ public class Telecommande extends Activity{
 
 	private SeekBar seekBar1;
 	EditText ecran;
+	EditText volumeText;
 	Button button1, button2, button3, button4, button5, button6, button7;
 	Button button8, button9, button0, buttonOk,buttonMute;
 	private static final String TAG = "MyActivity";
@@ -36,6 +56,8 @@ public class Telecommande extends Activity{
 	Button moins, plus;
 	ImageButton back,mute;
 	Toast toast;  
+	private int actualVol;
+	private int newVol;
 
 
 	@Override
@@ -47,10 +69,10 @@ public class Telecommande extends Activity{
 		// Retour sur la vue précédente
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
-		getActionBar().setDisplayShowTitleEnabled(false);
-		getActionBar().setTitle("Retour");
+		getActionBar().setDisplayShowTitleEnabled(true);
+		getActionBar().setTitle("Télécommande");
 		getActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
-		
+
 		seekBar1 = (SeekBar) findViewById(R.id.seekBar1);
 		button0 = (Button) findViewById(R.id.button0);
 		button1 = (Button) findViewById(R.id.button1);
@@ -68,25 +90,32 @@ public class Telecommande extends Activity{
 		back = (ImageButton) findViewById(R.id.back);
 		mute = (ImageButton) findViewById(R.id.buttonMute);
 		ecran = (EditText) findViewById(R.id.EditText01);
+		volumeText = (EditText) findViewById(R.id.EditTextVolume);
 
-
+		/*** VOLUME BAR ***/
+		new GetVolumeTask(this).execute();
+		
+		Log.d(TAG,"actualVol" + actualVol);
 		seekBar1.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-			int progressChanged = 0;
-
+			int progressChanged; 
+			
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
-				progressChanged = progress;
+				Log.d(TAG,"onProgressChanged" + progressChanged);
+
+				// POST new volume
+				newVol = seekBar.getProgress();
+				volumeText.setText(Integer.toString(newVol));     // update de l'edit text
+				sendVolumePressed(Integer.toString(newVol));
 			}
 
 			public void onStartTrackingTouch(SeekBar seekBar) {
-				// TODO Auto-generated method stub
 			}
 
 			public void onStopTrackingTouch(SeekBar seekBar) {
-				/*Toast.makeText(Reglages.this,"seek bar progress:"+progressChanged,
-                         Toast.LENGTH_SHORT,test).show();*/
-				Log.d(TAG,"seek bar progress:"+progressChanged);
 			}
 		});
+
+		/*** END_VOLUME BAR ***/
 
 		//récupérer l'IP de la box
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -313,8 +342,12 @@ public class Telecommande extends Activity{
 
 	void sendKeyPressed(String key) {
 		new SendKeyPressedTask().execute(
-				new String[] { URL_HTTP , key});
-
+			new String[] { URL_HTTP , key});
+	}
+	
+	void sendVolumePressed(String volumeToSend) {
+		new SendVolumeTask().execute(
+			new String[] { URL_HTTP , volumeToSend});
 	}
 
 	//Appel de la fonction SendKey de la classe UserIntefaceApi pour pouvoir envoyer les commande de remote
@@ -332,5 +365,107 @@ public class Telecommande extends Activity{
 			}
 		}     
 	}
+	
+	// Appel fonction SendVolume de la classe UserIntefaceApi pour pouvoir gérer le volume de remote
+	private class SendVolumeTask extends AsyncTask<String, Void, String> {
+		private Exception mException = null;
 
+		@Override
+		protected String doInBackground(String... params) {
+			try {
+				UserInterfaceApi.sendVolume(params[0], params[1]);
+				return params[1];
+			} catch (ServerException e) {
+				mException = e;
+				return params[1];
+			}
+		}
+	}
+
+	public class GetVolumeTask extends AsyncTask<String, Void, String> {
+		public static final String LOG_TAG = "debug netWorkUtils";
+
+		//int volume;
+		//BaseAdapter adapter;
+		Context context;
+
+		public GetVolumeTask(/*int volume, BaseAdapter adapter, */Context c) {
+			//this.volume = volume;
+			//this.adapter = adapter;
+			this.context = c;
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			String url = NetworkUtils.getUrlHttp(context)+"/UserInterface/Volume";
+			Log.i(LOG_TAG, "get current volume : "+url);
+			HttpGet method = new HttpGet(url);
+			HttpClient client = new DefaultHttpClient();
+			//on veut du json en retour
+			method.setHeader("Accept", NetworkUtils.JSON_CONTENT_TYPE);
+			//on envoit du json au serveur
+			method.setHeader("content-type",NetworkUtils.JSON_CONTENT_TYPE);
+
+			try {
+				HttpResponse response = client.execute(method);
+				int statusCode = response.getStatusLine().getStatusCode();
+				Log.d(LOG_TAG, "httpResponse statusCode : "+statusCode);
+				HttpEntity entity = response.getEntity();
+				if(entity != null){
+					BufferedReader r = new BufferedReader(new InputStreamReader(entity.getContent()));
+					StringBuilder total = new StringBuilder();
+					String line;
+					while ((line = r.readLine()) != null) {
+						total.append(line);
+					}
+					Log.d(LOG_TAG, "result : "+total);
+					return total.toString();
+				}
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+				Log.d(LOG_TAG, "ClientProtocolException : "+e.toString());
+
+			} catch (IOException e) {
+				e.printStackTrace();
+				Log.d(LOG_TAG, "IOException : "+e.toString());
+			}
+
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(String result){
+			super.onPostExecute(result);
+
+			if(result != null){
+				
+				VolumeSerialize vs = new Gson().fromJson(result, VolumeSerialize.class);
+				Volume vol = vs;
+				actualVol = Integer.parseInt(vol.getVolume());
+				seekBar1.setProgress(actualVol);  //set position seekbar en fct du volume courant
+				volumeText.setText(Integer.toString(actualVol));    // affichage sur l'edit text
+			}
+
+
+		}
+		public class Volume{
+
+			String volume;
+
+			public String getVolume() {
+				return volume;
+			}
+
+			public void setVolume(String volume) {
+				this.volume = volume;
+			}
+		}
+
+		public class VolumeSerialize extends Volume{
+
+			private static final long serialVersionUID = 1456L;
+		}
+	}
+
+	
 }
