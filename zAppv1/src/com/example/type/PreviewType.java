@@ -1,4 +1,4 @@
-package com.example.favoris;
+package com.example.type;
 
 import infoprog.BaseProgramme;
 import infoprog.BaseProgrammeSerialize;
@@ -59,6 +59,7 @@ import com.example.cloud.EPGChaine;
 import com.example.cloud.EPGChaineSerialize;
 import com.example.cloud.EPGNext;
 import com.example.cloud.EPGNextSerialize;
+import com.example.favoris.FeedReaderDbHelperFavoris;
 import com.example.favoris.FeedReaderContractFavoris.FeedEntry;
 import com.example.remote.BaseApi;
 import com.example.remote.ServerException;
@@ -67,8 +68,8 @@ import com.example.zappv1.R;
 import com.example.zappv1.Telecommande;
 import com.google.gson.Gson;
 
-public class previewFavoris extends Activity implements GestureDetector.OnGestureListener {
-	
+public class PreviewType extends Activity implements GestureDetector.OnGestureListener {
+
 	/*** IMAGE Melvin ***/
 	private EPGChaine epgChaine;
 	private EPGNext nextprog;
@@ -117,7 +118,7 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 	private GestureDetectorCompat mDetector; 
 	int id;
 	String[] parse;
-	String progId, listefavori;
+	String progId, listetype;
 	ProgressBar mProgressBar;
 
 
@@ -130,7 +131,7 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 		ActionBar actionbar = getActionBar();
 		actionbar.show();
 		getActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
-		
+
 		textChaine = (TextView)findViewById(R.id.chaineName);
 		textNom = (TextView)findViewById(R.id.progNom);
 		textDescription = (TextView)findViewById(R.id.progDescription);
@@ -167,7 +168,7 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 		extra = getIntent().getExtras();
 		if(extra != null)
 		{
-			listefavori = extra.getString("listefavori");
+			listetype = extra.getString("listetype");
 			fin = extra.getString("progFin");
 			channel = extra.getString("chaineNom");
 			textChaine.setText(channel);
@@ -181,14 +182,15 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 			gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			gbpt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			gnext.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-			
-			parse = listefavori.split(",");
+
+			parse = listetype.split(",");
 			for (int i =0; i< parse.length; i++){
 				if (chaineId.equals(parse[i]))
 				{
 					id = i;
 				}
 			}
+
 		}
 
 		//Récuperation de l'adresse ip de la box grâce aux préférences 
@@ -208,14 +210,7 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 			checkboxfavoris.setChecked(true);
 		}
 		else checkboxfavoris.setChecked(false);
-		/*checkboxfavoris.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
-			}
-		});*/
 		play.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
@@ -352,14 +347,7 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 
 	protected void onSwipeLeft() { 
 		// do your stuff here
-		if (checkboxfavoris.isChecked()){
-			id++;
-		}else{
-			id++;
-			for (int i =id-1; i < parse.length-1 ; i++) {
-				parse[i] = parse[i+1];
-			}
-		}
+		id++;
 		if(id>=parse.length) id=id-parse.length;
 		getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),parse[id]);
 		gtc.execute();
@@ -378,7 +366,7 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 		{
 			Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
 		}
-		
+
 		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
 		Log.d(TAG,"BDD OPEN");
 		if (isInDB(parse[id]))
@@ -392,15 +380,9 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 	protected void onSwipeRight() {   
 		// do your stuff here
 		//sendKeyPressed(UserInterfaceApi.CHANNEL_UP); 
-		if (checkboxfavoris.isChecked()){
-			id--;
-		}else{
-			id--;
-			for (int i =id+1; i < parse.length-1 ; i++) {
-				parse[i] = parse[i+1];
-			}
-		}
-		
+
+		id--;
+
 		if(id<0) id=id+parse.length;
 		getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),parse[id]);
 		gtc.execute();
@@ -419,7 +401,7 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 		{
 			Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
 		}
-		
+
 		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
 		Log.d(TAG,"BDD OPEN");
 		if (isInDB(parse[id]))
@@ -872,7 +854,7 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 			checkboxfavoris.setChecked(true);
 		}
 	}
-	
+
 	public Boolean isInDB(String imdbId){
 		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
 		SQLiteDatabase db = mDbHelper.getReadableDatabase();
@@ -887,7 +869,7 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 			return false;			
 		}
 	}
-	
+
 	public void deleteFavoris(String channel){
 		Log.d(TAG,"BDD TRANSFERT" + channel);
 		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
@@ -898,7 +880,7 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 		db.delete(FeedEntry.TABLE_NAME, FeedEntry.COLUMN_NAME_ID + " = " +channel, null);
 		db.close();
 	}
-	
+
 	public void saveFavoris(String channel){
 		// Gets the data repository in write mode
 		Log.d(TAG,"BDD TRANSFERT" + channel);
@@ -921,13 +903,13 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 	@SuppressLint("ShowToast")
 	private void setAddedToast(){
 		Context context = getApplicationContext();
-		CharSequence text = "chaîne ajoutée avec succès!";
+		CharSequence text = "Film ajoutÃ© avec succÃ¨s!";
 		toast = Toast.makeText(context, text, toast_duration);
 	}
 	@SuppressLint("ShowToast")
 	private void setDeletedToast(){
 		Context context = getApplicationContext();
-		CharSequence text = "chaîne supprimée avec succès!";
+		CharSequence text = "Film supprimÃ© avec succÃ¨s!";
 		toast = Toast.makeText(context, text, toast_duration);
 	}
 }

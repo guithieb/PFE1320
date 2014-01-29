@@ -1,4 +1,4 @@
-package com.example.favoris;
+package com.example.type;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,46 +9,38 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.BaseAdapter;
 
 import com.example.cloud.EPGChaine;
-import com.example.cloud.EPGChaines;
+import com.example.cloud.EPGChaineSerialize;
 import com.example.remote.BaseApi;
 import com.google.gson.Gson;
 
-public class GetFavorisTask extends AsyncTask<String, Void, String>{
+public class gettypeTask extends AsyncTask<String, Void, String> {
 
-	ArrayList<EPGChaine> chaines;
+	ArrayList <EPGChaine> chaine;
+
 	BaseAdapter adapter;
 	Context context;
-	String channels;
+	String id;
 	public static final String LOG_TAG = "debug";
-	private ProgressDialog spinner;
-
-	public GetFavorisTask(ArrayList<EPGChaine> chaines, BaseAdapter adapter, Context c, String channels) {
-		this.chaines = chaines;
+	public gettypeTask(ArrayList <EPGChaine> chaine,BaseAdapter adapter, Context c,String id) {
+		this.chaine = chaine;
 		this.adapter = adapter;
 		this.context = c;
-		this.channels = channels;
-		this.spinner = new ProgressDialog(context);
+		this.id=id;
 	}
-	
-	protected void onPreExecute(){
-		spinner.setMessage("Chargement");
-		spinner.show();
-	}
-	
+
 	//Fonction qui se lance à l'appel de cette classe
 	@Override
 	protected String doInBackground(String... params){
-	  //Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+		//Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
 		//String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
-	  //Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
-		String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/?TVChannelsId="+channels;
+		//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
+		String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/?TVChannelsId="+id;
 		try {
 			HttpResponse response = BaseApi.executeHttpGet(url);
 			HttpEntity entity = response.getEntity();
@@ -73,20 +65,20 @@ public class GetFavorisTask extends AsyncTask<String, Void, String>{
 		}
 		return null;
 	}
-	
+
 	//Fonction qui se lance après l'éxécution de la fonction doInBackground
-	
+
 	protected void onPostExecute(String result){
 		super.onPostExecute(result);
-		spinner.dismiss();
+
 		if (result!=null)
 		{	
-			EPGChaines ch = new Gson().fromJson(result,EPGChaines.class);
+			EPGChaineSerialize ch = new Gson().fromJson(result,EPGChaineSerialize.class);
 			Log.d(LOG_TAG,"CH "+ch.toString());
-			chaines.clear();
-			chaines.addAll(ch);
+			//adapter.notifyDataSetChanged();
+			chaine.clear();
+			chaine.add(ch);
 			adapter.notifyDataSetChanged();
-			
 		}
 	}
 

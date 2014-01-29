@@ -99,7 +99,12 @@ public class ListeChaine extends Fragment{
 
   }
 
-  
+  public void onResume(){
+		super.onResume();
+		adapter = new ChaineAdapter(getActivity(), epgChaines, this);  
+	    listeChaine.setAdapter(adapter);
+	    refreshChaine();
+  }
 
 private void refreshChaine() {
 	// TODO Auto-generated method stub
