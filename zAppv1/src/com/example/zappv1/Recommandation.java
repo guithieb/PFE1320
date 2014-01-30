@@ -70,18 +70,12 @@ public class Recommandation extends Fragment {
 	int counter = 1;
 	String ip;
 	String appId;
-	String typepref = "Film";
-	String typeProg = "Série";
-	ArrayList <String> chainetype = new ArrayList<String>();
-	ArrayList <String> chainepref = new ArrayList<String>();
+	String premier = "Film"; // type préféré par l'utilisateur
+	String second = "Série";// deuxième type préféré
+	String troisieme; // troisième type préféré
+	ArrayList <String> premiertype = new ArrayList<String>();
+	ArrayList <String> secondtype = new ArrayList<String>();
 
-	/*
-	public static Fragment newInstance(Context context){
-		Recommandation f = new Recommandation();
-
-		return f;
-	}
-	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.recommandation, null);
@@ -297,12 +291,12 @@ public class Recommandation extends Fragment {
 				BaseProgrammeSerialize bpz = new Gson().fromJson(result,BaseProgrammeSerialize.class);
 				bp = bpz;
 
-				if (bp.getProgramme().getListeGenres().getGenre().equals(typepref)){
-					chainepref.add(channel);
+				if (bp.getProgramme().getListeGenres().getGenre().equals(premier)){
+					premiertype.add(channel);
 				}
 
-				if (bp.getProgramme().getListeGenres().getGenre().equals(typeProg)){
-					chainetype.add(channel);
+				if (bp.getProgramme().getListeGenres().getGenre().equals(second)){
+					secondtype.add(channel);
 				}
 
 				//on compare la liste des artistes de la webapp et ceux du programme
@@ -352,9 +346,9 @@ public class Recommandation extends Fragment {
 				chaineId = parsing(chainereco, 0);
 				//si vide, on propose les programmes de la catégorie préférée par l'utilisateur
 				if (chaineId.isEmpty()){
-					chaineId = parsing(chainepref, 0);
-					if (chainepref.size() < 4){
-						chaineId = chaineId + parsing(chainetype, chainepref.size());
+					chaineId = parsing(premiertype, 0);
+					if (secondtype.size() < 4){
+						chaineId = chaineId + parsing(secondtype, secondtype.size());
 					}
 					adapter = new RecommandationAdapter(getActivity(), epgrecommendes, this);  
 					listeRecommandation.setAdapter(adapter);
@@ -362,9 +356,9 @@ public class Recommandation extends Fragment {
 				}else
 				{
 					if ((chaineId.length() == 1)||(chaineId.length() == 2)){
-						chaineId = chaineId + parsing(chainepref, 1);
-						if (chainepref.size() + chainereco.size() < 4){
-							chaineId = chaineId + parsing(chainetype, chainepref.size() + chainereco.size());
+						chaineId = chaineId + parsing(premiertype, 1);
+						if (premiertype.size() + chainereco.size() < 4){
+							chaineId = chaineId + parsing(secondtype, (premiertype.size() + chainereco.size()));
 						}
 						adapter = new RecommandationAdapter(getActivity(), epgrecommendes, this);  
 						listeRecommandation.setAdapter(adapter);
