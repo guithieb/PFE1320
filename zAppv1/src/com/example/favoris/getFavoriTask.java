@@ -75,8 +75,6 @@ public class getFavoriTask extends AsyncTask<String, Void, String> {
 		if (result!=null)
 		{	
 			EPGChaineSerialize ch = new Gson().fromJson(result,EPGChaineSerialize.class);
-			Log.d(LOG_TAG,"CH "+ch.toString());
-			//adapter.notifyDataSetChanged();
 			chaine.clear();
 			chaine.add(ch);
 			adapter.notifyDataSetChanged();

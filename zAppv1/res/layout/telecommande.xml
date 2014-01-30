@@ -10,51 +10,44 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:paddingLeft="20dp" >
+         >
 
         <EditText
             android:id="@+id/EditTextVolume"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:cursorVisible="false"
             android:editable="false"
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="30dp">
+            android:textStyle="bold" >
         </EditText>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/Layout1"
-        android:layout_width="200dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp" >
-
-        <ImageButton
-            android:id="@+id/buttonMute"
-            android:layout_width="51dp"
-            android:layout_height="45dp"
-            android:src="@drawable/mutedark" />
 
         <SeekBar
             android:id="@+id/seekBar1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="0.77"
+            android:focusableInTouchMode="true"
             android:indeterminate="false"
-            android:max="100" />
+            android:minHeight="30dip" />
     </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/Layout2"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/Layout1"
+        android:layout_below="@id/Layout1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp" >
 
@@ -86,8 +79,8 @@
         android:id="@+id/Layout3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/Layout1"
         android:layout_below="@+id/Layout2"
+        android:layout_centerHorizontal="true"
         android:columnCount="3"
         android:orientation="horizontal" >
 
@@ -146,10 +139,12 @@
             android:textColor="@color/white"
             android:textStyle="bold" />
 
-        <Button
+        <ImageButton
+            android:id="@+id/buttonMute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="fill"
-            android:layout_rowSpan="3"
-            android:enabled="false" />
+            android:src="@drawable/mutedark" />
 
         <Button
             android:id="@+id/button0"

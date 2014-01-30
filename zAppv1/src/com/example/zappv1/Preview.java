@@ -8,6 +8,7 @@ import infoprog.ProgrammeFilmSerialize;
 import infoprog.ProgrammeMag;
 import infoprog.ProgrammeMagSerialize;
 import infoprog.ProgrammeSerie;
+import infoprog.ProgrammeSerieSerialize;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -82,6 +83,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	private BaseProgramme basePg;
 	private ProgrammeFilm pgFilm;
 	private ProgrammeMag pgMag;
+	private ProgrammeSerie pgSerie;
 
 
 	private static final int SWIPE_MIN_DISTANCE = 120;
@@ -105,6 +107,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	TextView textDescription;
 	TextView textDebut,textFin, textNextDebut, textNextFin;
 	TextView textDuree, textGenre, textNext;
+	TextView textEpisode;
 	ImageView imagette, left, right;
 	CheckBox checkboxfavoris;
 	Button play;
@@ -145,6 +148,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		textNext = (TextView) findViewById(R.id.next);
 		textNextDebut = (TextView) findViewById(R.id.progNextDebut);
 		textNextFin = (TextView) findViewById(R.id.progNextFin);
+		textEpisode = (TextView) findViewById(R.id.episode);
 		play = (Button) findViewById(R.id.buttonplay);
 		checkboxfavoris = (CheckBox) findViewById(R.id.checkBox1);
 
@@ -549,7 +553,17 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				if(chaine != null)
 					Log.d(LOG_TAG,"CHAINE"+chaine.getListeProgrammes().getProgrammes().getNom());
 				textChaine.setText(chaine.getNom());
-				textNom.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getNom()));
+				if(chaine.getListeProgrammes().getProgrammes().getNom().contains("&#4")){
+					String[] parseNom = chaine.getListeProgrammes().getProgrammes().getNom().split("&");
+					if (chaine.getListeProgrammes().getProgrammes().getNom().contains("&apos;")){
+						textNom.setText(Html.fromHtml(parseNom[0] + "&" + parseNom[1]));
+					}else{
+						textNom.setText(Html.fromHtml(parseNom[0]));
+					}
+				}
+				else{
+					textNom.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getNom()));
+				}
 				textDescription.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getDescription()));
 
 
@@ -595,7 +609,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		}
 
 		return super.onOptionsItemSelected(item);
-		//return true;    // erreur ...
 	}
 
 	public void makeToast(String message) {
@@ -655,8 +668,16 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			{	
 				BaseProgrammeSerialize bpz = new Gson().fromJson(result,BaseProgrammeSerialize.class);
 				bp = bpz;
-
-				Log.d(LOG_TAG,"TVSHOW"+result.toString());
+				if (bp.getProgramme().getListeGenres().getGenre().equals("Série"))
+				{
+					ProgrammeSerieSerialize pss = new Gson().fromJson(result,ProgrammeSerieSerialize.class);
+					pgSerie = pss;
+					textEpisode.setText(" - E: "+pgSerie.getProgramme().getSerie().getEpisode() + "\\S: "+pgSerie.getProgramme().getSerie().getSaison());
+					
+				}
+				else{
+					textEpisode.setText("");
+				}
 				if(result.toString().contains("\"firstName\": {}")){
 					textGenre.setText(bp.getProgramme().getListeGenres().getGenre());
 					String[] parse2 = bp.getProgramme().getDiffusion().getDuree().split("T");
@@ -858,32 +879,41 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 			if (result!=null)
 			{
-				Log.d(LOG_TAG,"RESULT"+result.toString());
 				EPGNextSerialize next = new Gson().fromJson(result,EPGNextSerialize.class);
-
 
 				//adapter.notifyDataSetChanged();
 				prog = next;
 				int j=0;
 				if(prog != null)
-					Log.d(LOG_TAG,"CHAINE"+prog.getListeProgrammes().getProgrammes().get(0).getNom());
 				for (int i=0; i<prog.getListeProgrammes().getProgrammes().size(); i++){
 					if (prog.getListeProgrammes().getProgrammes().get(i).getDebut().equals(fin)){
 						j = i;
-						textNext.setText(Html.fromHtml(prog.getListeProgrammes().getProgrammes().get(j).getNom()));
 
-						String[] parse = prog.getListeProgrammes().getProgrammes().get(i).getDebut().split("T");
-						String[] debutProg = parse[1].split("Z");
-						textNextDebut.setText(debutProg[0]+" - ");
-						String[] parse2 = prog.getListeProgrammes().getProgrammes().get(i).getFin().split("T");
-						String[] finProg = parse2[1].split("Z");
-						textNextFin.setText(finProg[0]);
+						if(prog.getListeProgrammes().getProgrammes().get(j).getNom().contains("&#4")){
+							String[] parseNom = prog.getListeProgrammes().getProgrammes().get(j).getNom().split("&");
+
+							if (prog.getListeProgrammes().getProgrammes().get(j).getNom().contains("&apos;")){
+								textNext.setText(Html.fromHtml(parseNom[0] + "&" + parseNom[1]));
+							}else{
+								textNext.setText(Html.fromHtml(parseNom[0]));
+							}
+						}
+						else{
+							textNext.setText(Html.fromHtml(prog.getListeProgrammes().getProgrammes().get(j).getNom()));
+						}
 					}
+					String[] parse = prog.getListeProgrammes().getProgrammes().get(i).getDebut().split("T");
+					String[] debutProg = parse[1].split("Z");
+					textNextDebut.setText(debutProg[0]+" - ");
+					String[] parse2 = prog.getListeProgrammes().getProgrammes().get(i).getFin().split("T");
+					String[] finProg = parse2[1].split("Z");
+					textNextFin.setText(finProg[0]);
 				}
-
 			}
+
 		}
 	}
+
 	//clickListener des favoris
 	public void addFavoristoDB(View view) {
 		//si on clique sur l'

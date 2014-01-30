@@ -28,7 +28,6 @@ public class ProgrammeSerie  {
 		private Diffusion Diffusion;
 		private String imagette;
 		private String productionDate;
-		private ListeArtiste ListeArtistes;
 		private serie serie;
 		
 		public Programme()
@@ -101,21 +100,6 @@ public class ProgrammeSerie  {
 		public void setProductionDate(String productionDate) {
 			this.productionDate = productionDate;
 		}
-	
-	
-
-	
-	
-	
-	
-
-	public ListeArtiste getListeArtistes() {
-		return ListeArtistes;
-	}
-
-	public void setListeArtistes(ListeArtiste listeArtistes) {
-		ListeArtistes = listeArtistes;
-	}
 
 	public serie getSerie() {
 		return serie;

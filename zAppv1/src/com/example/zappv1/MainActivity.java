@@ -345,14 +345,6 @@ public class MainActivity extends Activity {
 			startActivity(intent);
 			overridePendingTransition(R.anim.bottom_in, R.anim.top_out);
 			break;
-		case R.id.action_refresh:
-			Log.d(TAG,"REFRESH OK");
-		//	super.onOptionsItemSelected(item);
-			
-			//super.onCreate(ListeChaine.refreshChaine());
-			//ListeChaine.refreshChaine();
-			//onResume();
-			break;
 		default:
 			break;
 		}

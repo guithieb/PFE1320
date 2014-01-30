@@ -17,11 +17,13 @@ import com.example.cloud.EPGChaineSerialize;
 import com.example.remote.BaseApi;
 import com.example.zappv1.R;
 import com.google.gson.Gson;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,8 +52,10 @@ public class DisplayByType extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		//création de la vue et connexion des variables avec leur "clones" xml
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.displaybytype);
+		/// Code en dur avec la couleur #303030
+		getActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
 		listeType = (ListView) findViewById(R.id.chaines);
 		Bundle extra = getIntent().getExtras();
 		extra = getIntent().getExtras();
@@ -64,38 +68,39 @@ public class DisplayByType extends Activity {
 				gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			}
 		}
-		
-		 //évenement lorsque qu'on clique sur une chaîne dans la liste
-        listeType.setOnItemClickListener(new OnItemClickListener()
-        {
-          @Override
-          public void onItemClick(AdapterView<?> arg0, View v, int position, long id)
-          {
-            Intent intent = new Intent(getApplicationContext(), PreviewType.class);
-            item = (EPGChaine) arg0.getItemAtPosition(position);
-            intent.putExtra("listetype", chaineId);
-            //Envoi du nom de la chaine à la vue prévisualisation
-            intent.putExtra("chaineNom",item.getNom());
-            //Envoi de l'id de la chaîne
-            intent.putExtra("chaineId", item.getId());
-            //envoi de l'id du programme
-            intent.putExtra("progid", item.getListeProgrammes().getProgrammes().getId());
-            intent.putExtra("progFin", item.getListeProgrammes().getProgrammes().getFin());             
-            intent.setClass(getApplicationContext(), PreviewType.class);
-            startActivity(intent);
-            DisplayByType.this.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-          }
-             
-        });
-	}
-	
-	 public void onResume(){
-			super.onResume();
-			for (int i = 1; i < 20; i++){
-				getChannelTask gtc = new getChannelTask(epgChaine, getApplicationContext(),Integer.toString(i));
-				gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+		//évenement lorsque qu'on clique sur une chaîne dans la liste
+		listeType.setOnItemClickListener(new OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View v, int position, long id)
+			{
+				Intent intent = new Intent(getApplicationContext(), PreviewType.class);
+				item = (EPGChaine) arg0.getItemAtPosition(position);
+				intent.putExtra("listetype", chaineId);
+				//Envoi du nom de la chaine à la vue prévisualisation
+				intent.putExtra("chaineNom",item.getNom());
+				//Envoi de l'id de la chaîne
+				intent.putExtra("chaineId", item.getId());
+				//envoi de l'id du programme
+				intent.putExtra("progid", item.getListeProgrammes().getProgrammes().getId());
+				intent.putExtra("progFin", item.getListeProgrammes().getProgrammes().getFin());             
+				intent.setClass(getApplicationContext(), PreviewType.class);
+				startActivity(intent);
+				DisplayByType.this.overridePendingTransition(R.anim.right_in, R.anim.left_out);
 			}
-	  }
+
+		});
+	}
+
+	public void onResume(){
+		//mettre à jour la vue quand on revient d'une des vues previewType
+		super.onResume();
+		for (int i = 1; i < 20; i++){
+			getChannelTask gtc = new getChannelTask(epgChaine, getApplicationContext(),Integer.toString(i));
+			gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		}
+	}
 	private void refreshType(){
 		new gettypeTask(epgType, adapter, getApplicationContext(), chaineId).execute();
 	}
@@ -170,8 +175,8 @@ public class DisplayByType extends Activity {
 				}
 			}
 		}
-		
-		
+
+
 
 	}
 	//récupération des information d'un programme
@@ -268,6 +273,7 @@ public class DisplayByType extends Activity {
 			}
 
 		}
+		//transformation du tableau de chaînes en un string utilisable dans les tasks d'appel
 		public String parsing(){
 			String parse ="";
 			if (tri.isEmpty()){
