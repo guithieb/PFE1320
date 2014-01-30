@@ -3,8 +3,9 @@ package com.example.recommandation;
 public class DataBaseReco {
 
 	private static final String TAG = "MyActivity";
-	public String id;
-	public String genre;
+	private String id;
+	private String genre;
+	private String ordrepref;
 	
 	public DataBaseReco(){
 		
@@ -25,6 +26,17 @@ public class DataBaseReco {
 	public void setGenre(String genre) {
 		this.genre = genre;
 	}
+
+	public String getOrdrepref() {
+		return ordrepref;
+	}
+
+	public void setOrdrepref(String ordrepref) {
+		this.ordrepref = ordrepref;
+	}
+
+
+	
 	
 
 	

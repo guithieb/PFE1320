@@ -78,6 +78,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.zappv1.MainActivity" />
         </activity>
+        
+        <activity android:name="com.example.zappv1.GenreForm"
+            	  android:screenOrientation="portrait" >
+         </activity>
+        
         <activity
             android:name="com.example.zappv1.Telecommande"
             android:parentActivityName="com.example.zappv1.MainActivity"

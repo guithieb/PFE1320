@@ -23,6 +23,7 @@ import com.example.recommandation.AppRegister;
 import com.example.recommandation.GetRecoTasks;
 import com.example.recommandation.ObjectReco;
 import com.example.recommandation.ObjectRecoSerialize;
+import com.example.recommandation.RecoBDD;
 import com.example.recommandation.RecommandationAdapter;
 import com.example.recommandation.getRecoTask;
 import com.example.remote.BaseApi;
@@ -31,6 +32,7 @@ import com.google.gson.Gson;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -81,6 +83,15 @@ public class Recommandation extends Fragment {
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.recommandation, null);
 		listeRecommandation = (ListView) root.findViewById(R.id.chaines);
 
+        RecoBDD recoBdd = new RecoBDD(getActivity());
+        
+        if(recoBdd.getCount() == 0)
+        {
+        	Intent intent = new Intent(getActivity(), GenreForm.class);
+        	startActivity(intent);
+        }
+
+		
 		//on récupère la liste des artistes auprès de la webapp
 		GetDatabaseTask gdbt = new GetDatabaseTask();
 		gdbt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
