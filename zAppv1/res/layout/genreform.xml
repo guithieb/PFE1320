@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <Spinner
+        android:id="@+id/spinnerForm"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/buttonValidateForm"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Valider" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <TextView
+            android:id="@+id/type1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="92dp"
+            android:text="Pas de 1er choix"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/type2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/type1"
+            android:layout_below="@+id/type1"
+            android:layout_marginTop="42dp"
+            android:text="Pas de 2nd choix"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/type3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/type2"
+            android:layout_below="@+id/type2"
+            android:layout_marginTop="42dp"
+            android:text="Pas de 3eme choix"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

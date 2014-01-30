@@ -16,6 +16,7 @@ public class FeedReaderContractReco {
         public static final String TABLE_NAME = "recommandation";
         public static final String COLUMN_NAME_ID = "id";
         public static final String COLUMN_NAME_GENRE = "genre";
+        public static final String COLUMN_NAME_ORDREPREF = "ordrepref";
         
     }
 	
