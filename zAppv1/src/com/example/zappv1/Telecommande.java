@@ -62,6 +62,7 @@ public class Telecommande extends Activity{
 	Toast toast;  
 	private int actualVol;
 	private int newVol;
+	private boolean boolMute = false;
 
 
 	@Override
@@ -98,11 +99,11 @@ public class Telecommande extends Activity{
 
 		/*** VOLUME BAR ***/
 		new GetVolumeTask(this).execute();
-		
+
 		Log.d(TAG,"actualVol" + actualVol);
 		seekBar1.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			int progressChanged; 
-			
+
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
 				Log.d(TAG,"onProgressChanged" + progressChanged);
 
@@ -111,7 +112,7 @@ public class Telecommande extends Activity{
 				volumeText.setText(Integer.toString(newVol));     // update de l'edit text
 				sendVolumePressed(Integer.toString(newVol));
 				//Log.d(TAG,"newVol" + newVol);                   // volume mis à jour
-				
+
 			}
 
 			public void onStartTrackingTouch(SeekBar seekBar) {
@@ -280,8 +281,17 @@ public class Telecommande extends Activity{
 
 			@Override
 			public void onClick(View v) {
-				sendKeyPressed(UserInterfaceApi.CHANNEL_MUTE);
-
+				if(boolMute)
+				{
+					sendKeyPressed(UserInterfaceApi.CHANNEL_MUTE);
+					seekBar1.setEnabled(true);
+					boolMute = false;
+				}
+				else {
+					sendKeyPressed(UserInterfaceApi.CHANNEL_MUTE);
+					seekBar1.setEnabled(false);
+					boolMute = true;
+				}
 			}
 		});
 
@@ -292,12 +302,12 @@ public class Telecommande extends Activity{
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
-	
+
+
 	//ajout du bouton retour (de la télécommande vers la vue prévèdente)
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
+
 		// Handle action bar actions click
 		switch (item.getItemId()) {
 		case R.id.action_alarm:
@@ -368,12 +378,12 @@ public class Telecommande extends Activity{
 
 	void sendKeyPressed(String key) {
 		new SendKeyPressedTask().execute(
-			new String[] { URL_HTTP , key});
+				new String[] { URL_HTTP , key});
 	}
-	
+
 	void sendVolumePressed(String volumeToSend) {
 		new SendVolumeTask().execute(
-			new String[] { URL_HTTP , volumeToSend});
+				new String[] { URL_HTTP , volumeToSend});
 	}
 
 	//Appel de la fonction SendKey de la classe UserIntefaceApi pour pouvoir envoyer les commande de remote
@@ -391,7 +401,7 @@ public class Telecommande extends Activity{
 			}
 		}     
 	}
-	
+
 	// Appel fonction SendVolume de la classe UserIntefaceApi pour pouvoir gérer le volume de remote
 	private class SendVolumeTask extends AsyncTask<String, Void, String> {
 		private Exception mException = null;
@@ -464,12 +474,12 @@ public class Telecommande extends Activity{
 			super.onPostExecute(result);
 
 			if(result != null){
-				
+
 				VolumeSerialize vs = new Gson().fromJson(result, VolumeSerialize.class);
 				Volume vol = vs;
-				actualVol = Integer.parseInt(vol.getVolume())/10;
+				actualVol = Integer.parseInt(vol.getVolume());  // /10 par palier de 10
 				seekBar1.setProgress(actualVol);  //set position seekbar en fct du volume courant
-				volumeText.setText(Integer.toString(actualVol/10));    // affichage sur l'edit text
+				volumeText.setText(Integer.toString(actualVol));    // affichage sur l'edit text
 			}
 
 
@@ -493,5 +503,5 @@ public class Telecommande extends Activity{
 		}
 	}
 
-	
+
 }
