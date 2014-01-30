@@ -106,6 +106,8 @@ public class Telecommande extends Activity{
 				newVol = seekBar.getProgress();
 				volumeText.setText(Integer.toString(newVol));     // update de l'edit text
 				sendVolumePressed(Integer.toString(newVol));
+				//Log.d(TAG,"newVol" + newVol);                   // volume mis à jour
+				
 			}
 
 			public void onStartTrackingTouch(SeekBar seekBar) {
@@ -441,9 +443,9 @@ public class Telecommande extends Activity{
 				
 				VolumeSerialize vs = new Gson().fromJson(result, VolumeSerialize.class);
 				Volume vol = vs;
-				actualVol = Integer.parseInt(vol.getVolume());
+				actualVol = Integer.parseInt(vol.getVolume())/10;
 				seekBar1.setProgress(actualVol);  //set position seekbar en fct du volume courant
-				volumeText.setText(Integer.toString(actualVol));    // affichage sur l'edit text
+				volumeText.setText(Integer.toString(actualVol/10));    // affichage sur l'edit text
 			}
 
 
