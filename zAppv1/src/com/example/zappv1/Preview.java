@@ -609,7 +609,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		}
 
 		return super.onOptionsItemSelected(item);
-		//return true;    // erreur ...
 	}
 
 	public void makeToast(String message) {
@@ -880,15 +879,12 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 			if (result!=null)
 			{
-				Log.d(LOG_TAG,"RESULT"+result.toString());
 				EPGNextSerialize next = new Gson().fromJson(result,EPGNextSerialize.class);
-
 
 				//adapter.notifyDataSetChanged();
 				prog = next;
 				int j=0;
 				if(prog != null)
-					Log.d(LOG_TAG,"CHAINE"+prog.getListeProgrammes().getProgrammes().get(0).getNom());
 				for (int i=0; i<prog.getListeProgrammes().getProgrammes().size(); i++){
 					if (prog.getListeProgrammes().getProgrammes().get(i).getDebut().equals(fin)){
 						j = i;

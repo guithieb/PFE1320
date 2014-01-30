@@ -142,7 +142,6 @@ public class Recommandation extends Fragment {
 					while ((line = r.readLine()) != null) {
 						total.append(line);
 					}
-					//Log.d(LOG_TAG,"TOTAL "+total.toString());
 					return total.toString();
 				}
 
@@ -161,7 +160,6 @@ public class Recommandation extends Fragment {
 		@Override
 		protected void onPostExecute(String result){
 			super.onPostExecute(result);
-			Log.d(TAG,"RECOSULT"+result);
 			if(result!=null)
 			{
 				ObjectRecoSerialize recoSerialize = new Gson().fromJson(result,ObjectRecoSerialize.class);
@@ -213,7 +211,6 @@ public class Recommandation extends Fragment {
 					while ((line = r.readLine()) != null) {
 						total.append(line);
 					}
-					//Log.d(LOG_TAG,"TOTAL "+total.toString());
 					return total.toString();
 				}
 
@@ -238,9 +235,7 @@ public class Recommandation extends Fragment {
 
 				//adapter.notifyDataSetChanged();
 				chaine = ch;
-				//Log.d(TAG,"PROGRAMMEID"+ chaine.toString());
 				if(chaine != null){
-					//Log.d(TAG,"PROGRAMMEID"+"1");
 					getBaseProgrammeTask gbpt = new getBaseProgrammeTask(basePg,getActivity(),chaine.getListeProgrammes().getProgrammes().getId(),
 							chaine.getId());
 					gbpt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -310,7 +305,6 @@ public class Recommandation extends Fragment {
 					chainetype.add(channel);
 				}
 
-				Log.d(TAG,"TVSHOW"+result.toString());
 				//on compare la liste des artistes de la webapp et ceux du programme
 				if (database){
 					if((result.toString().contains("\"firstName\": {}"))||(result.toString().contains("\"ListeArtistes\": {}"))){
@@ -342,8 +336,7 @@ public class Recommandation extends Fragment {
 										&& (pgMag.getProgramme().getListeArtistes().getArtiste().getFirstName().equals(reco.getArtists().get(i).getFirstName()))){
 									chainereco.add(channel);
 								}
-								if (pgMag == null){Log.d(TAG,"PGMAG null");}
-								else {Log.d(TAG,"CHaine" + channel);}
+								
 							}
 						}
 
@@ -353,7 +346,6 @@ public class Recommandation extends Fragment {
 			}
 			
 			counter++;
-			Log.d(TAG,"COUNTER"+counter);
 			//on lance cette partie que quand toutes les chaînes ont été analysées
 			if (counter == 19){
 				//on récupére le String comprenant les chaînes à afficher
@@ -436,7 +428,6 @@ public class Recommandation extends Fragment {
 			if(result != null)
 			{
 				appId = result;
-				Log.d(TAG,"APPID"+appId);
 			}
 		}
 
