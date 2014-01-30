@@ -343,7 +343,6 @@ public class PreviewType extends Activity implements GestureDetector.OnGestureLi
 		
 		
 		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
-		Log.d(TAG,"BDD OPEN");
 		if (isInDB(parse[id]))
 		{
 			checkboxfavoris.setChecked(true);
@@ -422,7 +421,6 @@ public class PreviewType extends Activity implements GestureDetector.OnGestureLi
 					while ((line = r.readLine()) != null) {
 						total.append(line);
 					}
-					//Log.d(LOG_TAG,"TOTAL "+total.toString());
 					return total.toString();
 				}
 
@@ -448,14 +446,12 @@ public class PreviewType extends Activity implements GestureDetector.OnGestureLi
 				//adapter.notifyDataSetChanged();
 				chaine = ch;
 				if(chaine != null)
-					Log.d(LOG_TAG,"CHAINE"+chaine.getListeProgrammes().getProgrammes().getNom());
 				textChaine.setText(chaine.getNom());
 				textNom.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getNom()));
 
 				//adapter.notifyDataSetChanged();
 				chaine = ch;
 				if(chaine != null)
-					Log.d(LOG_TAG,"CHAINE"+chaine.getListeProgrammes().getProgrammes().getNom());
 				textChaine.setText(chaine.getNom());
 				if(chaine.getListeProgrammes().getProgrammes().getNom().contains("&#4")){
 					String[] parseNom = chaine.getListeProgrammes().getProgrammes().getNom().split("&");
@@ -550,7 +546,6 @@ public class PreviewType extends Activity implements GestureDetector.OnGestureLi
 					while ((line = r.readLine()) != null) {
 						total.append(line);
 					}
-					Log.d(LOG_TAG,"TOTAL "+total.toString());
 					return total.toString();
 				}
 
@@ -581,7 +576,6 @@ public class PreviewType extends Activity implements GestureDetector.OnGestureLi
 				else{
 					textEpisode.setText("");
 				}
-				Log.d(LOG_TAG,"TVSHOW"+result.toString());
 				if(result.toString().contains("\"firstName\": {}")){
 					textGenre.setText(bp.getProgramme().getListeGenres().getGenre());
 					String[] parse2 = bp.getProgramme().getDiffusion().getDuree().split("T");
@@ -758,7 +752,6 @@ public class PreviewType extends Activity implements GestureDetector.OnGestureLi
 					while ((line = r.readLine()) != null) {
 						total.append(line);
 					}
-					//Log.d(LOG_TAG,"TOTAL "+total.toString());
 					return total.toString();
 				}
 
@@ -786,7 +779,6 @@ public class PreviewType extends Activity implements GestureDetector.OnGestureLi
 				prog = next;
 				int j=0;
 				if(prog != null)
-					Log.d(LOG_TAG,"CHAINE"+prog.getListeProgrammes().getProgrammes().get(0).getNom());
 				for (int i=0; i<prog.getListeProgrammes().getProgrammes().size(); i++){
 					if (prog.getListeProgrammes().getProgrammes().get(i).getDebut().equals(fin)){
 						j = i;

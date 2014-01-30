@@ -18,9 +18,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -29,6 +32,7 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+
 
 
 
@@ -122,10 +126,8 @@ public class Telecommande extends Activity{
 		//récupérer l'IP de la box
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		ip = prefs.getString(BOX_PREFERENCES,"null");
-		Log.d(TAG,"IP22"+ip);
 
 		URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
-		Log.d(TAG,"IP"+ip);
 
 		button0.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -285,7 +287,29 @@ public class Telecommande extends Activity{
 
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+	
+	
+	//ajout du bouton retour (de la télécommande vers la vue prévèdente)
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		
+		// Handle action bar actions click
+		switch (item.getItemId()) {
+		case R.id.action_alarm:
+			finish();
+			overridePendingTransition(R.anim.top_in, R.anim.botton_out);
+			break;
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 
+	}
 
 	//voici la méthode qui est exécutée lorsque l'on clique sur un bouton chiffre
 	public void chiffreClick(String str) {

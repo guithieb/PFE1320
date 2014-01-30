@@ -176,7 +176,6 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 
 			chaineId = extra.getString("chaineId");
 			progId= extra.getString("progid");
-			Log.d(TAG,"PROGRAMMEID"+progId);
 			getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),chaineId);
 			getBaseProgrammeTask gbpt = new getBaseProgrammeTask(basePg,getApplicationContext(),progId);
 			getNextProgramTask gnext = new getNextProgramTask(nextprog,getApplicationContext(),chaineId, fin);
@@ -196,15 +195,12 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 		//Récuperation de l'adresse ip de la box grâce aux préférences 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		ip = prefs.getString(BOX_PREFERENCES,"null");
-		Log.d(TAG,"IP22"+ip);
 
 		URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
-		Log.d(TAG,"IP"+ip);
 
 
 		/*** OPEN DATABASE ***/
 		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
-		Log.d(TAG,"BDD OPEN");
 		if (isInDB(parse[id]))
 		{
 			checkboxfavoris.setChecked(true);
@@ -317,7 +313,6 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 			float distanceY) {
-		Log.d(DEBUG_TAG, "onScroll: " + e1.toString()+e2.toString());
 		return true;
 	}
 
@@ -365,24 +360,9 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 		if(id>=parse.length) id=id-parse.length;
 		getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),parse[id]);
 		gtc.execute();
-		Log.d(TAG,"TASK OK");
-		if(gtc.getStatus() == AsyncTask.Status.RUNNING)
-		{
-			Log.d(TAG,"TASK RIGHT OK");
-		}
-
-		if(gtc.getStatus() == AsyncTask.Status.FINISHED)
-		{
-			Log.d(TAG,"TASK RIGHT FIN");
-		}
-
-		if(epgChaine != null)
-		{
-			Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
-		}
+		
 		
 		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
-		Log.d(TAG,"BDD OPEN");
 		if (isInDB(parse[id]))
 		{
 			checkboxfavoris.setChecked(true);
@@ -406,24 +386,9 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 		if(id<0) id=id+parse.length;
 		getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),parse[id]);
 		gtc.execute();
-		Log.d(TAG,"TASK OK");
-		if(gtc.getStatus() == AsyncTask.Status.RUNNING)
-		{
-			Log.d(TAG,"TASK RIGHT OK");
-		}
-
-		if(gtc.getStatus() == AsyncTask.Status.FINISHED)
-		{
-			Log.d(TAG,"TASK RIGHT FIN");
-		}
-
-		if(epgChaine != null)
-		{
-			Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
-		}
+		
 		
 		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
-		Log.d(TAG,"BDD OPEN");
 		if (isInDB(parse[id]))
 		{
 			checkboxfavoris.setChecked(true);
@@ -483,7 +448,6 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 					while ((line = r.readLine()) != null) {
 						total.append(line);
 					}
-					//Log.d(LOG_TAG,"TOTAL "+total.toString());
 					return total.toString();
 				}
 
@@ -815,7 +779,6 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 					while ((line = r.readLine()) != null) {
 						total.append(line);
 					}
-					//Log.d(LOG_TAG,"TOTAL "+total.toString());
 					return total.toString();
 				}
 
@@ -907,7 +870,6 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 	}
 	
 	public void deleteFavoris(String channel){
-		Log.d(TAG,"BDD TRANSFERT" + channel);
 		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
 		SQLiteDatabase db = mDbHelper.getWritableDatabase();
 		// Define 'where' part of query.
