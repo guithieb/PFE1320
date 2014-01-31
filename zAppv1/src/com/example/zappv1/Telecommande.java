@@ -283,11 +283,13 @@ public class Telecommande extends Activity{
 					sendKeyPressed(UserInterfaceApi.CHANNEL_MUTE);
 					seekBar1.setEnabled(true);
 					boolMute = false;
+					
 				}
 				else {
 					sendKeyPressed(UserInterfaceApi.CHANNEL_MUTE);
 					seekBar1.setEnabled(false);
 					boolMute = true;
+					
 				}
 			}
 		});
@@ -417,7 +419,7 @@ public class Telecommande extends Activity{
 
 	public class GetVolumeTask extends AsyncTask<String, Void, String> {
 		public static final String LOG_TAG = "debug netWorkUtils";
-
+		
 		Context context;
 
 		public GetVolumeTask(Context c) {
