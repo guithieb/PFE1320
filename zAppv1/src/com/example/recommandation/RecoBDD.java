@@ -1,17 +1,20 @@
 package com.example.recommandation;
 
+import java.util.ArrayList;
+
 import com.example.recommandation.FeedReaderContractReco.FeedEntry;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class RecoBDD {
 
 	private static final int VERSION_BDD = 1;
 	private static final String NOM_BDD = "reco.db";
- 
+	private static final String TAG = "activity";
 	
  
 	private SQLiteDatabase bdd;
@@ -19,12 +22,12 @@ public class RecoBDD {
 	private FeedReaderDbHelperReco baseReco;
 	
 	public  RecoBDD(Context context){
-		//On créer la BDD et sa table
+		//On cr≈Ωer la BDD et sa table
 		baseReco = new FeedReaderDbHelperReco(context, NOM_BDD, null, VERSION_BDD);
 	}
 	
 	public void open(){
-		//on ouvre la BDD en écriture
+		//on ouvre la BDD en ≈Ωcriture
 		bdd = baseReco.getWritableDatabase();
 	}
 	
@@ -33,7 +36,7 @@ public class RecoBDD {
 	}
 	
 	public void close(){
-		//on ferme l'accès à la BDD
+		//on ferme l'accÔøΩs ÀÜ la BDD
 		bdd.close();
 	}
 	
@@ -42,17 +45,17 @@ public class RecoBDD {
 	}
 	
 	public long insertPref(DataBaseReco dbReco){
-		//Création d'un ContentValues (fonctionne comme une HashMap)
+		//Cr≈Ωation d'un ContentValues (fonctionne comme une HashMap)
 		ContentValues values = new ContentValues();
-		//on lui ajoute une valeur associé à une clé (qui est le nom de la colonne dans laquelle on veut mettre la valeur)
+		//on lui ajoute une valeur associ≈Ω ÀÜ une cl≈Ω (qui est le nom de la colonne dans laquelle on veut mettre la valeur)
 		values.put(FeedEntry.COLUMN_NAME_GENRE, dbReco.getGenre());
 		values.put(FeedEntry.COLUMN_NAME_ORDREPREF, dbReco.getOrdrepref());
-		//on insère l'objet dans la BDD via le ContentValues
+		//on insÔøΩre l'objet dans la BDD via le ContentValues
 		return bdd.insert(FeedEntry.TABLE_NAME, null, values);
 	}
 	
 	public int removeLivreWithGenre(String genre){
-		//Suppression d'un livre de la BDD grâce à l'ID
+		//Suppression d'un livre de la BDD gr‚Ä∞ce ÀÜ l'ID
 		return bdd.delete(FeedEntry.TABLE_NAME, FeedEntry.COLUMN_NAME_GENRE + " = " +genre, null);
 	}
 	
@@ -63,6 +66,31 @@ public class RecoBDD {
 	    int cnt = cursor.getCount();
 	    cursor.close();
 	    return cnt;
+	}
+	
+	public ArrayList<String> cursorToReco( )
+	{
+	  ArrayList<String> listGenre = new ArrayList<String>();
+	  String getAllQuery = "SELECT * FROM " + FeedEntry.TABLE_NAME;
+	  bdd = baseReco.getReadableDatabase();
+	  Cursor cursor = bdd.rawQuery(getAllQuery,null);
+	  
+	  if (cursor.getCount() == 0)
+      return null;
+	  
+	  if (cursor.moveToFirst()) {
+
+      while (cursor.isAfterLast() == false) {
+          String genre = cursor.getString(cursor
+                  .getColumnIndex(FeedEntry.COLUMN_NAME_GENRE));
+
+          listGenre.add(genre);
+          cursor.moveToNext();
+      }
+  }
+	  
+	  Log.d(TAG,"GENRELIST"+listGenre.toString());
+	  return listGenre;
 	}
 	
 	

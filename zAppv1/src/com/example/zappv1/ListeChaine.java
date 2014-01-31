@@ -29,6 +29,7 @@ import com.example.cloud.EPGChaine;
 import com.example.cloud.EPGChaine.ListeProgramme;
 import com.example.cloud.EPGChaines;
 import com.example.cloud.GetProgramTask;
+import com.example.recommandation.RecoBDD;
 import com.example.remote.ServerException;
 import com.example.zappv1.R;
 
@@ -65,6 +66,20 @@ public class ListeChaine extends Fragment{
   public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
     ViewGroup root = (ViewGroup) inflater.inflate(R.layout.liste_chaine, container,false);
     //Initialisation de la List qui regroupe tout les noms des chaines
+    
+    
+    RecoBDD recoBdd = new RecoBDD(getActivity());
+    
+    if(recoBdd.getCount() == 0)
+    {
+      Intent intent = new Intent(getActivity(), GenreForm.class);
+      
+      startActivity(intent);
+      
+    
+    }
+
+    
     listeChaine = (ListView) root.findViewById(R.id.chaines);
     adapter = new ChaineAdapter(getActivity(), epgChaines, this);  
     listeChaine.setAdapter(adapter);
