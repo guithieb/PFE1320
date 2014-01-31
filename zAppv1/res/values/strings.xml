@@ -13,7 +13,7 @@
         <item>Liste des chaînes</item>
         <item>Favoris</item>
         <item>Recommandations</item>
-        <item>Type</item>
+        <item>Catégories</item>
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->
@@ -22,7 +22,7 @@
     <item>@drawable/ic_listechaine</item>
     <item>@drawable/ic_favorite</item>
     <item>@drawable/ic_reco</item>
-    <item>@drawable/ic_launcher</item>
+    <item>@drawable/ic_categorie</item>
     </array>
     
     <!-- Content Description -->

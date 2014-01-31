@@ -47,7 +47,7 @@ import com.google.gson.Gson;
 
 public class Telecommande extends Activity{
 
-	private SeekBar seekBar1;
+	private SeekBar volumeSeekBar;
 	EditText ecran;
 	EditText volumeText;
 	Button button1, button2, button3, button4, button5, button6, button7;
@@ -78,7 +78,7 @@ public class Telecommande extends Activity{
 		getActionBar().setTitle("Télécommande");
 		getActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
 
-		seekBar1 = (SeekBar) findViewById(R.id.seekBar1);
+		volumeSeekBar = (SeekBar) findViewById(R.id.seekBar1);
 		button0 = (Button) findViewById(R.id.button0);
 		button1 = (Button) findViewById(R.id.button1);
 		button2 = (Button) findViewById(R.id.button2);
@@ -100,18 +100,19 @@ public class Telecommande extends Activity{
 		/*** VOLUME BAR ***/
 		new GetVolumeTask(this).execute();
 
-		Log.d(TAG,"actualVol" + actualVol);
-		seekBar1.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-			int progressChanged; 
+		// GET SON DE LA STB EN COURS PROBLEME !!
+		Log.d(TAG,"actual value" + actualVol);
+
+		volumeSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
-				Log.d(TAG,"onProgressChanged" + progressChanged);
 
 				// POST new volume
-				newVol = seekBar.getProgress();
+				newVol = volumeSeekBar.getProgress();
 				volumeText.setText(Integer.toString(newVol));     // update de l'edit text
 				sendVolumePressed(Integer.toString(newVol));
-				//Log.d(TAG,"newVol" + newVol);                   // volume mis à jour
+				Log.d(TAG,"newVol onProgressChanged" + newVol);                   // volume mis à jour
+				//Log.d(TAG, "actualVol onProgressChanged : "+actualVol);
 
 			}
 
@@ -188,7 +189,7 @@ public class Telecommande extends Activity{
 
 		buttonOk.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				if(ecran.getText().toString().isEmpty()){
+				if(ecran.getText().toString	().isEmpty()){
 					//message d'erreur si aucune chaîne est envoyée
 					AlertDialog.Builder builder1 = new AlertDialog.Builder(v.getContext());
 					builder1.setMessage("Renseigner une chaîne");
@@ -284,13 +285,15 @@ public class Telecommande extends Activity{
 				if(boolMute)
 				{
 					sendKeyPressed(UserInterfaceApi.CHANNEL_MUTE);
-					seekBar1.setEnabled(true);
+					volumeSeekBar.setEnabled(true);
 					boolMute = false;
+					mute.setFocusableInTouchMode(true);
 				}
 				else {
 					sendKeyPressed(UserInterfaceApi.CHANNEL_MUTE);
-					seekBar1.setEnabled(false);
+					volumeSeekBar.setEnabled(false);
 					boolMute = true;
+					mute.setFocusableInTouchMode(false);
 				}
 			}
 		});
@@ -454,7 +457,7 @@ public class Telecommande extends Activity{
 					while ((line = r.readLine()) != null) {
 						total.append(line);
 					}
-					Log.d(LOG_TAG, "result : "+total);
+					Log.i(LOG_TAG, "result : "+total);
 					return total.toString();
 				}
 			} catch (ClientProtocolException e) {
@@ -478,8 +481,12 @@ public class Telecommande extends Activity{
 				VolumeSerialize vs = new Gson().fromJson(result, VolumeSerialize.class);
 				Volume vol = vs;
 				actualVol = Integer.parseInt(vol.getVolume());  // /10 par palier de 10
-				seekBar1.setProgress(actualVol);  //set position seekbar en fct du volume courant
+				Log.d(LOG_TAG, "volumeText postexecute : "+actualVol);
+				//Log.d(LOG_TAG, "vol: "+vol);
+				//Log.d(LOG_TAG, "vs: "+vs);
+				volumeSeekBar.setProgress(actualVol);  //set position seekbar en fct du volume courant
 				volumeText.setText(Integer.toString(actualVol));    // affichage sur l'edit text
+
 			}
 
 
