@@ -6,57 +6,61 @@
     android:orientation="vertical" >
 
     <LinearLayout
-        android:id="@+id/LayoutVolume"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-         >
-
-        <EditText
-            android:id="@+id/EditTextVolume"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:cursorVisible="false"
-            android:editable="false"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" >
-        </EditText>
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/Layout1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp" >
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:src="@drawable/ic_sound" />
 
         <SeekBar
             android:id="@+id/seekBar1"
-            android:layout_width="fill_parent"
+            android:layout_width="208dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_weight="0.68"
             android:focusableInTouchMode="true"
             android:indeterminate="false"
             android:minHeight="30dip" />
+
+        <EditText
+            android:id="@+id/EditTextVolume"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_weight="0.27"
+            android:cursorVisible="false"
+            android:editable="false"
+            android:ems="10"
+            android:focusableInTouchMode="false"
+            android:gravity="center"
+            android:textColor="@color/appthemezapp_color"
+            android:textSize="17sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/Layout2"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/Layout1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" >
+        android:layout_below="@+id/Layout1"
+        android:layout_centerHorizontal="true" >
 
         <EditText
             android:id="@+id/EditText01"
-            android:layout_width="50dp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:cursorVisible="false"
             android:editable="false"
+            android:focusableInTouchMode="false"
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="20sp"
@@ -64,15 +68,6 @@
 
             <requestFocus />
         </EditText>
-
-        <Button
-            android:id="@+id/buttonOk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/EditText01"
-            android:text="OK"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
     </RelativeLayout>
 
     <GridLayout
@@ -82,109 +77,190 @@
         android:layout_below="@+id/Layout2"
         android:layout_centerHorizontal="true"
         android:columnCount="3"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:useDefaultMargins="true" >
 
         <Button
             android:id="@+id/button1"
+            style="@dimen/activity_vertical_margin"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
             android:layout_weight="2"
+            android:background="@drawable/remotebutton_custom"
             android:text="1"
-            android:textColor="@color/white"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/button2"
+            style="@dimen/activity_vertical_margin"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:background="@drawable/remotebutton_custom"
             android:text="2"
             android:textColor="@color/white"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/button3"
+            style="@dimen/activity_vertical_margin"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:background="@drawable/remotebutton_custom"
             android:text="3"
             android:textColor="@color/white"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/button4"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:background="@drawable/remotebutton_custom"
             android:text="4"
             android:textColor="@color/white"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/button5"
+            style="@dimen/activity_vertical_margin"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:background="@drawable/remotebutton_custom"
             android:text="5"
             android:textColor="@color/white"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/button6"
+            style="@dimen/activity_vertical_margin"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:background="@drawable/remotebutton_custom"
             android:text="6"
             android:textColor="@color/white"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/button7"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:background="@drawable/remotebutton_custom"
             android:text="7"
             android:textColor="@color/white"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/button8"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:background="@drawable/remotebutton_custom"
             android:text="8"
             android:textColor="@color/white"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/button9"
+            style="@dimen/activity_vertical_margin"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:background="@drawable/remotebutton_custom"
             android:text="9"
             android:textColor="@color/white"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
-        <ImageButton
-            android:id="@+id/buttonMute"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill"
-            android:src="@drawable/mutedark" />
+        <Space />
+
+        <Space />
+
+        <Button
+            android:id="@+id/buttonOk"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_column="0"
+            android:layout_columnSpan="3"
+            android:layout_gravity="fill_horizontal|top"
+            android:layout_row="4"
+            android:layout_rowSpan="2"
+            android:background="@drawable/remotebutton_custom"
+            android:text="OK"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/button0"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_column="1"
+            android:layout_gravity="left|top"
+            android:layout_row="3"
+            android:background="@drawable/remotebutton_custom"
             android:text="0"
             android:textColor="@color/white"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill"
+            style="@dimen/activity_vertical_margin"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_column="2"
+            android:layout_gravity="left|top"
+            android:layout_row="3"
+            android:background="@drawable/remotebutton_custom"
             android:src="@drawable/backdark" />
+
+        <ImageButton
+            android:id="@+id/buttonMute"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_column="0"
+            android:layout_gravity="left|top"
+            android:layout_row="3"
+            android:background="@drawable/remotebutton_custom"
+            android:src="@drawable/mutedark" />
     </GridLayout>
 
     <LinearLayout
         android:id="@+id/Layout4"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/Layout3"
+        android:layout_alignRight="@+id/Layout3"
         android:layout_below="@+id/Layout3"
-        android:layout_marginTop="23dp" >
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:useDefaultMargins="true" >
 
         <Button
             android:id="@+id/moins"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/remotebutton_custom"
             android:gravity="center"
             android:text="-"
             android:textColor="@color/white"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/programme"
-            android:layout_width="64dp"
-            android:layout_height="20dp"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="2dp"
+            android:layout_weight="1"
             android:gravity="center"
             android:lines="3"
             android:text="P"
@@ -194,11 +270,14 @@
 
         <Button
             android:id="@+id/plus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/remotebutton_custom"
             android:gravity="center"
             android:text="+"
             android:textColor="@color/white"
+            android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
 

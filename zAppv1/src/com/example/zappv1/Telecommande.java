@@ -60,7 +60,7 @@ public class Telecommande extends Activity{
 	Button moins, plus;
 	ImageButton back,mute;
 	Toast toast;  
-	private int actualVol;
+	int actualVol;
 	private int newVol;
 	private boolean boolMute = false;
 
@@ -99,8 +99,6 @@ public class Telecommande extends Activity{
 
 		/*** VOLUME BAR ***/
 		new GetVolumeTask(this).execute();
-
-		Log.d(TAG,"actualVol" + actualVol);
 		seekBar1.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			int progressChanged; 
 
@@ -110,8 +108,7 @@ public class Telecommande extends Activity{
 				// POST new volume
 				newVol = seekBar.getProgress();
 				volumeText.setText(Integer.toString(newVol));     // update de l'edit text
-				sendVolumePressed(Integer.toString(newVol));
-				//Log.d(TAG,"newVol" + newVol);                   // volume mis à jour
+				sendVolumePressed(Integer.toString(newVol));	 // volume mis à jour                 
 
 			}
 
@@ -189,7 +186,7 @@ public class Telecommande extends Activity{
 		buttonOk.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if(ecran.getText().toString().isEmpty()){
-					//message d'erreur si aucune chaîne est envoyée
+					//message d'erreur si aucune chaine est envoyée
 					AlertDialog.Builder builder1 = new AlertDialog.Builder(v.getContext());
 					builder1.setMessage("Renseigner une chaîne");
 					builder1.setCancelable(true);
@@ -203,7 +200,7 @@ public class Telecommande extends Activity{
 					alert.show();
 				}else{
 
-					//envoi du numéro de la chaîne à la télé
+					//envoi du numéro de la chaine à la télé
 					switch(Integer.parseInt(ecran.getText().toString()))
 					{
 
@@ -286,11 +283,13 @@ public class Telecommande extends Activity{
 					sendKeyPressed(UserInterfaceApi.CHANNEL_MUTE);
 					seekBar1.setEnabled(true);
 					boolMute = false;
+					
 				}
 				else {
 					sendKeyPressed(UserInterfaceApi.CHANNEL_MUTE);
 					seekBar1.setEnabled(false);
 					boolMute = true;
+					
 				}
 			}
 		});
@@ -304,7 +303,7 @@ public class Telecommande extends Activity{
 	}
 
 
-	//ajout du bouton retour (de la télécommande vers la vue prévèdente)
+	//ajout du bouton retour (de la télécommande vers la vue précédente)
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -420,14 +419,10 @@ public class Telecommande extends Activity{
 
 	public class GetVolumeTask extends AsyncTask<String, Void, String> {
 		public static final String LOG_TAG = "debug netWorkUtils";
-
-		//int volume;
-		//BaseAdapter adapter;
+		
 		Context context;
 
-		public GetVolumeTask(/*int volume, BaseAdapter adapter, */Context c) {
-			//this.volume = volume;
-			//this.adapter = adapter;
+		public GetVolumeTask(Context c) {
 			this.context = c;
 		}
 
@@ -454,7 +449,7 @@ public class Telecommande extends Activity{
 					while ((line = r.readLine()) != null) {
 						total.append(line);
 					}
-					Log.d(LOG_TAG, "result : "+total);
+					Log.d(LOG_TAG, "TOTAL : "+total.toString());
 					return total.toString();
 				}
 			} catch (ClientProtocolException e) {
@@ -474,12 +469,11 @@ public class Telecommande extends Activity{
 			super.onPostExecute(result);
 
 			if(result != null){
-
 				VolumeSerialize vs = new Gson().fromJson(result, VolumeSerialize.class);
 				Volume vol = vs;
 				actualVol = Integer.parseInt(vol.getVolume());  // /10 par palier de 10
 				seekBar1.setProgress(actualVol);  //set position seekbar en fct du volume courant
-				volumeText.setText(Integer.toString(actualVol));    // affichage sur l'edit text
+				volumeText.setText(vol.getVolume());    // affichage sur l'edit text
 			}
 
 
