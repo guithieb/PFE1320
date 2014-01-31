@@ -900,13 +900,13 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 	@SuppressLint("ShowToast")
 	private void setAddedToast(){
 		Context context = getApplicationContext();
-		CharSequence text = "chaîne ajoutée avec succès!";
+		CharSequence text = "Chaîne ajoutée avec succès !";
 		toast = Toast.makeText(context, text, toast_duration);
 	}
 	@SuppressLint("ShowToast")
 	private void setDeletedToast(){
 		Context context = getApplicationContext();
-		CharSequence text = "chaîne supprimée avec succès!";
+		CharSequence text = "Chaîne supprimée avec succès !";
 		toast = Toast.makeText(context, text, toast_duration);
 	}
 }

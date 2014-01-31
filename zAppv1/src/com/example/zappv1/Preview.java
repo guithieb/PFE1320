@@ -987,13 +987,13 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	@SuppressLint("ShowToast")
 	private void setAddedToast(){
 		Context context = getApplicationContext();
-		CharSequence text = "chaîne ajoutée aux favoris!";
+		CharSequence text = "Chaîne ajoutée aux favoris !";
 		toast = Toast.makeText(context, text, toast_duration);
 	}
 	@SuppressLint("ShowToast")
 	private void setDeletedToast(){
 		Context context = getApplicationContext();
-		CharSequence text = "chaîne retirée aux favoris!";
+		CharSequence text = "Chaîne retirée aux favoris !";
 		toast = Toast.makeText(context, text, toast_duration);
 	}
 

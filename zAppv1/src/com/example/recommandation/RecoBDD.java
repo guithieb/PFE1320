@@ -48,6 +48,7 @@ public class RecoBDD {
 		//CrŽation d'un ContentValues (fonctionne comme une HashMap)
 		ContentValues values = new ContentValues();
 		//on lui ajoute une valeur associŽ ˆ une clŽ (qui est le nom de la colonne dans laquelle on veut mettre la valeur)
+		
 		values.put(FeedEntry.COLUMN_NAME_GENRE, dbReco.getGenre());
 		values.put(FeedEntry.COLUMN_NAME_ORDREPREF, dbReco.getOrdrepref());
 		//on ins�re l'objet dans la BDD via le ContentValues
