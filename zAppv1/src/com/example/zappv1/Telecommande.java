@@ -353,6 +353,7 @@ public class Telecommande extends Activity{
 					dialog.cancel();
 				}
 			});
+			ecran.setText("");
 
 
 			AlertDialog alert = builder1.create();
@@ -376,6 +377,7 @@ public class Telecommande extends Activity{
 
 				AlertDialog alert = builder1.create();
 				alert.show();
+				ecran.setText("");
 			}
 
 		}
