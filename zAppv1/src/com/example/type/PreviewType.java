@@ -1,5 +1,4 @@
-package com.example.zappv1;
-
+package com.example.type;
 
 import infoprog.BaseProgramme;
 import infoprog.BaseProgrammeSerialize;
@@ -61,38 +60,41 @@ import com.example.cloud.EPGChaine;
 import com.example.cloud.EPGChaineSerialize;
 import com.example.cloud.EPGNext;
 import com.example.cloud.EPGNextSerialize;
-import com.example.favoris.FeedReaderContractFavoris.FeedEntry;
 import com.example.favoris.FeedReaderDbHelperFavoris;
+import com.example.favoris.FeedReaderContractFavoris.FeedEntry;
 import com.example.remote.BaseApi;
 import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
+import com.example.zappv1.R;
+import com.example.zappv1.Telecommande;
 import com.google.gson.Gson;
 
-/**
- * 
- * Vue servant à afficher les informations sur le programme en cours d'une chaine précise
- * 
- * 
- */
+public class PreviewType extends Activity implements GestureDetector.OnGestureListener {
 
-public class Preview extends Activity implements GestureDetector.OnGestureListener {
-
-	//initialisation des variables
+	/*** IMAGE Melvin ***/
 	private EPGChaine epgChaine;
 	private EPGNext nextprog;
 	private BaseProgramme basePg;
 	private ProgrammeFilm pgFilm;
-	private ProgrammeMag pgMag;
 	private ProgrammeSerie pgSerie;
+	private ProgrammeMag pgMag;
+
+	/*** PLAYER ZAPP ***/
+	//VideoView playerSurfaceView;
+	// besoin du format 3gp != stream
+	//String videoSrc = "rtsp://v6.cache1.c.youtube.com/CjYLENy73wIaLQkDsLHya4-Z9hMYDSANFEIJbXYtZ29vZ2xlSARSBXdhdGNoYKX4k4uBjbOiUQw=/0/0/0/video.3gp";
 
 
+	// *** Melvin Gesture *** //
 	private static final int SWIPE_MIN_DISTANCE = 120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	private static final String TAG = "MyActivity";
 	public static final String BOX_PREFERENCES = "boxPrefs";
+	//*** Melvin Gesture *** //
 	private String ip;
 	private static final String LOG_TAG = "activity";
+	//private static final String DEFAULT_BOX_URL = "http://192.168.0.24:8080/api.bbox.lan/V0";
 	public static final String SUFFIXE_URL = "/api.bbox.lan/V0";
 	public static String URL_HTTP = "";
 	private Toast toast;
@@ -106,32 +108,29 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	TextView textNom;
 	TextView textDescription;
 	TextView textDebut,textFin, textNextDebut, textNextFin;
-	TextView textDuree, textGenre, textNext;
-	TextView textEpisode;
-	ImageView imagette, left, right;
+	TextView textDuree, textGenre, textNext, textEpisode;
+	ImageView imagette;
 	CheckBox checkboxfavoris;
 	Button play;
 	Bundle extra;
 	ArrayList<EPGChaine> epg = new ArrayList<EPGChaine>();
 	private static final String DEBUG_TAG = "Gestures";
+	private ChaineAdapter adapter;
 	private GestureDetectorCompat mDetector; 
 	int id;
-	String progId;
+	String[] parse;
+	String progId, listetype;
 	ProgressBar mProgressBar;
 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		//création de la vue et connexion des variables avec leur "clones" xml
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.preview);
 
 		/*** ACTION BAR ***/
 		ActionBar actionbar = getActionBar();
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
 		actionbar.show();
-		// Code en dur avec la couleur #303030
 		getActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
 
 		textChaine = (TextView)findViewById(R.id.chaineName);
@@ -143,8 +142,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		textDuree = (TextView) findViewById(R.id.duree);
 		mProgressBar = (ProgressBar) findViewById(R.id.progressTest);
 		imagette = (ImageView) findViewById(R.id.imagette);
-		left = (ImageView) findViewById(R.id.left);
-		right = (ImageView) findViewById(R.id.right);
 		textNext = (TextView) findViewById(R.id.next);
 		textNextDebut = (TextView) findViewById(R.id.progNextDebut);
 		textNextFin = (TextView) findViewById(R.id.progNextFin);
@@ -163,18 +160,18 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		// GestureDetector.OnGestureListener
 		//mDetector = new GestureDetectorCompat(this,this);
 
-		//Récupération du nom de la chaine envoyé dans la vue ListeChaine
+		//Récuperation du nom de la chaine envoyé dans la vue ListeChaine
 		Bundle extra = getIntent().getExtras();
 		extra = getIntent().getExtras();
 		if(extra != null)
 		{
+			listetype = extra.getString("listetype");
 			fin = extra.getString("progFin");
 			channel = extra.getString("chaineNom");
 			textChaine.setText(channel);
 
 			chaineId = extra.getString("chaineId");
 			progId= extra.getString("progid");
-			Log.d(TAG,"PROGRAMMEID"+progId);
 			getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),chaineId);
 			getBaseProgrammeTask gbpt = new getBaseProgrammeTask(basePg,getApplicationContext(),progId);
 			getNextProgramTask gnext = new getNextProgramTask(nextprog,getApplicationContext(),chaineId, fin);
@@ -182,21 +179,26 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			gbpt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			gnext.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-			id = Integer.parseInt(chaineId);
+			parse = listetype.split(",");
+			for (int i =0; i< parse.length; i++){
+				if (chaineId.equals(parse[i]))
+				{
+					id = i;
+				}
+			}
+
 		}
 
-		////Récupération de l'adresse ip de la box grace aux préférences 
+		//Récuperation de l'adresse ip de la box grâce aux préférences 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		ip = prefs.getString(BOX_PREFERENCES,"null");
 
-
 		URL_HTTP = "http://"+ip+":8080"+SUFFIXE_URL;
-		Log.d(TAG,"IP"+ip);
 
 
-		new FeedReaderDbHelperFavoris(getApplicationContext());
-		Log.d(TAG,"BDD OPEN");
-		if (isInDB(Integer.toString(id)))
+		/*** OPEN DATABASE ***/
+		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
+		if (isInDB(parse[id]))
 		{
 			checkboxfavoris.setChecked(true);
 		}
@@ -227,6 +229,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				case 9: sendKeyPressed(UserInterfaceApi.CHANNEL_9);
 				break;
 				case 11 : 
+					//final CountDownLatch countdownlatch = new CountDownLatch(2);
 					sendKeyPressed(UserInterfaceApi.CHANNEL_1);
 					sendKeyPressed(UserInterfaceApi.CHANNEL_1);
 					break;
@@ -259,103 +262,33 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				default : break;
 
 				}
-			}
-		});
-		left.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				// do your stuff here
-				id--;
-				if(id<=0) id=id+19;
-				getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),Integer.toString(id));
-				gtc.execute();
-				Log.d(TAG,"TASK OK");
-				if(gtc.getStatus() == AsyncTask.Status.RUNNING)
-				{
-					Log.d(TAG,"TASK RIGHT OK");
-				}
-
-				if(gtc.getStatus() == AsyncTask.Status.FINISHED)
-				{
-					Log.d(TAG,"TASK RIGHT FIN");
-				}
-
-				if(epgChaine != null)
-				{
-					Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
-				}
-
-				new FeedReaderDbHelperFavoris(getApplicationContext());
-				Log.d(TAG,"BDD OPEN");
-				if (isInDB(Integer.toString(id)))
-				{
-					checkboxfavoris.setChecked(true);
-				}
-				else checkboxfavoris.setChecked(false);
-
-			}
-		});
-		right.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				id++;
-				if(id>=20) id=id-19;
-				getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),Integer.toString(id));
-				gtc.execute();
-				Log.d(TAG,"TASK OK");
-				if(gtc.getStatus() == AsyncTask.Status.RUNNING)
-				{
-					Log.d(TAG,"TASK RIGHT OK");
-				}
-
-				if(gtc.getStatus() == AsyncTask.Status.FINISHED)
-				{
-					Log.d(TAG,"TASK RIGHT FIN");
-				}
-
-				if(epgChaine != null)
-				{
-					Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
-				}
-
-				new FeedReaderDbHelperFavoris(getApplicationContext());
-				Log.d(TAG,"BDD OPEN");
-				if (isInDB(Integer.toString(id)))
-				{
-					checkboxfavoris.setChecked(true);
-				}
-				else checkboxfavoris.setChecked(false);
-
+				// Perform action on click
 			}
 		});
 	}
-
 
 	void sendKeyPressed(String key) {
 		new SendKeyPressedTask().execute(
 				new String[] { URL_HTTP , key});
-
 	}
 
 	//Appel de la fonction SendKey de la classe UserIntefaceApi pour pouvoir envoyer les commande de remote
 	private class SendKeyPressedTask extends AsyncTask<String, Void, String> {
-		//Fonction obligatoire dans un AsynTask,
+		private Exception mException = null;
+
+		//Fonction obligatoire dans un AsynTask, réalise le traitement de manière asynchrone dans un thread séparé
 		@Override
 		protected String doInBackground(String... params) {
 			try {
 				UserInterfaceApi.sendKey(params[0], params[1], UserInterfaceApi.TYPE_KEY_PRESSED);
 				return params[1];
 			} catch (ServerException e) {
+				mException = e;
 				return params[1];
 			}
 		}     
 	}
-
-
+	
 	//Fonction permettant de detecter différents gestes sur le smartphone (ici le slide pour changer de programme)
 	@Override 
 	public boolean onTouchEvent(MotionEvent event){ 
@@ -367,7 +300,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 			float distanceY) {
-		Log.d(DEBUG_TAG, "onScroll: " + e1.toString()+e2.toString());
 		return true;
 	}
 
@@ -405,28 +337,13 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	protected void onSwipeLeft() { 
 		// do your stuff here
 		id++;
-		if(id>=20) id=id-19;
-		getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),Integer.toString(id));
+		if(id>=parse.length) id=id-parse.length;
+		getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),parse[id]);
 		gtc.execute();
-		Log.d(TAG,"TASK OK");
-		if(gtc.getStatus() == AsyncTask.Status.RUNNING)
-		{
-			Log.d(TAG,"TASK RIGHT OK");
-		}
-
-		if(gtc.getStatus() == AsyncTask.Status.FINISHED)
-		{
-			Log.d(TAG,"TASK RIGHT FIN");
-		}
-
-		if(epgChaine != null)
-		{
-			Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
-		}
-
-		new FeedReaderDbHelperFavoris(getApplicationContext());
-		Log.d(TAG,"BDD OPEN");
-		if (isInDB(Integer.toString(id)))
+		
+		
+		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
+		if (isInDB(parse[id]))
 		{
 			checkboxfavoris.setChecked(true);
 		}
@@ -439,28 +356,13 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		//sendKeyPressed(UserInterfaceApi.CHANNEL_UP); 
 
 		id--;
-		if(id<=0) id=id+19;
-		getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),Integer.toString(id));
+
+		if(id<0) id=id+parse.length;
+		getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),parse[id]);
 		gtc.execute();
-		Log.d(TAG,"TASK OK");
-		if(gtc.getStatus() == AsyncTask.Status.RUNNING)
-		{
-			Log.d(TAG,"TASK RIGHT OK");
-		}
-
-		if(gtc.getStatus() == AsyncTask.Status.FINISHED)
-		{
-			Log.d(TAG,"TASK RIGHT FIN");
-		}
-
-		if(epgChaine != null)
-		{
-			Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
-		}
-
-		new FeedReaderDbHelperFavoris(getApplicationContext());
-		Log.d(TAG,"BDD OPEN");
-		if (isInDB(Integer.toString(id)))
+		
+		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
+		if (isInDB(parse[id]))
 		{
 			checkboxfavoris.setChecked(true);
 		}
@@ -487,25 +389,26 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		return false;
 	}
 
-	//classe permettant de récupérer les informations en cours d'une chaine précise
-	//et envoyer les valeurs recues aux views xml de preview.xml
 	private class getChannelTask extends AsyncTask<String, Void, String> {
 
 		EPGChaine chaine;
 
+		BaseAdapter adapter;
+		Context context;
 		String id;
 		public static final String LOG_TAG = "debug";
 		public getChannelTask(EPGChaine chaine, Context c,String id) {
 			this.chaine = chaine;
+			this.context = c;
 			this.id=id;
 		}
 
-		//Fonction qui se lance a l'appel de cette classe
+		//Fonction qui se lance à l'appel de cette classe
 		@Override
 		protected String doInBackground(String... params){
-			//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaines en temps réel
+			//Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
 			//String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
-			//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaines en temps réel
+			//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
 			String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/?TVChannelsId="+id;
 			try {
 				HttpResponse response = BaseApi.executeHttpGet(url);
@@ -518,7 +421,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 					while ((line = r.readLine()) != null) {
 						total.append(line);
 					}
-					//Log.d(LOG_TAG,"TOTAL "+total.toString());
 					return total.toString();
 				}
 
@@ -532,7 +434,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			return null;
 		}
 
-		//Fonction qui se lance aprés l'execution du doinbackground
+		//Fonction qui se lance après l'éxécution de la fonction doInBackground
 
 		protected void onPostExecute(String result){
 			super.onPostExecute(result);
@@ -544,14 +446,12 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				//adapter.notifyDataSetChanged();
 				chaine = ch;
 				if(chaine != null)
-					Log.d(LOG_TAG,"CHAINE"+chaine.getListeProgrammes().getProgrammes().getNom());
 				textChaine.setText(chaine.getNom());
 				textNom.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getNom()));
 
 				//adapter.notifyDataSetChanged();
 				chaine = ch;
 				if(chaine != null)
-					Log.d(LOG_TAG,"CHAINE"+chaine.getListeProgrammes().getProgrammes().getNom());
 				textChaine.setText(chaine.getNom());
 				if(chaine.getListeProgrammes().getProgrammes().getNom().contains("&#4")){
 					String[] parseNom = chaine.getListeProgrammes().getProgrammes().getNom().split("&");
@@ -569,7 +469,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 				String[] parse = chaine.getListeProgrammes().getProgrammes().getDebut().split("T");
 				String[] debutProg = parse[1].split("Z");
-				textDebut.setText(/*"Début: "+*/debutProg[0]+" - ");
+				textDebut.setText(debutProg[0]+" - ");
 
 				String[] parse2 = chaine.getListeProgrammes().getProgrammes().getFin().split("T");
 				String[] finProg = parse2[1].split("Z");
@@ -600,15 +500,14 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		switch (item.getItemId()) 
 		{
 		case R.id.action_alarm:
-			intent.setClass(this, Telecommande.class);
 			startActivity(intent);
-			overridePendingTransition(R.anim.bottom_in, R.anim.top_out);
 			break;
 		default: 
 			break;
 		}
 
-		return super.onOptionsItemSelected(item);
+
+		return true;
 	}
 
 	public void makeToast(String message) {
@@ -617,24 +516,24 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	}
 	/*** END ACTION MENU ***/
 
-	//classe permettant de récupérer les informations d'un programme precis
-	//et envoyer les valeurs recues aux views xml de preview.xml
 	private class getBaseProgrammeTask extends AsyncTask <String,Void,String>
 	{
 		BaseProgramme bp;
+		Context context;
 		String id;
 
 		public getBaseProgrammeTask(BaseProgramme b, Context context, String id)
 		{
 			this.bp = b;
+			this.context = context;
 			this.id = id;
 		}
 
 		@Override
 		protected String doInBackground(String... params){
-			//Url de la requete permettant d'acceder au Cloud pour récupérer toutes les chaines en temps réel
+			//Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
 			//String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
-			//Url de la requete permettant d'acceder au Cloud pour récupérer toutes les chaines en temps réel
+			//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
 			String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?programId="+id;
 			try {
 				HttpResponse response = BaseApi.executeHttpGet(url);
@@ -647,7 +546,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 					while ((line = r.readLine()) != null) {
 						total.append(line);
 					}
-					Log.d(LOG_TAG,"TOTAL "+total.toString());
 					return total.toString();
 				}
 
@@ -686,7 +584,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 					//duree du programme en minutes
 					String[] duree = DureeProg[0].split("H");
 					int dm = (Integer.parseInt(duree[0])*60)+Integer.parseInt(duree[1]);
-					Log.d(LOG_TAG,"HEURERATIO"+dm);
 					//heure actuelle en minutes
 					Calendar c = Calendar.getInstance(); 
 					int heure = c.get(Calendar.HOUR_OF_DAY);
@@ -701,7 +598,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 					int difference = (minutes+heure*60) - dd;
 					//ratio pour progress bar
 					double ratio = (double) difference/ (double) dm;
-					Log.d(LOG_TAG,"HEURERATIO"+ratio);
 					mProgressBar.setProgress((int) (ratio*100));
 
 					if (bp.getProgramme().getImagette() != null){ 
@@ -713,7 +609,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				}
 				else {
 					if (result.toString().contains("[")){
-						Log.d(LOG_TAG,"TVSHOW ARRAY Artiste");
 						ProgrammeFilmSerialize pfs = new Gson().fromJson(result,ProgrammeFilmSerialize.class);
 						pgFilm = pfs;
 
@@ -724,7 +619,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 						//duree du programme en minutes
 						String[] duree = DureeProg[0].split("H");
 						int dm = (Integer.parseInt(duree[0])*60)+Integer.parseInt(duree[1]);
-						Log.d(LOG_TAG,"HEURERATIO"+dm);
 						//heure actuelle en minutes
 						Calendar c = Calendar.getInstance(); 
 						int heure = c.get(Calendar.HOUR_OF_DAY);
@@ -739,7 +633,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 						int difference = (minutes+heure*60) - dd;
 						//ratio pour progress bar
 						double ratio = (double) difference/ (double) dm;
-						Log.d(LOG_TAG,"HEURERATIO"+ratio);
 						mProgressBar.setProgress((int) (ratio*100));
 
 						if (pgFilm.getProgramme().getImagette() != null){ 
@@ -761,7 +654,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 						//duree du programme en minutes
 						String[] duree = DureeProg[0].split("H");
 						int dm = (Integer.parseInt(duree[0])*60)+Integer.parseInt(duree[1]);
-						Log.d(LOG_TAG,"HEURERATIO"+dm);
 						//heure actuelle en minutes
 						Calendar c = Calendar.getInstance(); 
 						int heure = c.get(Calendar.HOUR_OF_DAY);
@@ -776,7 +668,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 						int difference = (minutes+heure*60) - dd;
 						//ratio pour progress bar
 						double ratio = (double) difference/ (double) dm;
-						Log.d(LOG_TAG,"HEURERATIO"+ratio);
 						mProgressBar.setProgress((int) (ratio*100));
 
 						if (pgMag.getProgramme().getImagette() != null){ 
@@ -831,21 +722,24 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 		EPGNext prog;
 
+		BaseAdapter adapter;
+		Context context;
 		String id;
 		String fin;
 		public static final String LOG_TAG = "debug";
 		public getNextProgramTask(EPGNext nextprog, Context c,String id, String fin) {
 			this.prog = nextprog;
+			this.context = c;
 			this.id=id;
 			this.fin = fin;
 		}
 
-		//Fonction qui se lance a l'appel de cette classe
+		//Fonction qui se lance à l'appel de cette classe
 		@Override
 		protected String doInBackground(String... params){
-			//Url de la requete permettant d'acceder au Cloud pour récupérer toutes les chaines en temps reel
+			//Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
 			//String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
-			//Url de la requete permettant d'acceder au Cloud pour récupérer toutes les chaines en temps reel
+			//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
 			String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/?TVChannelsId="+id+"&period=1";
 			try {
 				HttpResponse response = BaseApi.executeHttpGet(url);
@@ -858,7 +752,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 					while ((line = r.readLine()) != null) {
 						total.append(line);
 					}
-					//Log.d(LOG_TAG,"TOTAL "+total.toString());
 					return total.toString();
 				}
 
@@ -872,7 +765,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			return null;
 		}
 
-		//
+		//Fonction qui se lance après l'éxécution de la fonction doInBackground
 
 		protected void onPostExecute(String result){
 			super.onPostExecute(result);
@@ -881,6 +774,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			{
 				EPGNextSerialize next = new Gson().fromJson(result,EPGNextSerialize.class);
 
+
 				//adapter.notifyDataSetChanged();
 				prog = next;
 				int j=0;
@@ -888,7 +782,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				for (int i=0; i<prog.getListeProgrammes().getProgrammes().size(); i++){
 					if (prog.getListeProgrammes().getProgrammes().get(i).getDebut().equals(fin)){
 						j = i;
-
 						if(prog.getListeProgrammes().getProgrammes().get(j).getNom().contains("&#4")){
 							String[] parseNom = prog.getListeProgrammes().getProgrammes().get(j).getNom().split("&");
 
@@ -901,36 +794,33 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 						else{
 							textNext.setText(Html.fromHtml(prog.getListeProgrammes().getProgrammes().get(j).getNom()));
 						}
-					}
-					String[] parse = prog.getListeProgrammes().getProgrammes().get(i).getDebut().split("T");
-					String[] debutProg = parse[1].split("Z");
-					textNextDebut.setText(debutProg[0]+" - ");
-					String[] parse2 = prog.getListeProgrammes().getProgrammes().get(i).getFin().split("T");
-					String[] finProg = parse2[1].split("Z");
-					textNextFin.setText(finProg[0]);
-				}
-			}
 
+						String[] parse = prog.getListeProgrammes().getProgrammes().get(i).getDebut().split("T");
+						String[] debutProg = parse[1].split("Z");
+						textNextDebut.setText(debutProg[0]+" - ");
+						String[] parse2 = prog.getListeProgrammes().getProgrammes().get(i).getFin().split("T");
+						String[] finProg = parse2[1].split("Z");
+						textNextFin.setText(finProg[0]);
+					}
+				}
+
+			}
 		}
 	}
 
-	//clickListener des favoris
 	public void addFavoristoDB(View view) {
-		//si on clique sur l'
-		//on l'enleve des favoris
-		if(isInDB(Integer.toString(id)))
+		//delete favori if click and true
+		if(isInDB(parse[id]))
 		{
-			deleteFavoris(Integer.toString(id));
+			deleteFavoris(parse[id]);
 			this.setDeletedToast();
 			toast.show();
 			checkboxfavoris.setChecked(false);
 		}else
-			//si on clique sur etoile qui nest pas favoris
-			//on l'ajoute aux favoris
 		{
 			// Do something in response to button
 
-			saveFavoris(Integer.toString(id)); // A VOIR !!!!
+			saveFavoris(parse[id]); // A VOIR !!!!
 			this.setAddedToast();
 			toast.show();
 			//toast.cancel();
@@ -938,7 +828,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		}
 	}
 
-	//fonction qui verifie si la chaine fait partie des favoris
 	public Boolean isInDB(String imdbId){
 		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
 		SQLiteDatabase db = mDbHelper.getReadableDatabase();
@@ -954,9 +843,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		}
 	}
 
-	//fonction qui enleve la chaine des favoris
 	public void deleteFavoris(String channel){
-		Log.d(TAG,"BDD TRANSFERT" + channel);
 		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
 		SQLiteDatabase db = mDbHelper.getWritableDatabase();
 		// Define 'where' part of query.
@@ -966,10 +853,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		db.close();
 	}
 
-	//fonction qui ajoute la chaine aux favoris
 	public void saveFavoris(String channel){
 		// Gets the data repository in write mode
-		Log.d(TAG,"BDD TRANSFERT" + channel);
 		FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
 		SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
@@ -977,7 +862,9 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		ContentValues values = new ContentValues();
 		values.put(FeedEntry.COLUMN_NAME_ID , channel );
 
-		db.insert(
+		// Insert the new row, returning the primary key value of the new row
+		long newRowId;
+		newRowId = db.insert(
 				FeedEntry.TABLE_NAME,
 				FeedEntry.COLUMN_NAME_ID,
 				values);
@@ -987,15 +874,13 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	@SuppressLint("ShowToast")
 	private void setAddedToast(){
 		Context context = getApplicationContext();
-		CharSequence text = "chaîne ajoutée aux favoris!";
+		CharSequence text = "Film ajoutÃ© avec succÃ¨s!";
 		toast = Toast.makeText(context, text, toast_duration);
 	}
 	@SuppressLint("ShowToast")
 	private void setDeletedToast(){
 		Context context = getApplicationContext();
-		CharSequence text = "chaîne retirée aux favoris!";
+		CharSequence text = "Film supprimÃ© avec succÃ¨s!";
 		toast = Toast.makeText(context, text, toast_duration);
 	}
-
-
 }

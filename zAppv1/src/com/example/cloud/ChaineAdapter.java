@@ -85,7 +85,6 @@ public class ChaineAdapter extends BaseAdapter {
 		{ 
 			ch = new ChView();
 			convertView = inflater.inflate(R.layout.chaineview, null);
-			//ch.chaineName = (TextView) convertView.findViewById(R.id.chaineName);
 			ch.progName = (TextView) convertView.findViewById(R.id.progName);
 			ch.photo = (ImageView) convertView.findViewById(R.id.Picture);
 			ch.debut = (TextView) convertView.findViewById(R.id.debut);
@@ -98,9 +97,6 @@ public class ChaineAdapter extends BaseAdapter {
 		}
 
 		final EPGChaine application = datas.get(position);
-
-		//ch.chaineName.setText(application.getNom());
-		Log.d(LOG_TAG, "id" +application.getId());
 
 		if (application.getNom().equals("Canal+")) {
 			ch.photo.setImageResource(R.drawable.canal);

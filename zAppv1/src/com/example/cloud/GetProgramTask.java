@@ -48,7 +48,7 @@ public class GetProgramTask extends AsyncTask<String, Void, String>{
 	}
 	
 	protected void onPreExecute(){
-		spinner.setMessage("Chargement de l'EPG");
+		spinner.setMessage("Chargement");
 		spinner.show();
 	}
 	

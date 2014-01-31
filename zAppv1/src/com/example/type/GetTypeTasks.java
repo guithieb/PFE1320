@@ -1,4 +1,4 @@
-package com.example.cloud;
+package com.example.type;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,27 +9,31 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.BaseAdapter;
 
+import com.example.cloud.EPGChaine;
+import com.example.cloud.EPGChaines;
 import com.example.remote.BaseApi;
 import com.google.gson.Gson;
 
-public class getChannelTask extends AsyncTask<String, Void, String> {
-	
-	EPGChaine chaine;
-	
+public class GetTypeTasks extends AsyncTask<String, Void, String>{
+
+	ArrayList<EPGChaine> chaines;
 	BaseAdapter adapter;
 	Context context;
-	String id;
-	 public static final String LOG_TAG = "debug";
+	String channels;
+	public static final String LOG_TAG = "debug";
+	private ProgressDialog spinner;
 
-public getChannelTask(EPGChaine chaine, Context c,String id) {
-		this.chaine = chaine;
+	public GetTypeTasks(ArrayList<EPGChaine> chaines, BaseAdapter adapter, Context c, String channels) {
+		this.chaines = chaines;
+		this.adapter = adapter;
 		this.context = c;
-		this.id=id;
+		this.channels = channels;
 	}
 	
 	//Fonction qui se lance à l'appel de cette classe
@@ -38,7 +42,7 @@ public getChannelTask(EPGChaine chaine, Context c,String id) {
 	  //Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
 		//String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
 	  //Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
-		String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/?TVChannelsId="+id;
+		String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/?TVChannelsId="+channels;
 		try {
 			HttpResponse response = BaseApi.executeHttpGet(url);
 			HttpEntity entity = response.getEntity();
@@ -68,18 +72,14 @@ public getChannelTask(EPGChaine chaine, Context c,String id) {
 	
 	protected void onPostExecute(String result){
 		super.onPostExecute(result);
-		Log.d(LOG_TAG,"POSTEXECUTE");
 		if (result!=null)
-		{	Log.d(LOG_TAG,"RESULT "+result);
-			EPGChaineSerialize ch = new Gson().fromJson(result,EPGChaineSerialize.class);
+		{	
+			EPGChaines ch = new Gson().fromJson(result,EPGChaines.class);
 			Log.d(LOG_TAG,"CH "+ch.toString());
-			//Log.d(LOG_TAG,"CH"+ch.toString());
-			Log.d(LOG_TAG,"RESULTCHANNEL"+result);
-			//adapter.notifyDataSetChanged();
-			chaine = ch;
-			if(chaine != null)
-			Log.d(LOG_TAG,"CHAINE"+chaine.getListeProgrammes().getProgrammes().getNom());
+			chaines.clear();
+			chaines.addAll(ch);
+			adapter.notifyDataSetChanged();
+			
 		}
 	}
-
 }

@@ -1,4 +1,4 @@
-package com.example.favoris;
+package com.example.type;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,7 +11,6 @@ import org.apache.http.client.ClientProtocolException;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.text.Html;
 import android.util.Log;
 import android.widget.BaseAdapter;
 
@@ -20,7 +19,7 @@ import com.example.cloud.EPGChaineSerialize;
 import com.example.remote.BaseApi;
 import com.google.gson.Gson;
 
-public class getFavoriTask extends AsyncTask<String, Void, String> {
+public class gettypeTask extends AsyncTask<String, Void, String> {
 
 	ArrayList <EPGChaine> chaine;
 
@@ -28,7 +27,7 @@ public class getFavoriTask extends AsyncTask<String, Void, String> {
 	Context context;
 	String id;
 	public static final String LOG_TAG = "debug";
-	public getFavoriTask(ArrayList <EPGChaine> chaine,BaseAdapter adapter, Context c,String id) {
+	public gettypeTask(ArrayList <EPGChaine> chaine,BaseAdapter adapter, Context c,String id) {
 		this.chaine = chaine;
 		this.adapter = adapter;
 		this.context = c;
@@ -75,9 +74,12 @@ public class getFavoriTask extends AsyncTask<String, Void, String> {
 		if (result!=null)
 		{	
 			EPGChaineSerialize ch = new Gson().fromJson(result,EPGChaineSerialize.class);
+			Log.d(LOG_TAG,"CH "+ch.toString());
+			//adapter.notifyDataSetChanged();
 			chaine.clear();
 			chaine.add(ch);
 			adapter.notifyDataSetChanged();
 		}
 	}
+
 }

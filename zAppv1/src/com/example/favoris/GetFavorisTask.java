@@ -38,7 +38,7 @@ public class GetFavorisTask extends AsyncTask<String, Void, String>{
 	}
 	
 	protected void onPreExecute(){
-		spinner.setMessage("Chargement de l'EPG");
+		spinner.setMessage("Chargement");
 		spinner.show();
 	}
 	
@@ -82,7 +82,6 @@ public class GetFavorisTask extends AsyncTask<String, Void, String>{
 		if (result!=null)
 		{	
 			EPGChaines ch = new Gson().fromJson(result,EPGChaines.class);
-			Log.d(LOG_TAG,"CH "+ch.toString());
 			chaines.clear();
 			chaines.addAll(ch);
 			adapter.notifyDataSetChanged();
