@@ -16,7 +16,6 @@
 		    android:horizontalSpacing="10dp"
 		    android:stretchMode="columnWidth"
 		    android:gravity="center"
-		    android:layout_marginTop="15dp"
 		    android:listSelector="@drawable/list_selecteur" >
 
         </ListView>

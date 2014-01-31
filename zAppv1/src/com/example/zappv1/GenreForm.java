@@ -18,7 +18,7 @@ public class GenreForm extends Activity {
 	private  Button validate;
 	private Spinner list;
 	private ArrayAdapter <String> adapter;
-	private static String [] genre = new String [] {"Film","SŽrie","TŽlŽfilm", "Magazine","Emission jeunesse", "Jeu", "Divertissement", "Documentaire","Information",
+	private static String [] genre = new String [] {"Film","Série","Téléfilm", "Magazine","Emission jeunesse", "Jeu", "Divertissement", "Documentaire","Information",
 		"Musique", "Feuilleton", "Adulte"};
 	private static final String TAG = "activity";
 	@Override
@@ -82,9 +82,8 @@ public class GenreForm extends Activity {
 		{
 			 TextView choix3 = (TextView) findViewById(R.id.type3);
 			 choix3.setText("3- "+reco.getGenre());
-			 finish();
-	        recoBdd.close();
-			
+			 recoBdd.close();
+			 finish();			
 		}
 	
 		
