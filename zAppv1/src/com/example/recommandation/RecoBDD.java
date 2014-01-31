@@ -2,24 +2,19 @@ package com.example.recommandation;
 
 import java.util.ArrayList;
 
-import com.example.favoris.DataBase;
-import com.example.favoris.FeedReaderDbHelperFavoris;
 import com.example.recommandation.FeedReaderContractReco.FeedEntry;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.BaseColumns;
 import android.util.Log;
 
 public class RecoBDD {
 
 	private static final int VERSION_BDD = 1;
 	private static final String NOM_BDD = "reco.db";
-	private static final String LOG_TAG = "activity";
-
- 
+	private static final String TAG = "activity";
 	
  
 	private SQLiteDatabase bdd;
@@ -27,12 +22,12 @@ public class RecoBDD {
 	private FeedReaderDbHelperReco baseReco;
 	
 	public  RecoBDD(Context context){
-		//On créer la BDD et sa table
+		//On crŽer la BDD et sa table
 		baseReco = new FeedReaderDbHelperReco(context, NOM_BDD, null, VERSION_BDD);
 	}
 	
 	public void open(){
-		//on ouvre la BDD en écriture
+		//on ouvre la BDD en Žcriture
 		bdd = baseReco.getWritableDatabase();
 	}
 	
@@ -50,9 +45,10 @@ public class RecoBDD {
 	}
 	
 	public long insertPref(DataBaseReco dbReco){
-		//Création d'un ContentValues (fonctionne comme une HashMap)
+		//CrŽation d'un ContentValues (fonctionne comme une HashMap)
 		ContentValues values = new ContentValues();
-		//on lui ajoute une valeur associé ˆ une clé (qui est le nom de la colonne dans laquelle on veut mettre la valeur)
+		//on lui ajoute une valeur associŽ ˆ une clŽ (qui est le nom de la colonne dans laquelle on veut mettre la valeur)
+		
 		values.put(FeedEntry.COLUMN_NAME_GENRE, dbReco.getGenre());
 		values.put(FeedEntry.COLUMN_NAME_ORDREPREF, dbReco.getOrdrepref());
 		//on ins�re l'objet dans la BDD via le ContentValues
@@ -73,50 +69,30 @@ public class RecoBDD {
 	    return cnt;
 	}
 	
-	//récupération de la base de données
-	public ArrayList<String> getallDataBase(){
-		ArrayList<String> epg = new ArrayList<String>();
-		ArrayList<DataBaseReco> datas = new ArrayList<DataBaseReco>();
+	public ArrayList<String> cursorToReco( )
+	{
+	  ArrayList<String> listGenre = new ArrayList<String>();
+	  String getAllQuery = "SELECT * FROM " + FeedEntry.TABLE_NAME;
+	  bdd = baseReco.getReadableDatabase();
+	  Cursor cursor = bdd.rawQuery(getAllQuery,null);
+	  
+	  if (cursor.getCount() == 0)
+      return null;
+	  
+	  if (cursor.moveToFirst()) {
 
-		
-		// Define a projection that specifies which columns from the database
-		// you will actually use after this query.
-		String[] projection = {
-				BaseColumns._ID,
-				FeedEntry.COLUMN_NAME_GENRE,
-		};
+      while (cursor.isAfterLast() == false) {
+          String genre = cursor.getString(cursor
+                  .getColumnIndex(FeedEntry.COLUMN_NAME_GENRE));
 
-		// How you want the results sorted in the resulting Cursor
-		String sortOrder =
-				FeedEntry.COLUMN_NAME_ORDREPREF + " ASC";
-
-		bdd = baseReco.getReadableDatabase();
-
-		Cursor cursor = bdd.query(
-				FeedEntry.TABLE_NAME,  // The table to query
-				projection,                               // The columns to return
-				null,                                // The columns for the WHERE clause
-				null,                            // The values for the WHERE clause
-				null,                                     // don't group the rows
-				null,                                     // don't filter by row groups
-				sortOrder                                 // The sort order
-				);
-
-		if(cursor.moveToFirst()){
-			do{
-				DataBaseReco chaine = new DataBaseReco();  //parametre a rentrer
-				chaine.setId(cursor.getString(
-						cursor.getColumnIndexOrThrow(FeedEntry.COLUMN_NAME_GENRE)));
-				datas.add(chaine);
-			}while(cursor.moveToNext());
-			//copie de la base de données dans un String à envoyer au thread
-			for (int i = 0 ; i < datas.size(); i++)
-			{
-					epg.add(datas.get(i).getGenre());
-			}
-		}
-
-		return epg;
+          listGenre.add(genre);
+          cursor.moveToNext();
+      }
+  }
+	  
+	  Log.d(TAG,"GENRELIST"+listGenre.toString());
+	  return listGenre;
 	}
+	
 	
 }

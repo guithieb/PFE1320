@@ -4,6 +4,8 @@ import com.example.recommandation.DataBaseReco;
 import com.example.recommandation.RecoBDD;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +20,7 @@ public class GenreForm extends Activity {
 	private  Button validate;
 	private Spinner list;
 	private ArrayAdapter <String> adapter;
-	private static String [] genre = new String [] {"Film","Série","Téléfilm", "Magazine","Emission jeunesse", "Jeu", "Divertissement", "Documentaire","Information",
+	private static String [] genre = new String [] {"Choisissez un type de programme","Film","Série","Téléfilm", "Magazine","Emission jeunesse", "Jeu", "Divertissement", "Documentaire","Information",
 		"Musique", "Feuilleton", "Adulte"};
 	private static final String TAG = "activity";
 	@Override
@@ -27,6 +29,18 @@ public class GenreForm extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.genreform);
 		
+		AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+    builder1.setMessage("Bienvenue sur Zapp ! Afin de bénéficier d'une recommandation personnalisée, veuillez renseigner vos 3 types de programmes préférés.");
+    builder1.setCancelable(true);
+    builder1.setPositiveButton("Ok",
+        new DialogInterface.OnClickListener() {
+      public void onClick(DialogInterface dialog, int id) {
+        dialog.cancel();
+      }
+    });
+    AlertDialog alert = builder1.create();
+    alert.show();
+		
 		list = (Spinner) findViewById(R.id.spinnerForm);
 		adapter = new ArrayAdapter<String> (this,android.R.layout.simple_spinner_item,genre);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -34,6 +48,9 @@ public class GenreForm extends Activity {
 		list.setAdapter(adapter);
 		
 		validate = (Button) findViewById(R.id.buttonValidateForm);
+		
+	  
+    
 		validate.setOnClickListener(new Button.OnClickListener()
 		{
 			public void onClick(View v)
@@ -59,10 +76,28 @@ public class GenreForm extends Activity {
 		int i = list.getSelectedItemPosition();
 		int pref = recoBdd.getCount()+1;
 		
+		if(i == 0)
+		{
+		  AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+	    builder1.setMessage("Vous devez choisir un type de programme avant de valider.");
+	    builder1.setCancelable(true);
+	    builder1.setPositiveButton("Ok",
+	        new DialogInterface.OnClickListener() {
+	      public void onClick(DialogInterface dialog, int id) {
+	        dialog.cancel();
+	      }
+	    });
+	    AlertDialog alert = builder1.create();
+	    alert.show();
+		}
+		
+		if(i!=0)
+		{
 		reco.setGenre(list.getItemAtPosition(i).toString());
 		reco.setOrdrepref(Integer.toString(pref));
-		
-		recoBdd.insertPref(reco);
+	  recoBdd.insertPref(reco);
+		}
+	
 		
 		if (recoBdd.getCount() == 1)
 		{
@@ -82,8 +117,9 @@ public class GenreForm extends Activity {
 		{
 			 TextView choix3 = (TextView) findViewById(R.id.type3);
 			 choix3.setText("3- "+reco.getGenre());
-			 recoBdd.close();
-			 finish();			
+			  recoBdd.close();
+	      finish();
+			
 		}
 	
 		

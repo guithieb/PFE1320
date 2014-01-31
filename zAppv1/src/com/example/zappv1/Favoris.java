@@ -62,33 +62,7 @@ public class Favoris extends Fragment{
 
 		//récupération du contenu de la base de données
 
-		channels = getallDataBase();
-		Log.d(TAG,"TASK RIGHT OK"+ channels);
-
-		//affichage d'une pop-up s'il n'y a pas de favoris
-		if (channels.equals("")){
-			AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
-			builder1.setMessage("Aucun favoris enregistrés.");
-			builder1.setCancelable(true);
-			builder1.setPositiveButton("Ok",
-					new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					dialog.cancel();
-				}
-			});
-
-
-			AlertDialog alert11 = builder1.create();
-			alert11.show();
-		}
-		//affichage si une seule ou plusieurs chaînes sont en favori
-		else 
-		{
-			adapter = new favorisadapter(getActivity(), epgfavoris, this);  
-			listeFavori.setAdapter(adapter);
-			refreshFavori();
-		}
-
+		
 		//évenement lorsque qu'on clique sur une chaîne dans la liste
 		listeFavori.setOnItemClickListener(new OnItemClickListener()
 		{
@@ -108,6 +82,7 @@ public class Favoris extends Fragment{
 				intent.setClass(getActivity(), previewFavoris.class);
 				startActivityForResult(intent,0);
 				getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+			
 			}
 
 		});
@@ -131,13 +106,17 @@ public class Favoris extends Fragment{
 				}
 			});
 
-
+			
 			AlertDialog alert11 = builder1.create();
-			alert11.show();
+			alert11.show();  
+      listeFavori.setAdapter(null);
+      
+		
 		}
 		//affichage si une seule ou plusieurs chaînes sont en favori
 		else 
 		{
+		  
 			adapter = new favorisadapter(getActivity(), epgfavoris, this);  
 			listeFavori.setAdapter(adapter);
 			refreshFavori();
