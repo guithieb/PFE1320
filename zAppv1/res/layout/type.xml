@@ -5,18 +5,116 @@
     android:background="#01435B"
     android:orientation="vertical" >
 
-    <GridView
-        android:id="@+id/list"
-        android:layout_width="fill_parent"
+    <GridLayout
+        android:id="@+id/type"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:gravity="center"
-        android:numColumns="2"
-        android:horizontalSpacing="10dp"
-        android:verticalSpacing="10dp"
-        android:stretchMode="columnWidth"
-        android:columnWidth="80dp"
-        android:background="@drawable/list_selecteur" >
-    </GridView>
+        android:layout_centerHorizontal="true"
+        android:layout_weight="0.83"
+        android:columnCount="2"
+        android:orientation="horizontal"
+        android:rowCount="1" >
+
+        <Button
+            android:id="@+id/Divertissement"
+            android:layout_width="wrap_content"
+            android:layout_height="72dp"
+            android:layout_gravity="fill_horizontal|center_vertical"
+            android:layout_weight="1"
+            android:text="Divertissement"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/Documentaire"
+            android:layout_height="72dp"
+            android:layout_gravity="fill_horizontal|center_vertical"
+            android:text="Documentaire"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/EmissionJeunesse"
+            android:layout_height="72dp"
+            android:layout_gravity="fill_horizontal|center_vertical"
+            android:text="Emission jeunesse"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/Feuilleton"
+            android:layout_width="wrap_content"
+            android:layout_height="72dp"
+            android:layout_gravity="fill_horizontal|center_vertical"
+            android:text="Feuilleton"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/Film"
+            android:layout_height="72dp"
+            android:layout_gravity="fill_horizontal|center_vertical"
+            android:layout_rowSpan="1"
+            android:text="Film"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/Information"
+            android:layout_gravity="fill_horizontal|center_vertical"
+            android:text="Information"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/Jeu"
+            android:layout_height="72dp"
+            android:layout_gravity="fill_horizontal|center_vertical"
+            android:text="Jeu"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/Magazine"
+            android:layout_height="72dp"
+            android:layout_gravity="fill_horizontal|center_vertical"
+            android:text="Magazine"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/Musique"
+            android:layout_height="72dp"
+            android:layout_gravity="fill_horizontal|center_vertical"
+            android:text="Musique"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/Serie"
+            android:layout_height="72dp"
+            android:layout_gravity="fill_horizontal|center_vertical"
+            android:text="Série"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/Sport"
+            android:layout_height="72dp"
+            android:layout_gravity="fill_horizontal|center_vertical"
+            android:layout_rowSpan="1"
+            android:text="Sport"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/Telefilm"
+            android:layout_height="72dp"
+            android:layout_gravity="fill_horizontal|center_vertical"
+            android:layout_rowSpan="1"
+            android:text="Téléfilm"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+    </GridLayout>
 
 </LinearLayout>
