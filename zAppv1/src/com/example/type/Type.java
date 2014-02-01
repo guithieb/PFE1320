@@ -30,16 +30,16 @@ public class Type extends Fragment{
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.type, null);
 		//ajout des types au gridview
 		divertissement = (Button) root.findViewById(R.id.Divertissement);
+	  jeu = (Button) root.findViewById(R.id.Jeu);
 		documentaire = (Button) root.findViewById(R.id.Documentaire);
+	  magazine = (Button) root.findViewById(R.id.Magazine);
 		emissionj = (Button) root.findViewById(R.id.EmissionJeunesse);
-		feuilleton = (Button) root.findViewById(R.id.Feuilleton);
-		film = (Button) root.findViewById(R.id.Film);
-		information = (Button) root.findViewById(R.id.Information);
-		jeu = (Button) root.findViewById(R.id.Jeu);
-		magazine = (Button) root.findViewById(R.id.Magazine);
 		musique = (Button) root.findViewById(R.id.Musique);
+		feuilleton = (Button) root.findViewById(R.id.Feuilleton);
 		serie = (Button) root.findViewById(R.id.Serie);
+		film = (Button) root.findViewById(R.id.Film);
 		sport = (Button) root.findViewById(R.id.Sport);
+		information = (Button) root.findViewById(R.id.Information);
 		telefilm = (Button) root.findViewById(R.id.Telefilm);
 
 		divertissement.setOnClickListener(new View.OnClickListener() {
@@ -47,6 +47,12 @@ public class Type extends Fragment{
 				typeClick(divertissement.getText().toString());
 			}
 		});
+		
+		jeu.setOnClickListener(new View.OnClickListener() {
+      public void onClick(View v) {
+        typeClick(jeu.getText().toString());
+      }
+    });
 		documentaire.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				typeClick(documentaire.getText().toString());
@@ -72,11 +78,7 @@ public class Type extends Fragment{
 				typeClick(information.getText().toString());
 			}
 		});
-		jeu.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				typeClick(jeu.getText().toString());
-			}
-		});
+		
 		magazine.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				typeClick(magazine.getText().toString());
