@@ -228,7 +228,7 @@ public class Recommandation extends Fragment {
 
 			for (int i = 1; i < 20; i++){
 				getChannelTask gtc = new getChannelTask(epgChaine, getActivity(),Integer.toString(i));
-				gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				gtc.execute();
 			}
 
 
@@ -295,7 +295,7 @@ public class Recommandation extends Fragment {
 				if(chaine != null){
 					getBaseProgrammeTask gbpt = new getBaseProgrammeTask(basePg,getActivity(),chaine.getListeProgrammes().getProgrammes().getId(),
 							chaine.getId());
-					gbpt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+					gbpt.execute();
 				}
 			}
 		}
