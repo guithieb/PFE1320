@@ -327,7 +327,7 @@ public class Telecommande extends Activity{
 
 		// Handle action bar actions click
 		switch (item.getItemId()) {
-		case R.id.action_alarm:
+		case R.id.action_remote:
 			finish();
 			overridePendingTransition(R.anim.top_in, R.anim.botton_out);
 			break;

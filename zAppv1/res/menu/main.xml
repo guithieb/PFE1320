@@ -7,7 +7,7 @@
         android:title="@string/action_settings"/> -->
     
     <item
-        android:id="@+id/action_alarm"
+        android:id="@+id/action_remote"
         android:icon="@drawable/ic_remote"
         android:showAsAction="ifRoom"/>
 

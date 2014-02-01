@@ -14,7 +14,7 @@ public class Informations extends Fragment{
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
-		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.liste_chaine, container,false);
+		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.informations, container,false);
 
 		return root;
 	}

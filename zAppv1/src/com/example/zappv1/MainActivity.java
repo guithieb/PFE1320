@@ -343,7 +343,7 @@ public class MainActivity extends Activity {
 		}
 		// Handle action bar actions click
 		switch (item.getItemId()) {
-		case R.id.action_alarm:
+		case R.id.action_remote:
 			intent.setClass(MainActivity.this, Telecommande.class);
 			startActivity(intent);
 			overridePendingTransition(R.anim.bottom_in, R.anim.top_out);
@@ -362,7 +362,7 @@ public class MainActivity extends Activity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// if nav drawer is opened, hide the action items
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.action_alarm).setVisible(!drawerOpen);
+		menu.findItem(R.id.action_remote).setVisible(!drawerOpen);
 		return super.onPrepareOptionsMenu(menu);
 	}
 

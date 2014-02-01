@@ -532,7 +532,7 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 		// Handle presses on the action bar items
 		switch (item.getItemId()) 
 		{
-		case R.id.action_alarm:
+		case R.id.action_remote:
 			startActivity(intent);
 			break;
 		default: 
