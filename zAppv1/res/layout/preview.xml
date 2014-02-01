@@ -9,41 +9,43 @@
         android:id="@+id/haut"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:layout_weight="0.33"
-        android:background="#01435B"
-        android:layout_marginBottom="5dp" >
+        android:background="#01435B" >
 
         <RelativeLayout
             android:id="@+id/Bandeau"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
 
-            <TextView
-                android:id="@+id/chaineName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="2dp"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
             <CheckBox
                 android:id="@+id/checkBox1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/chaineName"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp"
                 android:button="@android:drawable/btn_star"
-                android:gravity="left"
+                android:gravity="right"
                 android:onClick="addFavoristoDB" />
+
+            <TextView
+                android:id="@+id/chaineName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginRight="5dp"
+                android:text="bbbbbbb"
+                android:layout_toLeftOf="@id/checkBox1"
+                android:textColor="@color/orange"
+                android:textSize="20sp"
+                android:textStyle="bold" />
         </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/contenu"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/Bandeau"
-             >
+            android:layout_below="@id/Bandeau" >
 
             <RelativeLayout
                 android:id="@+id/image"

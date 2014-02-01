@@ -498,11 +498,15 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 
 				String[] parse = chaine.getListeProgrammes().getProgrammes().getDebut().split("T");
 				String[] debutProg = parse[1].split("Z");
-				textDebut.setText(debutProg[0]+" - ");
+				//enlever les secondes
+				String[] debut = debutProg[0].split(":");
+				textDebut.setText(debut[0]+":"+debut[1]+" - ");
 
 				String[] parse2 = chaine.getListeProgrammes().getProgrammes().getFin().split("T");
 				String[] finProg = parse2[1].split("Z");
-				textFin.setText(finProg[0]);
+				//enlever les secondes
+				String[] fin = finProg[0].split(":");
+				textFin.setText(fin[0]+":"+fin[1]);
 				getBaseProgrammeTask gbpt = new getBaseProgrammeTask(basePg,getApplicationContext(),chaine.getListeProgrammes().getProgrammes().getId());
 				getNextProgramTask gnext = new getNextProgramTask(nextprog,getApplicationContext(),chaine.getId(), chaine.getListeProgrammes().getProgrammes().getFin());
 				gbpt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -825,10 +829,14 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 						}
 						String[] parse = prog.getListeProgrammes().getProgrammes().get(i).getDebut().split("T");
 						String[] debutProg = parse[1].split("Z");
-						textNextDebut.setText(debutProg[0]+" - ");
+						//enlever les secondes
+						String[] debut = debutProg[0].split(":");
+						textNextDebut.setText(debut[0]+":"+debut[1]+" - ");
 						String[] parse2 = prog.getListeProgrammes().getProgrammes().get(i).getFin().split("T");
 						String[] finProg = parse2[1].split("Z");
-						textNextFin.setText(finProg[0]);
+						//enlever les secondes
+						String[] fin = finProg[0].split(":");
+						textNextFin.setText(fin[0]+":"+fin[1]);
 					}
 				}
 
