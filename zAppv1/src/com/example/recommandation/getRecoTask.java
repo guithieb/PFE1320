@@ -42,6 +42,7 @@ public class getRecoTask extends AsyncTask<String, Void, String> {
 		//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
 		String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/?TVChannelsId="+id;
 		try {
+		  Log.d(LOG_TAG,"IDEPG"+id);
 			HttpResponse response = BaseApi.executeHttpGet(url);
 			HttpEntity entity = response.getEntity();
 			if (entity !=null)

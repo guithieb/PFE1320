@@ -159,9 +159,6 @@ public class Recommandation extends Fragment {
 	}
 
 
-	private void refreshReco(){
-		new getRecoTask(epgrecommendes, adapter, getActivity(), chaineId).execute();
-	}
 
 	private void refreshrecos(){
 		new GetRecoTasks(epgrecommendes, adapter, getActivity(), chaineId).execute();
@@ -188,7 +185,7 @@ public class Recommandation extends Fragment {
 
 
 			//http post
-			String url = "http://zappwebapp.guinaudin.eu.cloudbees.net/REST/WebService";
+			String url = "http://zapp.guithieb.cloudbees.net/REST/WebService";
 			try {
 				HttpResponse response = BaseApi.executeHttpGet(url);
 				HttpEntity entity = response.getEntity();
@@ -220,6 +217,7 @@ public class Recommandation extends Fragment {
 			super.onPostExecute(result);
 			if(result!=null)
 			{
+			  Log.d(TAG,"ACTEUR"+result);
 				ObjectRecoSerialize recoSerialize = new Gson().fromJson(result,ObjectRecoSerialize.class);
 				reco = recoSerialize;
 				database = true;
@@ -397,8 +395,11 @@ public class Recommandation extends Fragment {
 											&& (pgFilm.getProgramme().getListeArtistes().getArtiste().get(j).getFirstName().equals(reco.getArtists().get(i).getFirstName()))){
 										//si ça correspond, on ajoute la chaîne au tableau
 										Log.d(TAG,"ENTREERECO");
+										if(!chainereco.contains(channel))
+										{
 										chainereco.add(channel);
 										Log.d(TAG,"CHAINERECO"+chainereco.toString());
+										}
 									}
 								}
 
@@ -470,24 +471,22 @@ public class Recommandation extends Fragment {
 				}else
 				{
 					if ((chaineId.length() == 1)||(chaineId.length() == 2)){
-						chaineId = chaineId + parsing(pref1, 1);
+						chaineId = chaineId + ","+ parsing(pref1, 1);
 						if (pref1.size() + chainereco.size() < 4){
-							chaineId = chaineId + "," + parsing(pref2, pref1.size() + chainereco.size());
-							Log.d(LOG_TAG,"PARSEPREF1"+chaineId);
+							chaineId = chaineId  + "," + parsing(pref2, pref1.size() + chainereco.size());
+							Log.d(LOG_TAG,"PARSEPREF2"+chaineId);
 						}
 
 						if ((pref1.size()+pref2.size() + chainereco.size()) < 4){
 							chaineId = chaineId + ","+ parsing(pref3, (pref1.size()+pref2.size() + chainereco.size()));
 						}
-						adapter = new RecommandationAdapter(getActivity(), epgrecommendes, this);  
-						listeRecommandation.setAdapter(adapter);
-						refreshReco();
+						
 					}
-					else{
+				
 						adapter = new RecommandationAdapter(getActivity(), epgrecommendes, this);  
 						listeRecommandation.setAdapter(adapter);
 						refreshrecos();
-					}
+					
 				}
 			}
 
