@@ -41,90 +41,87 @@ import com.example.zappv1.R;
  */
 
 public class ListeChaine extends Fragment{
-	
+
 	public ListeChaine(){
-		
+
 	}
 
-  private ListView listeChaine;
-  ArrayList<EPGChaine> epgChaines = new ArrayList<EPGChaine>();
-  final String ID_CHAINE = "id_chaine";
-  EPGChaine item;  
-  final String baseurlEPG = "http://openbbox.flex.bouyguesbox.fr:81/V0";
-  EPGChaine id;
-  ArrayList<EPGChaines> epgs = new ArrayList<EPGChaines>();
-  ChaineAdapter adapter;
+	private ListView listeChaine;
+	ArrayList<EPGChaine> epgChaines = new ArrayList<EPGChaine>();
+	final String ID_CHAINE = "id_chaine";
+	EPGChaine item;  
+	final String baseurlEPG = "http://openbbox.flex.bouyguesbox.fr:81/V0";
+	EPGChaine id;
+	ArrayList<EPGChaines> epgs = new ArrayList<EPGChaines>();
+	ChaineAdapter adapter;
 
 
-/*  public static Fragment newInstance(Context context){
+	/*  public static Fragment newInstance(Context context){
     ListeChaine f = new ListeChaine();
 
     return f;
   }*/
 
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
-    ViewGroup root = (ViewGroup) inflater.inflate(R.layout.liste_chaine, container,false);
-    //Initialisation de la List qui regroupe tout les noms des chaines
-    
-    
-    RecoBDD recoBdd = new RecoBDD(getActivity());
-    
-    if(recoBdd.getCount() == 0)
-    {
-      Intent intent = new Intent(getActivity(), GenreForm.class);
-      
-      startActivity(intent);
-      
-    
-    }
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
+		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.liste_chaine, container,false);
+		//Initialisation de la List qui regroupe tout les noms des chaines
 
-    
-    listeChaine = (ListView) root.findViewById(R.id.chaines);
-    adapter = new ChaineAdapter(getActivity(), epgChaines, this);  
-    listeChaine.setAdapter(adapter);
-    refreshChaine();
-    
-    
-    //évenement lorsque que l'on clique sur une chaîne dans la lsite
-    listeChaine.setOnItemClickListener(new OnItemClickListener()
-    {
-      @Override
-      public void onItemClick(AdapterView<?> arg0, View v, int position, long id)
-      {
-        Intent intent = new Intent(getActivity(), Preview.class);
-        item = (EPGChaine) arg0.getItemAtPosition(position);
 
-        //Envoi du nom de la chaine à la vue prévisualisation
-        intent.putExtra("chaineNom",item.getNom());
-        //Envoi de l'id de la chaîne
-        intent.putExtra("chaineId", item.getId());
-        //envoi de l'id du programme
-        intent.putExtra("progid", item.getListeProgrammes().getProgrammes().getId());
-        intent.putExtra("progFin", item.getListeProgrammes().getProgrammes().getFin());
-        intent.setClass(getActivity(), Preview.class);
-        startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
-      }
-         
-    });
-    
-   
-    return root;
+		RecoBDD recoBdd = new RecoBDD(getActivity());
 
-  }
+		if(recoBdd.getCount() == 0)
+		{
+			Intent intent = new Intent(getActivity(), GenreForm.class);
 
-  public void onResume(){
+			startActivity(intent);
+
+
+		}
+
+
+		listeChaine = (ListView) root.findViewById(R.id.chaines);
+
+
+		//évenement lorsque que l'on clique sur une chaîne dans la lsite
+		listeChaine.setOnItemClickListener(new OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View v, int position, long id)
+			{
+				Intent intent = new Intent(getActivity(), Preview.class);
+				item = (EPGChaine) arg0.getItemAtPosition(position);
+
+				//Envoi du nom de la chaine à la vue prévisualisation
+				intent.putExtra("chaineNom",item.getNom());
+				//Envoi de l'id de la chaîne
+				intent.putExtra("chaineId", item.getId());
+				//envoi de l'id du programme
+				intent.putExtra("progid", item.getListeProgrammes().getProgrammes().getId());
+				intent.putExtra("progFin", item.getListeProgrammes().getProgrammes().getFin());
+				intent.setClass(getActivity(), Preview.class);
+				startActivity(intent);
+				getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+			}
+
+		});
+
+
+		return root;
+
+	}
+
+	public void onResume(){
 		super.onResume();
 		adapter = new ChaineAdapter(getActivity(), epgChaines, this);  
-	    listeChaine.setAdapter(adapter);
-	    refreshChaine();
-  }
+		listeChaine.setAdapter(adapter);
+		refreshChaine();
+	}
 
-private void refreshChaine() {
-	// TODO Auto-generated method stub
-	new GetProgramTask(epgChaines, adapter, getActivity()).execute();
-	
+	private void refreshChaine() {
+		// TODO Auto-generated method stub
+		new GetProgramTask(epgChaines, adapter, getActivity()).execute();
+
 	}
 
 
