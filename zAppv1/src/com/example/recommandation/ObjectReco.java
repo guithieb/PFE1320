@@ -31,7 +31,7 @@ public class ObjectReco {
     public class Artist{
     
       String firstName;
-      String lastName;
+      String familyName;
       
       public Artist()
       {
@@ -46,12 +46,12 @@ public class ObjectReco {
         this.firstName = firstName;
       }
 
-      public String getLastName() {
-        return lastName;
+      public String getFamilyName() {
+        return familyName;
       }
 
-      public void setLastName(String lastName) {
-        this.lastName = lastName;
+      public void setFamilyName(String familyName) {
+        this.familyName = familyName;
       }
       
       

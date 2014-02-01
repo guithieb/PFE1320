@@ -14,12 +14,14 @@ import org.apache.http.client.ClientProtocolException;
 
 import com.example.cloud.EPGChaine;
 import com.example.cloud.EPGChaineSerialize;
+import com.example.cloud.EPGChaines;
 import com.example.remote.BaseApi;
 import com.example.zappv1.R;
 import com.google.gson.Gson;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,6 +48,7 @@ public class DisplayByType extends Activity {
 	TypeAdapter adapter;
 	private EPGChaine epgChaine;
 	int counter = 1;
+	ProgressDialog spinner;
 	public DisplayByType(){
 
 	}	
@@ -58,15 +61,17 @@ public class DisplayByType extends Activity {
 		getActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
 		listeType = (ListView) findViewById(R.id.chaines);
 		Bundle extra = getIntent().getExtras();
+		spinner = new ProgressDialog(this);
 		extra = getIntent().getExtras();
 		if(extra != null)
 		{
 			type = extra.getString("typeProg");
 			Log.d(LOG_TAG,"PROGRAMMEID"+ extra.getString("typeProg"));
-			for (int i = 1; i < 20; i++){
-				getChannelTask gtc = new getChannelTask(epgChaine, getApplicationContext(),Integer.toString(i));
-				gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-			}
+			spinner.setMessage("Chargement");
+			spinner.show();
+			//for (int i = 1; i < 20; i++){
+				new getChannelTask(getApplicationContext()).execute();
+			//}
 		}
 
 		//évenement lorsque qu'on clique sur une chaîne dans la liste
@@ -96,31 +101,27 @@ public class DisplayByType extends Activity {
 	public void onResume(){
 		//mettre à jour la vue quand on revient d'une des vues previewType
 		super.onResume();
-		for (int i = 1; i < 20; i++){
-			getChannelTask gtc = new getChannelTask(epgChaine, getApplicationContext(),Integer.toString(i));
-			gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		}
+		//for (int i = 1; i < 20; i++){
+			new getChannelTask(getApplicationContext()).execute();
+		//}
 	}
 	private void refreshType(){
-		new gettypeTask(epgType, adapter, getApplicationContext(), chaineId).execute();
+		new gettypeTask(epgType, adapter, this, chaineId).execute();
 	}
 
 	private void refreshTypes(){
-		new GetTypeTasks(epgType, adapter, getApplicationContext(), chaineId).execute();
+		new GetTypeTasks(epgType, adapter, this, chaineId).execute();
 	}
 	//récupération des informations en cours d'une chaîne
 	private class getChannelTask extends AsyncTask<String, Void, String> {
 
-		EPGChaine chaine;
+		ArrayList<EPGChaine> chaine = new ArrayList<EPGChaine>();
 
 		BaseAdapter adapter;
 		Context context;
-		String id;
 		public static final String LOG_TAG = "debug";
-		public getChannelTask(EPGChaine chaine, Context c,String id) {
-			this.chaine = chaine;
+		public getChannelTask(Context c) {
 			this.context = c;
-			this.id=id;
 		}
 
 		//Fonction qui se lance à l'appel de cette classe
@@ -129,7 +130,7 @@ public class DisplayByType extends Activity {
 			//Url de la requête permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
 			//String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live?period=1";
 			//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
-			String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/?TVChannelsId="+id;
+			String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/";
 			try {
 				HttpResponse response = BaseApi.executeHttpGet(url);
 				HttpEntity entity = response.getEntity();
@@ -162,16 +163,17 @@ public class DisplayByType extends Activity {
 
 			if (result!=null)
 			{        
-				EPGChaineSerialize ch = new Gson().fromJson(result,EPGChaineSerialize.class);
-
+				//EPGChaineSerialize ch = new Gson().fromJson(result,EPGChaineSerialize.class);
+				EPGChaines ch = new Gson().fromJson(result,EPGChaines.class);
 				//adapter.notifyDataSetChanged();
-				chaine = ch;
+				chaine.addAll(ch);
 				//Log.d(TAG,"PROGRAMMEID"+ chaine.toString());
 				if(chaine != null){
 					//Log.d(TAG,"PROGRAMMEID"+"1");
-					getBaseProgrammeTask gbpt = new getBaseProgrammeTask(basePg,getApplicationContext(),chaine.getListeProgrammes().getProgrammes().getId(),
-							chaine.getId());
-					gbpt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+					for (int i = 0; i < chaine.size(); i++){
+					new getBaseProgrammeTask(basePg,getApplicationContext(),chaine.get(i).getListeProgrammes().getProgrammes().getId(),
+							chaine.get(i).getId()).execute();
+					}
 				}
 			}
 		}
@@ -243,6 +245,7 @@ public class DisplayByType extends Activity {
 
 					//même algorithme que pour les favoris
 					if (chaineId.isEmpty()){
+						spinner.dismiss();
 						AlertDialog.Builder builder1 = new AlertDialog.Builder(DisplayByType.this);
 						builder1.setMessage("Aucun programme en cours pour ce type.");
 						builder1.setCancelable(true);
@@ -261,12 +264,16 @@ public class DisplayByType extends Activity {
 						if ((chaineId.length() == 1)||(chaineId.length() == 2)){
 							adapter = new TypeAdapter(getApplicationContext(), epgType, this);  
 							listeType.setAdapter(adapter);
+							
 							refreshType();
+							spinner.dismiss();
 						}
 						else{
 							adapter = new TypeAdapter(getApplicationContext(), epgType, this);  
 							listeType.setAdapter(adapter);
+							
 							refreshTypes();
+							spinner.dismiss();
 						}
 					}
 				}

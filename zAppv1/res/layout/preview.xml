@@ -1,14 +1,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF"
+    android:weightSum="1" >
 
     <RelativeLayout
         android:id="@+id/haut"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="5"
-        android:background="#01435B" >
+        android:layout_weight="0.33"
+        android:background="#01435B"
+        android:layout_marginBottom="5dp" >
 
         <RelativeLayout
             android:id="@+id/Bandeau"
@@ -40,12 +43,13 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/Bandeau"
-            android:background="#01435B" >
+             >
 
             <RelativeLayout
                 android:id="@+id/image"
                 android:layout_width="140dp"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp" >
 
                 <ImageView
                     android:id="@+id/imagette"
@@ -58,7 +62,8 @@
                 android:id="@+id/relativeLayout1"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true" >
+                android:layout_alignParentRight="true"
+                android:background="#01435B" >
 
                 <TextView
                     android:id="@+id/progNom"
@@ -108,42 +113,43 @@
                     android:max="100" />
             </RelativeLayout>
         </LinearLayout>
+    </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/play"
-            android:layout_width="match_parent"
+    <RelativeLayout
+        android:id="@+id/play"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/haut"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_weight="0.14" >
+
+        <ImageView
+            android:id="@+id/left"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/contenu"
+            android:layout_alignParentLeft="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/swipe_left" />
+
+        <Button
+            android:id="@+id/buttonplay"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp" >
+            android:background="@drawable/previewbutton_custom"
+            android:gravity="center"
+            android:text="Regarder sur TV"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/swipe_left" />
-
-            <Button
-                android:id="@+id/buttonplay"
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/buttonshape"
-                android:gravity="center"
-                android:text="Regarder"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/swipe_right" />
-        </RelativeLayout>
+        <ImageView
+            android:id="@+id/right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/swipe_right" />
     </RelativeLayout>
 
     <ScrollView
@@ -152,14 +158,15 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/haut"
+        android:layout_below="@id/play"
         android:layout_marginTop="10dp"
-        android:background="#FFFFFF" >
+        android:layout_weight="0.53" >
 
         <RelativeLayout
             android:id="@+id/relativeLayout2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp" >
 
             <RelativeLayout
                 android:id="@+id/relativeLayout3"

@@ -1,54 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <Spinner
-        android:id="@+id/spinnerForm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/buttonValidateForm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Valider votre choix" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+    <LinearLayout
+        android:id="@+id/linear1"
+        android:layout_width="fill_parent"
+        android:layout_height="72dp" >
 
         <TextView
             android:id="@+id/type1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/type2"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="66dp"
-            android:text="1er choix"
+            android:layout_gravity="center"
+            android:text="1er choix:"
             android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/spinnerForm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear2"
+        android:layout_width="fill_parent"
+        android:layout_height="72dp"
+        android:layout_below="@id/linear1"
+        android:layout_marginTop="30dp" >
 
         <TextView
             android:id="@+id/type2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/type1"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="126dp"
-            android:text="2eme choix"
+            android:layout_gravity="center"
+            android:text="2eme choix:"
             android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/spinnerForm2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear3"
+        android:layout_width="fill_parent"
+        android:layout_height="72dp"
+        android:layout_below="@id/linear2"
+        android:layout_marginTop="30dp" >
 
         <TextView
             android:id="@+id/type3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/type2"
-            android:layout_below="@+id/type1"
-            android:layout_marginTop="40dp"
-            android:text="3eme choix"
+      		android:layout_gravity="center"
+            android:text="3eme choix:"
             android:textSize="18sp" />
 
-    </RelativeLayout>
+        <Spinner
+            android:id="@+id/spinnerForm3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </LinearLayout>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/buttonValidateForm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linear3"
+        android:text="Valider votre choix" />
+
+</RelativeLayout>
