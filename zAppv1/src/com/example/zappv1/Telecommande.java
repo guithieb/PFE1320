@@ -99,6 +99,7 @@ public class Telecommande extends Activity{
 
 		/*** VOLUME BAR ***/
 		new GetVolumeTask(this).execute();
+		Log.d(TAG, "actualVol GetVolumeTask" + actualVol );
 		volumeSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			int progressChanged; 
 
@@ -109,7 +110,7 @@ public class Telecommande extends Activity{
 				newVol = seekBar.getProgress();
 				volumeText.setText(Integer.toString(newVol));     // update de l'edit text
 				sendVolumePressed(Integer.toString(newVol));	 // volume mis à jour                 
-
+				//Log.d(TAG, "newVol onProgressChanged" + newVol );
 			}
 
 			public void onStartTrackingTouch(SeekBar seekBar) {
@@ -491,6 +492,7 @@ public class Telecommande extends Activity{
 				actualVol = Integer.parseInt(vol.getVolume());  // /10 par palier de 10
 				volumeSeekBar.setProgress(actualVol);  //set position seekbar en fct du volume courant
 				volumeText.setText(vol.getVolume());    // affichage sur l'edit text
+				Log.d(TAG,"actualVol onPostExecute" + actualVol);
 			}
 
 
