@@ -14,6 +14,7 @@
         <item>Favoris</item>
         <item>Recommandations</item>
         <item>Catégories</item>
+        <item>Informations</item>
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->
@@ -23,6 +24,7 @@
     <item>@drawable/ic_favorite</item>
     <item>@drawable/ic_reco</item>
     <item>@drawable/ic_categorie</item>
+    <item>@drawable/ic_informations</item>
     </array>
     
     <!-- Content Description -->
