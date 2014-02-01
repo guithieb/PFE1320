@@ -129,6 +129,8 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 
 		/*** ACTION BAR ***/
 		ActionBar actionbar = getActionBar();
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
 		actionbar.show();
 		getActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
 		
@@ -534,7 +536,7 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 		}
 
 
-		return true;
+		return super.onOptionsItemSelected(item);
 	}
 
 	public void makeToast(String message) {

@@ -47,7 +47,7 @@ import com.google.gson.Gson;
 
 public class Telecommande extends Activity{
 
-	private SeekBar seekBar1;
+	private SeekBar volumeSeekBar;
 	EditText ecran;
 	EditText volumeText;
 	Button button1, button2, button3, button4, button5, button6, button7;
@@ -78,7 +78,7 @@ public class Telecommande extends Activity{
 		getActionBar().setTitle("Télécommande");
 		getActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
 
-		seekBar1 = (SeekBar) findViewById(R.id.seekBar1);
+		volumeSeekBar = (SeekBar) findViewById(R.id.volumeSeekBar);
 		button0 = (Button) findViewById(R.id.button0);
 		button1 = (Button) findViewById(R.id.button1);
 		button2 = (Button) findViewById(R.id.button2);
@@ -99,7 +99,7 @@ public class Telecommande extends Activity{
 
 		/*** VOLUME BAR ***/
 		new GetVolumeTask(this).execute();
-		seekBar1.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+		volumeSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			int progressChanged; 
 
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
@@ -273,7 +273,7 @@ public class Telecommande extends Activity{
 				sendKeyPressed(UserInterfaceApi.CHANNEL_DOWN);
 			}
 		});
-		//met le volume à nul
+		// Comportement sur bouton mute
 		mute.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -281,18 +281,35 @@ public class Telecommande extends Activity{
 				if(boolMute)
 				{
 					sendKeyPressed(UserInterfaceApi.CHANNEL_MUTE);
-					seekBar1.setEnabled(true);
+					volumeSeekBar.setEnabled(true);
 					boolMute = false;
+					mute.setEnabled(true);
+					mute.setBackgroundDrawable(getApplicationContext().getResources().getDrawable(R.drawable.remotebuttonshape));
+					Log.d(TAG,"MUTE UNLOCK ");
 					
 				}
 				else {
 					sendKeyPressed(UserInterfaceApi.CHANNEL_MUTE);
-					seekBar1.setEnabled(false);
+					//mute.setBackgroundColor(R.color.orange);
+					mute.setEnabled(false);
+					Log.d(TAG,"MUTE LOCK ");
+					volumeSeekBar.setEnabled(false);
+						
+					mute.setBackgroundDrawable(getApplicationContext().getResources().getDrawable(R.drawable.remotebutton_pressed));
 					boolMute = true;
+					mute.setEnabled(true);
+					Log.d(TAG,"MUTE READY to UNLOCK ");
 					
 				}
 			}
 		});
+		
+		/*if(boolMute){
+			mute.setBackgroundColor(R.drawable.remotebuttonshape);
+		}
+		else{
+			mute.setBackgroundColor(R.color.orange);
+		}*/
 
 	}
 
@@ -336,6 +353,7 @@ public class Telecommande extends Activity{
 					dialog.cancel();
 				}
 			});
+			ecran.setText("");
 
 
 			AlertDialog alert = builder1.create();
@@ -359,6 +377,7 @@ public class Telecommande extends Activity{
 
 				AlertDialog alert = builder1.create();
 				alert.show();
+				ecran.setText("");
 			}
 
 		}
@@ -472,7 +491,7 @@ public class Telecommande extends Activity{
 				VolumeSerialize vs = new Gson().fromJson(result, VolumeSerialize.class);
 				Volume vol = vs;
 				actualVol = Integer.parseInt(vol.getVolume());  // /10 par palier de 10
-				seekBar1.setProgress(actualVol);  //set position seekbar en fct du volume courant
+				volumeSeekBar.setProgress(actualVol);  //set position seekbar en fct du volume courant
 				volumeText.setText(vol.getVolume());    // affichage sur l'edit text
 			}
 

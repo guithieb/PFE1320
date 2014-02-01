@@ -64,8 +64,7 @@ public class DisplayByType extends Activity {
 			type = extra.getString("typeProg");
 			Log.d(LOG_TAG,"PROGRAMMEID"+ extra.getString("typeProg"));
 			for (int i = 1; i < 20; i++){
-				getChannelTask gtc = new getChannelTask(epgChaine, getApplicationContext(),Integer.toString(i));
-				gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				new getChannelTask(epgChaine, getApplicationContext(),Integer.toString(i)).execute();
 			}
 		}
 
@@ -169,9 +168,8 @@ public class DisplayByType extends Activity {
 				//Log.d(TAG,"PROGRAMMEID"+ chaine.toString());
 				if(chaine != null){
 					//Log.d(TAG,"PROGRAMMEID"+"1");
-					getBaseProgrammeTask gbpt = new getBaseProgrammeTask(basePg,getApplicationContext(),chaine.getListeProgrammes().getProgrammes().getId(),
-							chaine.getId());
-					gbpt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+					new getBaseProgrammeTask(basePg,getApplicationContext(),chaine.getListeProgrammes().getProgrammes().getId(),
+							chaine.getId()).execute();
 				}
 			}
 		}
