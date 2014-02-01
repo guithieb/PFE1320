@@ -32,6 +32,7 @@ import com.example.type.PreviewType;
 import com.google.gson.Gson;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -75,6 +76,7 @@ public class Recommandation extends Fragment {
 	private static final String TAG = "debug";
 	private static final String LOG_TAG = "activity";
 	int counter = 1;
+	ProgressDialog spinner;
 	String ip;
 	String appId;
 	ArrayList <String> chainetype = new ArrayList<String>();
@@ -87,13 +89,14 @@ public class Recommandation extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.recommandation, null);
 		listeRecommandation = (ListView) root.findViewById(R.id.chaines);
-
+		spinner = new ProgressDialog(getActivity());
 		RecoBDD recoBdd = new RecoBDD(getActivity());
 
 		if(recoBdd.getCount() == 3)
 		{
 			pref = recoBdd.cursorToReco();
-
+			spinner.setMessage("Chargement");
+			spinner.show();
 			//on récupère la liste des artistes auprès de la webapp
 			GetDatabaseTask gdbt = new GetDatabaseTask();
 			gdbt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -217,7 +220,7 @@ public class Recommandation extends Fragment {
 			super.onPostExecute(result);
 			if(result!=null)
 			{
-			  Log.d(TAG,"ACTEUR"+result);
+				Log.d(TAG,"ACTEUR"+result);
 				ObjectRecoSerialize recoSerialize = new Gson().fromJson(result,ObjectRecoSerialize.class);
 				reco = recoSerialize;
 				database = true;
@@ -397,8 +400,8 @@ public class Recommandation extends Fragment {
 										Log.d(TAG,"ENTREERECO");
 										if(!chainereco.contains(channel))
 										{
-										chainereco.add(channel);
-										Log.d(TAG,"CHAINERECO"+chainereco.toString());
+											chainereco.add(channel);
+											Log.d(TAG,"CHAINERECO"+chainereco.toString());
 										}
 									}
 								}
@@ -468,6 +471,7 @@ public class Recommandation extends Fragment {
 					adapter = new RecommandationAdapter(getActivity(), epgrecommendes, this);  
 					listeRecommandation.setAdapter(adapter);
 					refreshrecos();
+					spinner.dismiss();
 				}else
 				{
 					if ((chaineId.length() == 1)||(chaineId.length() == 2)){
@@ -480,13 +484,13 @@ public class Recommandation extends Fragment {
 						if ((pref1.size()+pref2.size() + chainereco.size()) < 4){
 							chaineId = chaineId + ","+ parsing(pref3, (pref1.size()+pref2.size() + chainereco.size()));
 						}
-						
+
 					}
-				
-						adapter = new RecommandationAdapter(getActivity(), epgrecommendes, this);  
-						listeRecommandation.setAdapter(adapter);
-						refreshrecos();
-					
+
+					adapter = new RecommandationAdapter(getActivity(), epgrecommendes, this);  
+					listeRecommandation.setAdapter(adapter);
+					refreshrecos();
+					spinner.dismiss();
 				}
 			}
 

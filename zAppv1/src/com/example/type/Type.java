@@ -30,9 +30,9 @@ public class Type extends Fragment{
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.type, null);
 		//ajout des types au gridview
 		divertissement = (Button) root.findViewById(R.id.Divertissement);
-	  jeu = (Button) root.findViewById(R.id.Jeu);
+		jeu = (Button) root.findViewById(R.id.Jeu);
 		documentaire = (Button) root.findViewById(R.id.Documentaire);
-	  magazine = (Button) root.findViewById(R.id.Magazine);
+		magazine = (Button) root.findViewById(R.id.Magazine);
 		emissionj = (Button) root.findViewById(R.id.EmissionJeunesse);
 		musique = (Button) root.findViewById(R.id.Musique);
 		feuilleton = (Button) root.findViewById(R.id.Feuilleton);
@@ -47,12 +47,12 @@ public class Type extends Fragment{
 				typeClick(divertissement.getText().toString());
 			}
 		});
-		
+
 		jeu.setOnClickListener(new View.OnClickListener() {
-      public void onClick(View v) {
-        typeClick(jeu.getText().toString());
-      }
-    });
+			public void onClick(View v) {
+				typeClick(jeu.getText().toString());
+			}
+		});
 		documentaire.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				typeClick(documentaire.getText().toString());
@@ -78,7 +78,7 @@ public class Type extends Fragment{
 				typeClick(information.getText().toString());
 			}
 		});
-		
+
 		magazine.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				typeClick(magazine.getText().toString());
@@ -107,9 +107,9 @@ public class Type extends Fragment{
 
 		return root;
 	}
-	
-	
-	
+
+
+
 	public void typeClick (String str){
 		Intent intent = new Intent(getActivity(), DisplayByType.class);
 		intent.putExtra("typeProg", str);
