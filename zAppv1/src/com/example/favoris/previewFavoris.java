@@ -108,7 +108,7 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 	TextView textDescription;
 	TextView textDebut,textFin, textNextDebut, textNextFin;
 	TextView textDuree, textGenre, textNext, textEpisode;
-	ImageView imagette;
+	ImageView imagette, left, right;;
 	CheckBox checkboxfavoris;
 	Button play;
 	Bundle extra;
@@ -143,6 +143,8 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 		textDuree = (TextView) findViewById(R.id.duree);
 		mProgressBar = (ProgressBar) findViewById(R.id.progressTest);
 		imagette = (ImageView) findViewById(R.id.imagette);
+		left = (ImageView) findViewById(R.id.left);
+		right = (ImageView) findViewById(R.id.right);
 		textNext = (TextView) findViewById(R.id.next);
 		textNextDebut = (TextView) findViewById(R.id.progNextDebut);
 		textNextFin = (TextView) findViewById(R.id.progNextFin);
@@ -275,6 +277,63 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 
 				}
 				// Perform action on click
+			}
+		});
+		
+		left.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				// do your stuff here
+				if (checkboxfavoris.isChecked()){
+					id--;
+				}else{
+					id--;
+					for (int i =id+1; i < parse.length-1 ; i++) {
+						parse[i] = parse[i+1];
+					}
+				}
+				
+				if(id<0) id=id+parse.length;
+				getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),parse[id]);
+				gtc.execute();
+
+				new FeedReaderDbHelperFavoris(getApplicationContext());
+				Log.d(TAG,"BDD OPEN");
+				if (isInDB(parse[id]))
+				{
+					checkboxfavoris.setChecked(true);
+				}
+				else checkboxfavoris.setChecked(false);
+
+			}
+		});
+		right.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (checkboxfavoris.isChecked()){
+					id++;
+				}else{
+					id++;
+					for (int i =id-1; i < parse.length-1 ; i++) {
+						parse[i] = parse[i+1];
+					}
+				}
+				if(id>=parse.length) id=id-parse.length;
+				getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),parse[id]);
+				gtc.execute();
+
+				new FeedReaderDbHelperFavoris(getApplicationContext());
+				Log.d(TAG,"BDD OPEN");
+				if (isInDB(parse[id]))
+				{
+					checkboxfavoris.setChecked(true);
+				}
+				else checkboxfavoris.setChecked(false);
+
 			}
 		});
 	}
