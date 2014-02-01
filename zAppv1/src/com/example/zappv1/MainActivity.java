@@ -108,7 +108,8 @@ public class MainActivity extends Activity {
 		"com.example.zappv1.ListeChaine",
 		"com.example.zappv1.Favoris",
 		"com.example.zappv1.Recommandation",
-	"com.example.type.Type"};
+		"com.example.type.Type",
+	"com.example.zappv1.Informations"};
 	private static final String TAG = "MyActivity";
 	public static final String BOX_PREFERENCES = "boxPrefs";
 	private String ip;
@@ -185,7 +186,9 @@ public class MainActivity extends Activity {
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
 		// Types
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
-
+		// Informations
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
+		
 		// Recycle the typed array
 		navMenuIcons.recycle();
 
@@ -228,7 +231,7 @@ public class MainActivity extends Activity {
 		}
 
 
-		  //*** Module ID IP téléphone ***/
+		//*** Module ID IP téléphone ***/
 		// On lance la librairie qui gère les devices, avec la callback pour les notifications natives
 		final DeviceWatcher deviceWatcher = DeviceWatcher.getInstance(getApplicationContext());
 		// On crée pour cela un DeviceManager
@@ -359,7 +362,7 @@ public class MainActivity extends Activity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// if nav drawer is opened, hide the action items
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+		menu.findItem(R.id.action_alarm).setVisible(!drawerOpen);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
