@@ -668,7 +668,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 			{	
 				BaseProgrammeSerialize bpz = new Gson().fromJson(result,BaseProgrammeSerialize.class);
 				bp = bpz;
-				if (bp.getProgramme().getListeGenres().getGenre().equals("Série"))
+				if ((bp.getProgramme().getListeGenres().getGenre().equals("Série"))&&(result.toString().contains("\"serie\": {")))
 				{
 					ProgrammeSerieSerialize pss = new Gson().fromJson(result,ProgrammeSerieSerialize.class);
 					pgSerie = pss;

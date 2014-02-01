@@ -34,6 +34,11 @@ public class GetTypeTasks extends AsyncTask<String, Void, String>{
 		this.adapter = adapter;
 		this.context = c;
 		this.channels = channels;
+		this.spinner = new ProgressDialog(context);
+	}
+	protected void onPreExecute(){
+		spinner.setMessage("Chargement");
+		spinner.show();
 	}
 	
 	//Fonction qui se lance à l'appel de cette classe
@@ -72,6 +77,7 @@ public class GetTypeTasks extends AsyncTask<String, Void, String>{
 	
 	protected void onPostExecute(String result){
 		super.onPostExecute(result);
+		spinner.dismiss();
 		if (result!=null)
 		{	
 			EPGChaines ch = new Gson().fromJson(result,EPGChaines.class);
