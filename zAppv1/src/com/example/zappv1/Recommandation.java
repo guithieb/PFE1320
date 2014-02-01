@@ -472,12 +472,12 @@ public class Recommandation extends Fragment {
 					if ((chaineId.length() == 1)||(chaineId.length() == 2)){
 						chaineId = chaineId + parsing(pref1, 1);
 						if (pref1.size() + chainereco.size() < 4){
-							chaineId = chaineId + parsing(pref2, pref1.size() + chainereco.size());
+							chaineId = chaineId + "," + parsing(pref2, pref1.size() + chainereco.size());
 							Log.d(LOG_TAG,"PARSEPREF1"+chaineId);
 						}
 
 						if ((pref1.size()+pref2.size() + chainereco.size()) < 4){
-							chaineId = chaineId + parsing(pref3, (pref1.size()+pref2.size() + chainereco.size()));
+							chaineId = chaineId + ","+ parsing(pref3, (pref1.size()+pref2.size() + chainereco.size()));
 						}
 						adapter = new RecommandationAdapter(getActivity(), epgrecommendes, this);  
 						listeRecommandation.setAdapter(adapter);
