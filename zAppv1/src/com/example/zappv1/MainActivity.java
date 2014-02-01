@@ -387,6 +387,9 @@ public class MainActivity extends Activity {
 		case 3:
 			fragment = new Type();
 			break;
+			
+		case 4:
+			fragment = new Informations();
 		default:
 			break;
 		}
