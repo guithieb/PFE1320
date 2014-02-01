@@ -393,7 +393,7 @@ public class Recommandation extends Fragment {
 
 							for (int i = 0; i < reco.getArtists().size(); i++){
 								for (int j = 0; j < pgFilm.getProgramme().getListeArtistes().getArtiste().size(); j++){
-									if ((pgFilm.getProgramme().getListeArtistes().getArtiste().get(j).getLastName().equals(reco.getArtists().get(i).getLastName()))
+									if ((pgFilm.getProgramme().getListeArtistes().getArtiste().get(j).getLastName().equals(reco.getArtists().get(i).getFamilyName()))
 											&& (pgFilm.getProgramme().getListeArtistes().getArtiste().get(j).getFirstName().equals(reco.getArtists().get(i).getFirstName()))){
 										//si ça correspond, on ajoute la chaîne au tableau
 										Log.d(TAG,"ENTREERECO");
@@ -410,7 +410,7 @@ public class Recommandation extends Fragment {
 							ProgrammeMagSerialize pms = new Gson().fromJson(result,ProgrammeMagSerialize.class);
 							pgMag = pms;
 							for (int i = 0; i <reco.getArtists().size(); i++){
-								if ((pgMag.getProgramme().getListeArtistes().getArtiste().getLastName().equals(reco.getArtists().get(i).getLastName()))
+								if ((pgMag.getProgramme().getListeArtistes().getArtiste().getLastName().equals(reco.getArtists().get(i).getFamilyName()))
 										&& (pgMag.getProgramme().getListeArtistes().getArtiste().getFirstName().equals(reco.getArtists().get(i).getFirstName()))){
 									chainereco.add(channel);
 									Log.d(TAG,"CHAINERECO2"+chainereco.toString());

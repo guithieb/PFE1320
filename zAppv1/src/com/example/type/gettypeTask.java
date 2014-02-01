@@ -9,6 +9,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -26,12 +27,18 @@ public class gettypeTask extends AsyncTask<String, Void, String> {
 	BaseAdapter adapter;
 	Context context;
 	String id;
+	private ProgressDialog spinner;
 	public static final String LOG_TAG = "debug";
 	public gettypeTask(ArrayList <EPGChaine> chaine,BaseAdapter adapter, Context c,String id) {
 		this.chaine = chaine;
 		this.adapter = adapter;
 		this.context = c;
 		this.id=id;
+		this.spinner = new ProgressDialog(context);
+	}
+	protected void onPreExecute(){
+		spinner.setMessage("Chargement");
+		spinner.show();
 	}
 
 	//Fonction qui se lance à l'appel de cette classe
@@ -70,7 +77,7 @@ public class gettypeTask extends AsyncTask<String, Void, String> {
 
 	protected void onPostExecute(String result){
 		super.onPostExecute(result);
-
+		spinner.dismiss();
 		if (result!=null)
 		{	
 			EPGChaineSerialize ch = new Gson().fromJson(result,EPGChaineSerialize.class);
