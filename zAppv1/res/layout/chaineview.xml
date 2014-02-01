@@ -20,31 +20,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:scaleType="fitCenter"
-                android:layout_marginLeft="5dp" />
+                android:layout_marginLeft="5dp"
+                android:scaleType="fitCenter" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/logo"
-            android:layout_marginLeft="5dp" >
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/logo" >
 
             <RelativeLayout
                 android:id="@+id/nomprog"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_weight="5" >
+                 >
 
                 <TextView
                     android:id="@+id/progName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:textColor="#000000"
                     android:textStyle="bold"
-                    android:textColor="#000000" />
+                    android:maxLength="60" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -52,14 +53,14 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/nomprog"
-                android:layout_weight="5" >
+                >
 
                 <TextView
                     android:id="@+id/debut"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textColor="#000000" />
+                    android:textColor="#000000"
+                    android:textStyle="bold" />
 
                 <ProgressBar
                     android:id="@+id/duree"
@@ -70,15 +71,14 @@
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@id/debut"
                     android:max="100" />
-            </RelativeLayout>     
-        </RelativeLayout>
+            </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/ancre"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true" >
+            <RelativeLayout
+                android:id="@+id/ancre"
+                android:layout_width="wrap_content"
+                android:layout_height="72dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" >
 
                 <ImageView
                     android:id="@+id/ancre"
@@ -89,6 +89,7 @@
                     android:scaleType="fitCenter"
                     android:src="@drawable/ancre" />
             </RelativeLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
 </LinearLayout>

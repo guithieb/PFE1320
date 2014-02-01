@@ -135,6 +135,9 @@ public class ChaineAdapter extends BaseAdapter {
 		
 		int horairedebut = (Integer.parseInt(progdebut[0])*60)+Integer.parseInt(progdebut[1]);
 		Log.d(LOG_TAG,"TOTALdebut "+Integer.toString(horairedebut));
+		if(progfin[0].equals("00")){
+			progfin[0]="24";
+		}
 		int horairefin = (Integer.parseInt(progfin[0])*60)+Integer.parseInt(progfin[1]);
 		Log.d(LOG_TAG,"TOTALfin "+Integer.toString(horairefin));
 		int dureetotale = horairefin - horairedebut;
