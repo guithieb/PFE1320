@@ -122,15 +122,6 @@ public class GenreForm extends Activity {
 			
 		}
 	
-		
-		
-        
-        
-        
-        
-        	
-        
-        	
 
 	}
 	
