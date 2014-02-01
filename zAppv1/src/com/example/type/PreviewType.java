@@ -109,7 +109,7 @@ public class PreviewType extends Activity implements GestureDetector.OnGestureLi
 	TextView textDescription;
 	TextView textDebut,textFin, textNextDebut, textNextFin;
 	TextView textDuree, textGenre, textNext, textEpisode;
-	ImageView imagette;
+	ImageView imagette, left, right;
 	CheckBox checkboxfavoris;
 	Button play;
 	Bundle extra;
@@ -144,6 +144,8 @@ public class PreviewType extends Activity implements GestureDetector.OnGestureLi
 		textDuree = (TextView) findViewById(R.id.duree);
 		mProgressBar = (ProgressBar) findViewById(R.id.progressTest);
 		imagette = (ImageView) findViewById(R.id.imagette);
+		left = (ImageView) findViewById(R.id.left);
+		right = (ImageView) findViewById(R.id.right);
 		textNext = (TextView) findViewById(R.id.next);
 		textNextDebut = (TextView) findViewById(R.id.progNextDebut);
 		textNextFin = (TextView) findViewById(R.id.progNextFin);
@@ -265,6 +267,42 @@ public class PreviewType extends Activity implements GestureDetector.OnGestureLi
 
 				}
 				// Perform action on click
+			}
+		});
+		right.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				id++;
+				if(id>=parse.length) id=id-parse.length;
+				getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),parse[id]);
+				gtc.execute();
+				
+				
+				FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
+				if (isInDB(parse[id]))
+				{
+					checkboxfavoris.setChecked(true);
+				}
+				else checkboxfavoris.setChecked(false);
+			}
+		});
+		left.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				id--;
+
+				if(id<0) id=id+parse.length;
+				getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),parse[id]);
+				gtc.execute();
+				
+				FeedReaderDbHelperFavoris mDbHelper = new FeedReaderDbHelperFavoris(getApplicationContext());
+				if (isInDB(parse[id]))
+				{
+					checkboxfavoris.setChecked(true);
+				}
+				else checkboxfavoris.setChecked(false);
 			}
 		});
 	}

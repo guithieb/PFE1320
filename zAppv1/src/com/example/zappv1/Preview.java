@@ -611,7 +611,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		default: 
 			break;
 		}
-
 		return super.onOptionsItemSelected(item);
 	}
 
