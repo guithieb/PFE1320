@@ -535,7 +535,7 @@ public class previewFavoris extends Activity implements GestureDetector.OnGestur
 			break;
 		}
 
-
+		finish();
 		return super.onOptionsItemSelected(item);
 	}
 

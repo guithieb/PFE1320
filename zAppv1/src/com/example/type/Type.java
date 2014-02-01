@@ -106,6 +106,8 @@ public class Type extends Fragment{
 		return root;
 	}
 	
+	
+	
 	public void typeClick (String str){
 		Intent intent = new Intent(getActivity(), DisplayByType.class);
 		intent.putExtra("typeProg", str);

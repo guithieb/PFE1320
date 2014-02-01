@@ -334,6 +334,7 @@ public class Telecommande extends Activity{
 		default:
 			break;
 		}
+		finish();
 		return super.onOptionsItemSelected(item);
 
 	}

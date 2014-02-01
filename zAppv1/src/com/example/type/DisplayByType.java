@@ -17,8 +17,10 @@ import com.example.cloud.EPGChaineSerialize;
 import com.example.cloud.EPGChaines;
 import com.example.remote.BaseApi;
 import com.example.zappv1.R;
+import com.example.zappv1.Telecommande;
 import com.google.gson.Gson;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -29,6 +31,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -58,7 +61,14 @@ public class DisplayByType extends Activity {
 
 		setContentView(R.layout.displaybytype);
 		/// Code en dur avec la couleur #303030
+		
+		/*** ACTION BAR ***/
+		ActionBar actionbar = getActionBar();
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
+		actionbar.show();
 		getActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
+		
 		listeType = (ListView) findViewById(R.id.chaines);
 		Bundle extra = getIntent().getExtras();
 		spinner = new ProgressDialog(this);
@@ -97,6 +107,25 @@ public class DisplayByType extends Activity {
 
 		});
 	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent = new Intent(this, Telecommande.class);
+
+		// Handle presses on the action bar items
+		switch (item.getItemId()) 
+		{
+		case R.id.action_alarm:
+			startActivity(intent);
+			break;
+		default: 
+			break;
+		}
+
+		finish();
+		return super.onOptionsItemSelected(item);
+	}
+	
 
 	public void onResume(){
 		//mettre à jour la vue quand on revient d'une des vues previewType

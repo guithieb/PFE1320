@@ -130,9 +130,11 @@ public class PreviewType extends Activity implements GestureDetector.OnGestureLi
 
 		/*** ACTION BAR ***/
 		ActionBar actionbar = getActionBar();
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
 		actionbar.show();
 		getActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
-
+		
 		textChaine = (TextView)findViewById(R.id.chaineName);
 		textNom = (TextView)findViewById(R.id.progNom);
 		textDescription = (TextView)findViewById(R.id.progDescription);
@@ -271,6 +273,8 @@ public class PreviewType extends Activity implements GestureDetector.OnGestureLi
 		new SendKeyPressedTask().execute(
 				new String[] { URL_HTTP , key});
 	}
+	
+	
 
 	//Appel de la fonction SendKey de la classe UserIntefaceApi pour pouvoir envoyer les commande de remote
 	private class SendKeyPressedTask extends AsyncTask<String, Void, String> {
@@ -506,8 +510,8 @@ public class PreviewType extends Activity implements GestureDetector.OnGestureLi
 			break;
 		}
 
-
-		return true;
+		finish();
+		return super.onOptionsItemSelected(item);
 	}
 
 	public void makeToast(String message) {
