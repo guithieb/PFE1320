@@ -106,9 +106,9 @@ public class MainActivity extends Activity {
 	//Liste des différentes vues liées au drawer
 	final static String[] fragments ={
 		"com.example.zappv1.ListeChaine",
+		"com.example.type.Type",
 		"com.example.zappv1.Favoris",
 		"com.example.zappv1.Recommandation",
-		"com.example.type.Type",
 	"com.example.zappv1.Informations"};
 	private static final String TAG = "MyActivity";
 	public static final String BOX_PREFERENCES = "boxPrefs";
@@ -378,15 +378,18 @@ public class MainActivity extends Activity {
 			fragment = new ListeChaine();
 			break;
 		case 1:
-			fragment = new Favoris();
+			fragment = new Type();
 			break;
 		case 2:
-			fragment = new Recommandation();
+			fragment = new Favoris();
 			break;
 
 		case 3:
-			fragment = new Type();
+			fragment = new Recommandation();
 			break;
+			
+		case 4:
+			fragment = new Informations();
 		default:
 			break;
 		}

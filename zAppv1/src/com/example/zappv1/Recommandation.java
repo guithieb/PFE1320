@@ -32,6 +32,7 @@ import com.example.type.PreviewType;
 import com.google.gson.Gson;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -75,6 +76,7 @@ public class Recommandation extends Fragment {
 	private static final String TAG = "debug";
 	private static final String LOG_TAG = "activity";
 	int counter = 1;
+	ProgressDialog spinner;
 	String ip;
 	String appId;
 	ArrayList <String> chainetype = new ArrayList<String>();
@@ -87,13 +89,14 @@ public class Recommandation extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) { 
 		ViewGroup root = (ViewGroup) inflater.inflate(R.layout.recommandation, null);
 		listeRecommandation = (ListView) root.findViewById(R.id.chaines);
-
+		spinner = new ProgressDialog(getActivity());
 		RecoBDD recoBdd = new RecoBDD(getActivity());
 
 		if(recoBdd.getCount() == 3)
 		{
 			pref = recoBdd.cursorToReco();
-
+			spinner.setMessage("Chargement");
+			spinner.show();
 			//on récupère la liste des artistes auprès de la webapp
 			GetDatabaseTask gdbt = new GetDatabaseTask();
 			gdbt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -159,9 +162,6 @@ public class Recommandation extends Fragment {
 	}
 
 
-	private void refreshReco(){
-		new getRecoTask(epgrecommendes, adapter, getActivity(), chaineId).execute();
-	}
 
 	private void refreshrecos(){
 		new GetRecoTasks(epgrecommendes, adapter, getActivity(), chaineId).execute();
@@ -188,7 +188,7 @@ public class Recommandation extends Fragment {
 
 
 			//http post
-			String url = "http://zappwebapp.guinaudin.eu.cloudbees.net/REST/WebService";
+			String url = "http://zapp.guithieb.cloudbees.net/REST/WebService";
 			try {
 				HttpResponse response = BaseApi.executeHttpGet(url);
 				HttpEntity entity = response.getEntity();
@@ -220,6 +220,7 @@ public class Recommandation extends Fragment {
 			super.onPostExecute(result);
 			if(result!=null)
 			{
+				Log.d(TAG,"ACTEUR"+result);
 				ObjectRecoSerialize recoSerialize = new Gson().fromJson(result,ObjectRecoSerialize.class);
 				reco = recoSerialize;
 				database = true;
@@ -230,7 +231,7 @@ public class Recommandation extends Fragment {
 
 			for (int i = 1; i < 20; i++){
 				getChannelTask gtc = new getChannelTask(epgChaine, getActivity(),Integer.toString(i));
-				gtc.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				gtc.execute();
 			}
 
 
@@ -297,7 +298,7 @@ public class Recommandation extends Fragment {
 				if(chaine != null){
 					getBaseProgrammeTask gbpt = new getBaseProgrammeTask(basePg,getActivity(),chaine.getListeProgrammes().getProgrammes().getId(),
 							chaine.getId());
-					gbpt.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+					gbpt.execute();
 				}
 			}
 		}
@@ -397,8 +398,11 @@ public class Recommandation extends Fragment {
 											&& (pgFilm.getProgramme().getListeArtistes().getArtiste().get(j).getFirstName().equals(reco.getArtists().get(i).getFirstName()))){
 										//si ça correspond, on ajoute la chaîne au tableau
 										Log.d(TAG,"ENTREERECO");
-										chainereco.add(channel);
-										Log.d(TAG,"CHAINERECO"+chainereco.toString());
+										if(!chainereco.contains(channel))
+										{
+											chainereco.add(channel);
+											Log.d(TAG,"CHAINERECO"+chainereco.toString());
+										}
 									}
 								}
 
@@ -467,27 +471,26 @@ public class Recommandation extends Fragment {
 					adapter = new RecommandationAdapter(getActivity(), epgrecommendes, this);  
 					listeRecommandation.setAdapter(adapter);
 					refreshrecos();
+					spinner.dismiss();
 				}else
 				{
 					if ((chaineId.length() == 1)||(chaineId.length() == 2)){
-						chaineId = chaineId + parsing(pref1, 1);
+						chaineId = chaineId + ","+ parsing(pref1, 1);
 						if (pref1.size() + chainereco.size() < 4){
-							chaineId = chaineId + parsing(pref2, pref1.size() + chainereco.size());
-							Log.d(LOG_TAG,"PARSEPREF1"+chaineId);
+							chaineId = chaineId  + "," + parsing(pref2, pref1.size() + chainereco.size());
+							Log.d(LOG_TAG,"PARSEPREF2"+chaineId);
 						}
 
 						if ((pref1.size()+pref2.size() + chainereco.size()) < 4){
-							chaineId = chaineId + parsing(pref3, (pref1.size()+pref2.size() + chainereco.size()));
+							chaineId = chaineId + ","+ parsing(pref3, (pref1.size()+pref2.size() + chainereco.size()));
 						}
-						adapter = new RecommandationAdapter(getActivity(), epgrecommendes, this);  
-						listeRecommandation.setAdapter(adapter);
-						refreshReco();
+
 					}
-					else{
-						adapter = new RecommandationAdapter(getActivity(), epgrecommendes, this);  
-						listeRecommandation.setAdapter(adapter);
-						refreshrecos();
-					}
+
+					adapter = new RecommandationAdapter(getActivity(), epgrecommendes, this);  
+					listeRecommandation.setAdapter(adapter);
+					refreshrecos();
+					spinner.dismiss();
 				}
 			}
 

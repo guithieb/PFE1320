@@ -24,6 +24,17 @@
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
             android:background="@drawable/typebutton_custom" />
+        
+        <Button
+            android:id="@+id/Jeu"
+            android:layout_width="wrap_content"
+            android:layout_height="72dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Jeu"
+            android:textStyle="bold"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/typebutton_custom" />
 
         <Button
             android:id="@+id/Documentaire"
@@ -31,6 +42,17 @@
             android:layout_height="72dp"
             android:layout_gravity="center_horizontal"
             android:text="Documentaire"
+            android:textStyle="bold"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/typebutton_custom" />
+        
+         <Button
+            android:id="@+id/Magazine"
+            android:layout_width="wrap_content"
+            android:layout_height="72dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Magazine"
             android:textStyle="bold"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
@@ -46,6 +68,17 @@
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
             android:background="@drawable/typebutton_custom" />
+        
+        <Button
+            android:id="@+id/Musique"
+            android:layout_width="wrap_content"
+            android:layout_height="72dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Musique"
+            android:textStyle="bold"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/typebutton_custom" />
 
         <Button
             android:id="@+id/Feuilleton"
@@ -53,6 +86,17 @@
             android:layout_height="72dp"
             android:layout_gravity="center_horizontal"
             android:text="Feuilleton"
+            android:textStyle="bold"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/typebutton_custom" />
+        
+         <Button
+            android:id="@+id/Serie"
+            android:layout_width="wrap_content"
+            android:layout_height="72dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Série"
             android:textStyle="bold"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
@@ -69,6 +113,17 @@
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
             android:background="@drawable/typebutton_custom" />
+        
+             <Button
+            android:id="@+id/Sport"
+            android:layout_width="wrap_content"
+            android:layout_height="72dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Sport"
+            android:textStyle="bold"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/typebutton_custom" />
 
         <Button
             android:id="@+id/Information"
@@ -76,61 +131,6 @@
             android:layout_height="72dp"
             android:layout_gravity="center_horizontal"
             android:text="Information"
-            android:textStyle="bold"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/typebutton_custom" />
-
-        <Button
-            android:id="@+id/Jeu"
-            android:layout_width="wrap_content"
-            android:layout_height="72dp"
-            android:layout_gravity="center_horizontal"
-            android:text="Jeu"
-            android:textStyle="bold"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/typebutton_custom" />
-
-        <Button
-            android:id="@+id/Magazine"
-            android:layout_width="wrap_content"
-            android:layout_height="72dp"
-            android:layout_gravity="center_horizontal"
-            android:text="Magazine"
-            android:textStyle="bold"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/typebutton_custom" />
-
-        <Button
-            android:id="@+id/Musique"
-            android:layout_width="wrap_content"
-            android:layout_height="72dp"
-            android:layout_gravity="center_horizontal"
-            android:text="Musique"
-            android:textStyle="bold"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/typebutton_custom" />
-
-        <Button
-            android:id="@+id/Serie"
-            android:layout_width="wrap_content"
-            android:layout_height="72dp"
-            android:layout_gravity="center_horizontal"
-            android:text="Série"
-            android:textStyle="bold"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/typebutton_custom" />
-
-        <Button
-            android:id="@+id/Sport"
-            android:layout_width="wrap_content"
-            android:layout_height="72dp"
-            android:layout_gravity="center_horizontal"
-            android:text="Sport"
             android:textStyle="bold"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
