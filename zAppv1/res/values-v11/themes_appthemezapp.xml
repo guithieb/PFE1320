@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  
+
+  <style name="AppThemezapp" parent="@style/_AppThemezapp">
+
+    <item name="android:editTextBackground">@drawable/appthemezapp_edit_text_holo_light</item>
+
+    <item name="android:textColorHighlight">#99eb6909</item>
+    <item name="android:textSelectHandleLeft">@drawable/appthemezapp_text_select_handle_left</item>
+    <item name="android:textSelectHandleRight">@drawable/appthemezapp_text_select_handle_right</item>
+    <item name="android:textSelectHandle">@drawable/appthemezapp_text_select_handle_middle</item>
+
+    <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewAppThemezapp</item>
+
+    <item name="android:listChoiceIndicatorMultiple">@drawable/appthemezapp_btn_check_holo_light</item>
+
+    <item name="android:listChoiceIndicatorSingle">@drawable/appthemezapp_btn_radio_holo_light</item>
+
+    <item name="android:buttonStyle">@style/ButtonAppThemezapp</item>
+
+    <item name="android:imageButtonStyle">@style/ImageButtonAppThemezapp</item>
+
+    <item name="android:dropDownSpinnerStyle">@style/SpinnerAppThemezapp</item>
+
+    <item name="android:progressBarStyleHorizontal">@style/ProgressBarAppThemezapp</item>
+
+    <item name="android:seekBarStyle">@style/SeekBarAppThemezapp</item>
+
+    <item name="android:ratingBarStyle">@style/RatingBarAppThemezapp</item>
+
+    <item name="android:ratingBarStyleIndicator">@style/RatingBarBigAppThemezapp</item>
+
+    <item name="android:ratingBarStyleSmall">@style/RatingBarSmallAppThemezapp</item>
+
+    <item name="android:buttonStyleToggle">@style/ToggleAppThemezapp</item>
+
+    <item name="android:listChoiceBackgroundIndicator">@drawable/appthemezapp_list_selector_holo_light</item>
+
+    <item name="android:activatedBackgroundIndicator">@drawable/appthemezapp_activated_background_holo_light</item>
+
+    <item name="android:fastScrollThumbDrawable">@drawable/appthemezapp_fastscroll_thumb_holo</item>
+
+  </style>
+
+</resources>

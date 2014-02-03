@@ -102,7 +102,7 @@ public class MainActivity extends Activity {
 	private ActionBarDrawerToggle actionBarDrawerToggle;
 	private int selection = 0;
 	private int oldSelection = -1;
-	final String[] data ={"Liste des chaînes","Favoris","Recommandations", "Type"};
+	final String[] data ={"Liste des chaînes","Favoris","Recommandations", "Type","Informations"};
 	//Liste des différentes vues liées au drawer
 	final static String[] fragments ={
 		"com.example.zappv1.ListeChaine",

@@ -10,6 +10,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -36,6 +37,9 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 
 
 
+
+
+import com.example.remote.BaseApi;
 import com.example.remote.NetworkUtils;
 import com.example.remote.ServerException;
 import com.example.remote.UserInterfaceApi;
@@ -67,15 +71,15 @@ public class Telecommande extends Activity{
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) { 
-		//initialisation de la vue Télécommande
+		//initialisation de la vue TÃ©lÃ©commande
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.telecommande);
 
-		// Retour sur la vue précédente
+		// Retour sur la vue prÃ©cÃ©dente
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
 		getActionBar().setDisplayShowTitleEnabled(true);
-		getActionBar().setTitle("Télécommande");
+		getActionBar().setTitle("TÃ©lÃ©commande");
 		getActionBar().setBackgroundDrawable(new ColorDrawable(0xFF303030));
 
 		volumeSeekBar = (SeekBar) findViewById(R.id.volumeSeekBar);
@@ -109,7 +113,7 @@ public class Telecommande extends Activity{
 				// POST new volume
 				newVol = seekBar.getProgress();
 				volumeText.setText(Integer.toString(newVol));     // update de l'edit text
-				sendVolumePressed(Integer.toString(newVol));	 // volume mis à jour                 
+				sendVolumePressed(Integer.toString(newVol));	 // volume mis Ã  jour                 
 				//Log.d(TAG, "newVol onProgressChanged" + newVol );
 			}
 
@@ -122,7 +126,7 @@ public class Telecommande extends Activity{
 
 		/*** END_VOLUME BAR ***/
 
-		//récupérer l'IP de la box
+		//rÃ©cupÃ©rer l'IP de la box
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		ip = prefs.getString(BOX_PREFERENCES,"null");
 
@@ -187,9 +191,9 @@ public class Telecommande extends Activity{
 		buttonOk.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if(ecran.getText().toString().isEmpty()){
-					//message d'erreur si aucune chaine est envoyée
+					//message d'erreur si aucune chaine est envoyÃ©e
 					AlertDialog.Builder builder1 = new AlertDialog.Builder(v.getContext());
-					builder1.setMessage("Renseigner une chaîne");
+					builder1.setMessage("Renseigner une chaÃ®ne");
 					builder1.setCancelable(true);
 					builder1.setPositiveButton("Ok",
 							new DialogInterface.OnClickListener() {
@@ -201,7 +205,7 @@ public class Telecommande extends Activity{
 					alert.show();
 				}else{
 
-					//envoi du numéro de la chaine à la télé
+					//envoi du numÃ©ro de la chaine Ã  la tÃ©lÃ©
 					switch(Integer.parseInt(ecran.getText().toString()))
 					{
 
@@ -321,7 +325,7 @@ public class Telecommande extends Activity{
 	}
 
 
-	//ajout du bouton retour (de la télécommande vers la vue précédente)
+	//ajout du bouton retour (de la tÃ©lÃ©commande vers la vue prÃ©cÃ©dente)
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -339,7 +343,7 @@ public class Telecommande extends Activity{
 
 	}
 
-	//voici la méthode qui est exécutée lorsque l'on clique sur un bouton chiffre
+	//voici la mÃ©thode qui est exÃ©cutÃ©e lorsque l'on clique sur un bouton chiffre
 	public void chiffreClick(String str) {
 
 		if (ecran.getText().toString().isEmpty()){
@@ -347,7 +351,7 @@ public class Telecommande extends Activity{
 		}
 		else if (ecran.getText().toString().length()==2){
 			AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-			builder1.setMessage("seulement les chaînes entre 1 et 19");
+			builder1.setMessage("seulement les chaÃ®nes entre 1 et 19");
 			builder1.setCancelable(true);
 			builder1.setPositiveButton("Ok",
 					new DialogInterface.OnClickListener() {
@@ -367,7 +371,7 @@ public class Telecommande extends Activity{
 			}
 			else {
 				AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-				builder1.setMessage("seulement les chaînes entre 1 et 19");
+				builder1.setMessage("seulement les chaÃ®nes entre 1 et 19");
 				builder1.setCancelable(true);
 				builder1.setPositiveButton("Ok",
 						new DialogInterface.OnClickListener() {
@@ -385,7 +389,7 @@ public class Telecommande extends Activity{
 		}
 	}
 	public void DeleteClick(){
-		//suppresion d'un chiffre du numéro dans l'EditText
+		//suppresion d'un chiffre du numÃ©ro dans l'EditText
 		String delete = ecran.getText().toString();
 		if (ecran.getText().toString().length()==2){
 			String[] nouveau = delete.split("");
@@ -422,7 +426,7 @@ public class Telecommande extends Activity{
 		}     
 	}
 
-	// Appel fonction SendVolume de la classe UserIntefaceApi pour pouvoir gérer le volume de remote
+	// Appel fonction SendVolume de la classe UserIntefaceApi pour pouvoir gÃ©rer le volume de remote
 	private class SendVolumeTask extends AsyncTask<String, Void, String> {
 		private Exception mException = null;
 
@@ -449,7 +453,8 @@ public class Telecommande extends Activity{
 
 		@Override
 		protected String doInBackground(String... params) {
-			String url = NetworkUtils.getUrlHttp(context)+"/UserInterface/Volume";
+			String url = NetworkUtils.getUrlHttp(context)+"/Applications";
+			//BaseApi baseapi = new BaseApi();
 			Log.i(LOG_TAG, "get current volume : "+url);
 			HttpGet method = new HttpGet(url);
 			HttpClient client = new DefaultHttpClient();
@@ -458,11 +463,17 @@ public class Telecommande extends Activity{
 			//on envoit du json au serveur
 			method.setHeader("content-type",NetworkUtils.JSON_CONTENT_TYPE);
 
-			try {
+			
+				
+			try{Log.d(LOG_TAG," Entre task : ");
 				HttpResponse response = client.execute(method);
+				Log.d(LOG_TAG," Entre task 2: ");
 				int statusCode = response.getStatusLine().getStatusCode();
 				Log.d(LOG_TAG, "httpResponse statusCode : "+statusCode);
+				
 				HttpEntity entity = response.getEntity();
+				Log.d(LOG_TAG, "entity statusCode : "+entity);
+				Log.d(LOG_TAG, "entityUtils : "+EntityUtils.toString(entity));
 				if(entity != null){
 					BufferedReader r = new BufferedReader(new InputStreamReader(entity.getContent()));
 					StringBuilder total = new StringBuilder();
@@ -470,7 +481,7 @@ public class Telecommande extends Activity{
 					while ((line = r.readLine()) != null) {
 						total.append(line);
 					}
-					Log.d(LOG_TAG, "TOTAL : "+total.toString());
+					Log.d(LOG_TAG, "TOTAL : "+total);
 					return total.toString();
 				}
 			} catch (ClientProtocolException e) {
@@ -488,18 +499,19 @@ public class Telecommande extends Activity{
 		@Override
 		protected void onPostExecute(String result){
 			super.onPostExecute(result);
-
+			//Log.d(TAG,"result onPostExecute" + result);
 			if(result != null){
 				VolumeSerialize vs = new Gson().fromJson(result, VolumeSerialize.class);
 				Volume vol = vs;
 				actualVol = Integer.parseInt(vol.getVolume());  // /10 par palier de 10
 				volumeSeekBar.setProgress(actualVol);  //set position seekbar en fct du volume courant
 				volumeText.setText(vol.getVolume());    // affichage sur l'edit text
+				
 				Log.d(TAG,"actualVol onPostExecute" + actualVol);
 			}
 
 
-		}
+		}}
 		public class Volume{
 
 			String volume;
@@ -517,7 +529,7 @@ public class Telecommande extends Activity{
 
 			private static final long serialVersionUID = 1456L;
 		}
-	}
+	
 
 
 }

@@ -3,31 +3,45 @@
 <!-- Generated with http://android-holo-colors.com -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <style name="AppThemezapp" parent="@style/_AppThemezapp"/>
+  
 
-  <style name="_AppThemezapp" parent="android:Theme.Holo.Light.DarkActionBar">
+  <style name="_AppThemezapp" parent="@style/AppThemezapp">
 
-    <item name="android:editTextBackground">@drawable/appthemezapp_edit_text_holo_light</item>
+    <item name="android:editTextStyle">@style/EditTextAppThemezapp</item>
 
-    <item name="android:listChoiceIndicatorMultiple">@drawable/appthemezapp_btn_check_holo_light</item>
+    <item name="android:textColorHighlight">#99eb6909</item>
+
+    <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewAppThemezapp</item>
+
+    <item name="android:checkboxStyle">@style/CheckBoxAppThemezapp</item>
+
+    <item name="android:radioButtonStyle">@style/RadioButtonAppThemezapp</item>
 
     <item name="android:buttonStyle">@style/ButtonAppThemezapp</item>
 
     <item name="android:imageButtonStyle">@style/ImageButtonAppThemezapp</item>
 
-    <item name="android:dropDownSpinnerStyle">@style/SpinnerAppThemezapp</item>
+    <item name="android:spinnerStyle">@style/SpinnerAppThemezapp</item>
+
+    <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItemAppThemezapp</item>
 
     <item name="android:progressBarStyleHorizontal">@style/ProgressBarAppThemezapp</item>
 
     <item name="android:seekBarStyle">@style/SeekBarAppThemezapp</item>
 
+    <item name="android:ratingBarStyle">@style/RatingBarAppThemezapp</item>
+
+    <item name="android:ratingBarStyleIndicator">@style/RatingBarBigAppThemezapp</item>
+
+    <item name="android:ratingBarStyleSmall">@style/RatingBarSmallAppThemezapp</item>
+
     <item name="android:buttonStyleToggle">@style/ToggleAppThemezapp</item>
 
-    <item name="android:listChoiceBackgroundIndicator">@drawable/appthemezapp_list_selector_holo_light</item>
+    <item name="android:listViewStyle">@style/ListViewAppThemezapp</item>
 
-    <item name="android:activatedBackgroundIndicator">@drawable/appthemezapp_activated_background_holo_light</item>
+    <item name="android:listViewWhiteStyle">@style/ListViewAppThemezapp.White</item>
 
-    <item name="android:fastScrollThumbDrawable">@drawable/appthemezapp_fastscroll_thumb_holo</item>
+    <item name="android:spinnerItemStyle">@style/SpinnerItemAppThemezapp</item>
 
   </style>
 

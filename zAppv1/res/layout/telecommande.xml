@@ -29,7 +29,9 @@
             android:layout_weight="0.68"
             android:focusableInTouchMode="true"
             android:indeterminate="false"
-            android:minHeight="30dip" />
+            android:minHeight="30dip"
+            android:progress="50"
+            android:thumb="@drawable/appthemezapp_scrubber_control_normal_holo" />
 
         <EditText
             android:id="@+id/EditTextVolume"
