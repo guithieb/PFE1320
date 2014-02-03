@@ -447,7 +447,5 @@ public class MainActivity extends Activity {
 		back_pressed = System.currentTimeMillis();
 	}
 
-
-
 }
 
