@@ -132,8 +132,6 @@ public class MainActivity extends Activity {
 			{
 				String newText = (String)params.get("text");
 				String which = (String)params.get("which");
-
-				if("1".equals(which)) Log.d(TAG,"HELLO");
 			}
 
 			else
@@ -249,7 +247,6 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onDeviceAdd(Device device) {
-				Log.d("deviceManager",">> device add "+device.ip);
 				deviceList += device.id+" ("+device.ip+"): "+device.friendlyName;
 				setText("1",deviceList);
 			}
@@ -268,7 +265,6 @@ public class MainActivity extends Activity {
 					{
 
 						deviceList += device.id+" ("+device.ip+"): "+device.friendlyName+"\n";//devices.get(i).id+" ";
-						Log.d(TAG,"NUM BOX" + device.ip + device.friendlyName);
 						//Identification de la box par le nom de son attribut DeviceType
 						if(device.deviceType != null){
 							if(device.deviceType.contains("urn:schemas-upnp-org:device:MediaRenderer:1")) 

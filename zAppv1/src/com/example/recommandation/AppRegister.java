@@ -22,13 +22,9 @@ public class AppRegister extends BaseApi{
    
     try {
       RegisterData data = new RegisterData(appName);
-     // Log.d(TAG,"APPNAME"+appName);
-      Log.d(TAG,"BASEURL"+baseUrl);
       HttpResponse response = executeHttpPost(baseUrl + URL_SUFFIX_REGISTER,data);
       Header locationHeader = response.getFirstHeader("Location");
-      
-      Log.d(TAG,"HEADER"+locationHeader);
-    
+          
      // String[] splitted = locationHeader.getValue().split("/");
       //String appId = splitted[splitted.length-1];
       checkResponseCodeWithoutBody(appName, response);

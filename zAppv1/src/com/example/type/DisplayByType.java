@@ -192,13 +192,10 @@ public class DisplayByType extends Activity {
 
 			if (result!=null)
 			{        
-				//EPGChaineSerialize ch = new Gson().fromJson(result,EPGChaineSerialize.class);
 				EPGChaines ch = new Gson().fromJson(result,EPGChaines.class);
 				//adapter.notifyDataSetChanged();
 				chaine.addAll(ch);
-				//Log.d(TAG,"PROGRAMMEID"+ chaine.toString());
 				if(chaine != null){
-					//Log.d(TAG,"PROGRAMMEID"+"1");
 					for (int i = 0; i < chaine.size(); i++){
 					new getBaseProgrammeTask(basePg,getApplicationContext(),chaine.get(i).getListeProgrammes().getProgrammes().getId(),
 							chaine.get(i).getId()).execute();

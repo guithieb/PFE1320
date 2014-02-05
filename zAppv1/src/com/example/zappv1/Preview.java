@@ -174,7 +174,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 			chaineId = extra.getString("chaineId");
 			progId= extra.getString("progid");
-			Log.d(TAG,"PROGRAMMEID"+progId);
 			getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),chaineId);
 			getBaseProgrammeTask gbpt = new getBaseProgrammeTask(basePg,getApplicationContext(),progId);
 			getNextProgramTask gnext = new getNextProgramTask(nextprog,getApplicationContext(),chaineId, fin);
@@ -195,7 +194,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 
 		new FeedReaderDbHelperFavoris(getApplicationContext());
-		Log.d(TAG,"BDD OPEN");
 		if (isInDB(Integer.toString(id)))
 		{
 			checkboxfavoris.setChecked(true);
@@ -271,24 +269,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				if(id<=0) id=id+19;
 				getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),Integer.toString(id));
 				gtc.execute();
-				Log.d(TAG,"TASK OK");
-				if(gtc.getStatus() == AsyncTask.Status.RUNNING)
-				{
-					Log.d(TAG,"TASK RIGHT OK");
-				}
-
-				if(gtc.getStatus() == AsyncTask.Status.FINISHED)
-				{
-					Log.d(TAG,"TASK RIGHT FIN");
-				}
-
-				if(epgChaine != null)
-				{
-					Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
-				}
 
 				new FeedReaderDbHelperFavoris(getApplicationContext());
-				Log.d(TAG,"BDD OPEN");
 				if (isInDB(Integer.toString(id)))
 				{
 					checkboxfavoris.setChecked(true);
@@ -306,24 +288,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				if(id>=20) id=id-19;
 				getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),Integer.toString(id));
 				gtc.execute();
-				Log.d(TAG,"TASK OK");
-				if(gtc.getStatus() == AsyncTask.Status.RUNNING)
-				{
-					Log.d(TAG,"TASK RIGHT OK");
-				}
-
-				if(gtc.getStatus() == AsyncTask.Status.FINISHED)
-				{
-					Log.d(TAG,"TASK RIGHT FIN");
-				}
-
-				if(epgChaine != null)
-				{
-					Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
-				}
 
 				new FeedReaderDbHelperFavoris(getApplicationContext());
-				Log.d(TAG,"BDD OPEN");
 				if (isInDB(Integer.toString(id)))
 				{
 					checkboxfavoris.setChecked(true);
@@ -367,7 +333,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 			float distanceY) {
-		Log.d(DEBUG_TAG, "onScroll: " + e1.toString()+e2.toString());
 		return true;
 	}
 
@@ -408,24 +373,9 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		if(id>=20) id=id-19;
 		getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),Integer.toString(id));
 		gtc.execute();
-		Log.d(TAG,"TASK OK");
-		if(gtc.getStatus() == AsyncTask.Status.RUNNING)
-		{
-			Log.d(TAG,"TASK RIGHT OK");
-		}
-
-		if(gtc.getStatus() == AsyncTask.Status.FINISHED)
-		{
-			Log.d(TAG,"TASK RIGHT FIN");
-		}
-
-		if(epgChaine != null)
-		{
-			Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
-		}
+		
 
 		new FeedReaderDbHelperFavoris(getApplicationContext());
-		Log.d(TAG,"BDD OPEN");
 		if (isInDB(Integer.toString(id)))
 		{
 			checkboxfavoris.setChecked(true);
@@ -442,24 +392,8 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 		if(id<=0) id=id+19;
 		getChannelTask gtc = new getChannelTask(epgChaine,getApplicationContext(),Integer.toString(id));
 		gtc.execute();
-		Log.d(TAG,"TASK OK");
-		if(gtc.getStatus() == AsyncTask.Status.RUNNING)
-		{
-			Log.d(TAG,"TASK RIGHT OK");
-		}
-
-		if(gtc.getStatus() == AsyncTask.Status.FINISHED)
-		{
-			Log.d(TAG,"TASK RIGHT FIN");
-		}
-
-		if(epgChaine != null)
-		{
-			Log.d(TAG,"EPGCHAINE"+epgChaine.getId());
-		}
 
 		new FeedReaderDbHelperFavoris(getApplicationContext());
-		Log.d(TAG,"BDD OPEN");
 		if (isInDB(Integer.toString(id)))
 		{
 			checkboxfavoris.setChecked(true);
@@ -543,8 +477,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 
 				//adapter.notifyDataSetChanged();
 				chaine = ch;
-				if(chaine != null)
-					Log.d(LOG_TAG,"CHAINE"+chaine.getListeProgrammes().getProgrammes().getNom());
 				textChaine.setText(chaine.getNom());
 				textNom.setText(Html.fromHtml(chaine.getListeProgrammes().getProgrammes().getNom()));
 
@@ -676,7 +608,7 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 					ProgrammeSerieSerialize pss = new Gson().fromJson(result,ProgrammeSerieSerialize.class);
 					pgSerie = pss;
 					textEpisode.setText(" - E: "+pgSerie.getProgramme().getSerie().getEpisode() + "\\S: "+pgSerie.getProgramme().getSerie().getSaison());
-					
+
 				}
 				else{
 					textEpisode.setText("");
@@ -689,7 +621,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 					//duree du programme en minutes
 					String[] duree = DureeProg[0].split("H");
 					int dm = (Integer.parseInt(duree[0])*60)+Integer.parseInt(duree[1]);
-					Log.d(LOG_TAG,"HEURERATIO"+dm);
 					//heure actuelle en minutes
 					Calendar c = Calendar.getInstance(); 
 					int heure = c.get(Calendar.HOUR_OF_DAY);
@@ -704,7 +635,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 					int difference = (minutes+heure*60) - dd;
 					//ratio pour progress bar
 					double ratio = (double) difference/ (double) dm;
-					Log.d(LOG_TAG,"HEURERATIO"+ratio);
 					mProgressBar.setProgress((int) (ratio*100));
 
 					if (bp.getProgramme().getImagette() != null){ 
@@ -742,7 +672,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 						int difference = (minutes+heure*60) - dd;
 						//ratio pour progress bar
 						double ratio = (double) difference/ (double) dm;
-						Log.d(LOG_TAG,"HEURERATIO"+ratio);
 						mProgressBar.setProgress((int) (ratio*100));
 
 						if (pgFilm.getProgramme().getImagette() != null){ 
@@ -764,7 +693,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 						//duree du programme en minutes
 						String[] duree = DureeProg[0].split("H");
 						int dm = (Integer.parseInt(duree[0])*60)+Integer.parseInt(duree[1]);
-						Log.d(LOG_TAG,"HEURERATIO"+dm);
 						//heure actuelle en minutes
 						Calendar c = Calendar.getInstance(); 
 						int heure = c.get(Calendar.HOUR_OF_DAY);
@@ -779,7 +707,6 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 						int difference = (minutes+heure*60) - dd;
 						//ratio pour progress bar
 						double ratio = (double) difference/ (double) dm;
-						Log.d(LOG_TAG,"HEURERATIO"+ratio);
 						mProgressBar.setProgress((int) (ratio*100));
 
 						if (pgMag.getProgramme().getImagette() != null){ 
@@ -888,34 +815,34 @@ public class Preview extends Activity implements GestureDetector.OnGestureListen
 				prog = next;
 				int j=0;
 				if(prog != null)
-				for (int i=0; i<prog.getListeProgrammes().getProgrammes().size(); i++){
-					if (prog.getListeProgrammes().getProgrammes().get(i).getDebut().equals(fin)){
-						j = i;
+					for (int i=0; i<prog.getListeProgrammes().getProgrammes().size(); i++){
+						if (prog.getListeProgrammes().getProgrammes().get(i).getDebut().equals(fin)){
+							j = i;
 
-						if(prog.getListeProgrammes().getProgrammes().get(j).getNom().contains("&#4")){
-							String[] parseNom = prog.getListeProgrammes().getProgrammes().get(j).getNom().split("&");
+							if(prog.getListeProgrammes().getProgrammes().get(j).getNom().contains("&#4")){
+								String[] parseNom = prog.getListeProgrammes().getProgrammes().get(j).getNom().split("&");
 
-							if (prog.getListeProgrammes().getProgrammes().get(j).getNom().contains("&apos;")){
-								textNext.setText(Html.fromHtml(parseNom[0] + "&" + parseNom[1]));
-							}else{
-								textNext.setText(Html.fromHtml(parseNom[0]));
+								if (prog.getListeProgrammes().getProgrammes().get(j).getNom().contains("&apos;")){
+									textNext.setText(Html.fromHtml(parseNom[0] + "&" + parseNom[1]));
+								}else{
+									textNext.setText(Html.fromHtml(parseNom[0]));
+								}
+							}
+							else{
+								textNext.setText(Html.fromHtml(prog.getListeProgrammes().getProgrammes().get(j).getNom()));
 							}
 						}
-						else{
-							textNext.setText(Html.fromHtml(prog.getListeProgrammes().getProgrammes().get(j).getNom()));
-						}
+						String[] parse = prog.getListeProgrammes().getProgrammes().get(i).getDebut().split("T");
+						String[] debutProg = parse[1].split("Z");
+						//enlever les secondes
+						String[] debut = debutProg[0].split(":");
+						textNextDebut.setText(debut[0]+":"+debut[1]+" - ");
+						String[] parse2 = prog.getListeProgrammes().getProgrammes().get(i).getFin().split("T");
+						String[] finProg = parse2[1].split("Z");
+						//enlever les secondes
+						String[] fin = finProg[0].split(":");
+						textNextFin.setText(fin[0]+":"+fin[1]);
 					}
-					String[] parse = prog.getListeProgrammes().getProgrammes().get(i).getDebut().split("T");
-					String[] debutProg = parse[1].split("Z");
-					//enlever les secondes
-					String[] debut = debutProg[0].split(":");
-					textNextDebut.setText(debut[0]+":"+debut[1]+" - ");
-					String[] parse2 = prog.getListeProgrammes().getProgrammes().get(i).getFin().split("T");
-					String[] finProg = parse2[1].split("Z");
-					//enlever les secondes
-					String[] fin = finProg[0].split(":");
-					textNextFin.setText(fin[0]+":"+fin[1]);
-				}
 			}
 
 		}

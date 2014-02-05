@@ -291,7 +291,7 @@ public class Telecommande extends Activity{
 					mute.setEnabled(true);
 					mute.setBackgroundDrawable(getApplicationContext().getResources().getDrawable(R.drawable.remotebuttonshape));
 					Log.d(TAG,"MUTE UNLOCK ");
-					
+
 				}
 				else {
 					sendKeyPressed(UserInterfaceApi.CHANNEL_MUTE);
@@ -299,16 +299,16 @@ public class Telecommande extends Activity{
 					mute.setEnabled(false);
 					Log.d(TAG,"MUTE LOCK ");
 					volumeSeekBar.setEnabled(false);
-						
+
 					mute.setBackgroundDrawable(getApplicationContext().getResources().getDrawable(R.drawable.remotebutton_pressed));
 					boolMute = true;
 					mute.setEnabled(true);
 					Log.d(TAG,"MUTE READY to UNLOCK ");
-					
+
 				}
 			}
 		});
-		
+
 		/*if(boolMute){
 			mute.setBackgroundColor(R.drawable.remotebuttonshape);
 		}
@@ -444,7 +444,7 @@ public class Telecommande extends Activity{
 
 	public class GetVolumeTask extends AsyncTask<String, Void, String> {
 		public static final String LOG_TAG = "debug netWorkUtils";
-		
+
 		Context context;
 
 		public GetVolumeTask(Context c) {
@@ -453,7 +453,7 @@ public class Telecommande extends Activity{
 
 		@Override
 		protected String doInBackground(String... params) {
-			String url = NetworkUtils.getUrlHttp(context)+"/Applications";
+			String url = NetworkUtils.getUrlHttp(context)+"/UserInterface/Volume";
 			//BaseApi baseapi = new BaseApi();
 			Log.i(LOG_TAG, "get current volume : "+url);
 			HttpGet method = new HttpGet(url);
@@ -463,17 +463,12 @@ public class Telecommande extends Activity{
 			//on envoit du json au serveur
 			method.setHeader("content-type",NetworkUtils.JSON_CONTENT_TYPE);
 
-			
-				
-			try{Log.d(LOG_TAG," Entre task : ");
+
+
+			try{
 				HttpResponse response = client.execute(method);
-				Log.d(LOG_TAG," Entre task 2: ");
-				int statusCode = response.getStatusLine().getStatusCode();
-				Log.d(LOG_TAG, "httpResponse statusCode : "+statusCode);
-				
+				int statusCode = response.getStatusLine().getStatusCode();				
 				HttpEntity entity = response.getEntity();
-				Log.d(LOG_TAG, "entity statusCode : "+entity);
-				Log.d(LOG_TAG, "entityUtils : "+EntityUtils.toString(entity));
 				if(entity != null){
 					BufferedReader r = new BufferedReader(new InputStreamReader(entity.getContent()));
 					StringBuilder total = new StringBuilder();
@@ -481,55 +476,48 @@ public class Telecommande extends Activity{
 					while ((line = r.readLine()) != null) {
 						total.append(line);
 					}
-					Log.d(LOG_TAG, "TOTAL : "+total);
 					return total.toString();
 				}
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
-				Log.d(LOG_TAG, "ClientProtocolException : "+e.toString());
-
 			} catch (IOException e) {
 				e.printStackTrace();
-				Log.d(LOG_TAG, "IOException : "+e.toString());
 			}
-
 			return null;
 		}
 
 		@Override
 		protected void onPostExecute(String result){
 			super.onPostExecute(result);
-			//Log.d(TAG,"result onPostExecute" + result);
 			if(result != null){
 				VolumeSerialize vs = new Gson().fromJson(result, VolumeSerialize.class);
 				Volume vol = vs;
 				actualVol = Integer.parseInt(vol.getVolume());  // /10 par palier de 10
 				volumeSeekBar.setProgress(actualVol);  //set position seekbar en fct du volume courant
 				volumeText.setText(vol.getVolume());    // affichage sur l'edit text
-				
-				Log.d(TAG,"actualVol onPostExecute" + actualVol);
 			}
 
 
-		}}
-		public class Volume{
+		}
+	}
+	public class Volume{
 
-			String volume;
+		String volume;
 
-			public String getVolume() {
-				return volume;
-			}
-
-			public void setVolume(String volume) {
-				this.volume = volume;
-			}
+		public String getVolume() {
+			return volume;
 		}
 
-		public class VolumeSerialize extends Volume{
-
-			private static final long serialVersionUID = 1456L;
+		public void setVolume(String volume) {
+			this.volume = volume;
 		}
-	
+	}
+
+	public class VolumeSerialize extends Volume{
+
+		private static final long serialVersionUID = 1456L;
+	}
+
 
 
 }

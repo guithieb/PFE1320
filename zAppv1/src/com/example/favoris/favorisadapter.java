@@ -130,6 +130,9 @@ public class favorisadapter extends BaseAdapter {
 		ch.debut.setText(progdebut[0]+":"+progdebut[1]);
 		
 		int horairedebut = (Integer.parseInt(progdebut[0])*60)+Integer.parseInt(progdebut[1]);
+		if (Integer.parseInt(progfin[0])<Integer.parseInt(progdebut[0])){
+			progfin[0]=Integer.toString(Integer.parseInt(progfin[0])+24);
+		}
 		int horairefin = (Integer.parseInt(progfin[0])*60)+Integer.parseInt(progfin[1]);
 		int dureetotale = horairefin - horairedebut;
 		//heure actuelle en minutes

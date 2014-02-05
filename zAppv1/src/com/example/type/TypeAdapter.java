@@ -95,9 +95,6 @@ public class TypeAdapter extends BaseAdapter {
 
 		final EPGChaine application = datas.get(position);
 
-		//ch.chaineName.setText(application.getNom());
-		Log.d(LOG_TAG, "id" +application.getId());
-
 		if (application.getNom().equals("Canal+")) {
 			ch.photo.setImageResource(R.drawable.canal);
 		}
@@ -134,11 +131,11 @@ public class TypeAdapter extends BaseAdapter {
 		ch.debut.setText(progdebut[0]+":"+progdebut[1]);
 
 		int horairedebut = (Integer.parseInt(progdebut[0])*60)+Integer.parseInt(progdebut[1]);
-		Log.d(LOG_TAG,"TOTALdebut "+Integer.toString(horairedebut));
+		if (Integer.parseInt(progfin[0])<Integer.parseInt(progdebut[0])){
+			progfin[0]=Integer.toString(Integer.parseInt(progfin[0])+24);
+		}
 		int horairefin = (Integer.parseInt(progfin[0])*60)+Integer.parseInt(progfin[1]);
-		Log.d(LOG_TAG,"TOTALfin "+Integer.toString(horairefin));
 		int dureetotale = horairefin - horairedebut;
-		Log.d(LOG_TAG,"TOTAL "+Integer.toString(dureetotale));
 		//heure actuelle en minutes
 		Calendar c = Calendar.getInstance(); 
 		int heure = c.get(Calendar.HOUR_OF_DAY);

@@ -116,32 +116,17 @@ public class GenreForm extends Activity {
 				reco.setGenre(list.getItemAtPosition(i).toString());
 				reco.setOrdrepref(Integer.toString(pref));
 				recoBdd.insertPref(reco);
-				Log.d(TAG, "FIRST"+ reco.getGenre());
-
 				reco.setGenre(list2.getItemAtPosition(j).toString());
 				reco.setOrdrepref(Integer.toString(pref+1));
 				recoBdd.insertPref(reco);
-				Log.d(TAG, "FIRST"+ reco.getGenre());
-
 				reco.setGenre(list3.getItemAtPosition(k).toString());
 				reco.setOrdrepref(Integer.toString(pref+2));
 				recoBdd.insertPref(reco);
-				Log.d(TAG, "FIRST"+ reco.getGenre());
 				recoBdd.close();
 				finish();
 			}
 
 		}
-
-
-
-
-
-
-
-
-
-
 
 	}
 

@@ -60,7 +60,6 @@ public class GetFavorisTask extends AsyncTask<String, Void, String>{
 				while ((line = r.readLine()) != null) {
 					total.append(line);
 				}
-				//Log.d(LOG_TAG,"TOTAL "+total.toString());
 				return total.toString();
 			}
 

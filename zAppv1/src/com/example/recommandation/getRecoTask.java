@@ -42,7 +42,6 @@ public class getRecoTask extends AsyncTask<String, Void, String> {
 		//Url de la requete permettant d'accéder au Cloud pour récupérer toutes les chaînes en temps réel
 		String url = "http://openbbox.flex.bouyguesbox.fr:81/V0/Media/EPG/Live/?TVChannelsId="+id;
 		try {
-		  Log.d(LOG_TAG,"IDEPG"+id);
 			HttpResponse response = BaseApi.executeHttpGet(url);
 			HttpEntity entity = response.getEntity();
 			if (entity !=null)
@@ -53,7 +52,6 @@ public class getRecoTask extends AsyncTask<String, Void, String> {
 				while ((line = r.readLine()) != null) {
 					total.append(line);
 				}
-				//Log.d(LOG_TAG,"TOTAL "+total.toString());
 				return total.toString();
 			}
 
@@ -75,7 +73,6 @@ public class getRecoTask extends AsyncTask<String, Void, String> {
 		if (result!=null)
 		{	
 			EPGChaineSerialize ch = new Gson().fromJson(result,EPGChaineSerialize.class);
-			Log.d(LOG_TAG,"CH "+ch.toString());
 			//adapter.notifyDataSetChanged();
 			chaine.clear();
 			chaine.add(ch);

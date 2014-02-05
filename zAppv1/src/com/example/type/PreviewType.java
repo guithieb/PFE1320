@@ -85,16 +85,13 @@ public class PreviewType extends Activity implements GestureDetector.OnGestureLi
 	//String videoSrc = "rtsp://v6.cache1.c.youtube.com/CjYLENy73wIaLQkDsLHya4-Z9hMYDSANFEIJbXYtZ29vZ2xlSARSBXdhdGNoYKX4k4uBjbOiUQw=/0/0/0/video.3gp";
 
 
-	// *** Melvin Gesture *** //
 	private static final int SWIPE_MIN_DISTANCE = 120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	private static final String TAG = "MyActivity";
 	public static final String BOX_PREFERENCES = "boxPrefs";
-	//*** Melvin Gesture *** //
 	private String ip;
 	private static final String LOG_TAG = "activity";
-	//private static final String DEFAULT_BOX_URL = "http://192.168.0.24:8080/api.bbox.lan/V0";
 	public static final String SUFFIXE_URL = "/api.bbox.lan/V0";
 	public static String URL_HTTP = "";
 	private Toast toast;
@@ -157,13 +154,6 @@ public class PreviewType extends Activity implements GestureDetector.OnGestureLi
 		// application context and an implementation of
 		// GestureDetector.OnGestureListener
 		mDetector = new GestureDetectorCompat(this,this);
-
-
-		// Instantiate the gesture detector with the
-		// application context and an implementation of
-		// GestureDetector.OnGestureListener
-		//mDetector = new GestureDetectorCompat(this,this);
-
 		//Récuperation du nom de la chaine envoyé dans la vue ListeChaine
 		Bundle extra = getIntent().getExtras();
 		extra = getIntent().getExtras();
