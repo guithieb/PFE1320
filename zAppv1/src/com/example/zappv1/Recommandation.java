@@ -458,13 +458,22 @@ public class Recommandation extends Fragment {
 				}else
 				{
 					if ((chaineId.length() == 1)||(chaineId.length() == 2)){
-						chaineId = chaineId + ","+ parsing(pref1, 1);
+						if(!pref1.isEmpty()){
+							chaineId = chaineId + ","+ parsing(pref1, 1);
+						}
+						else chaineId = chaineId;
 						if (pref1.size() + chainereco.size() < 4){
-							chaineId = chaineId  + "," + parsing(pref2, pref1.size() + chainereco.size());
+							if(!pref2.isEmpty()){
+								chaineId = chaineId  + "," + parsing(pref2, pref1.size() + chainereco.size());
+							}
+							else chaineId = chaineId;
 						}
 
 						if ((pref1.size()+pref2.size() + chainereco.size()) < 4){
-							chaineId = chaineId + ","+ parsing(pref3, (pref1.size()+pref2.size() + chainereco.size()));
+							if(!pref3.isEmpty()){
+								chaineId = chaineId + ","+ parsing(pref3, (pref1.size()+pref2.size() + chainereco.size()));
+							}
+							else chaineId = chaineId;
 						}
 
 					}
